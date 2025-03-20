@@ -99,15 +99,14 @@ def format_user_info_to_flattened_json(user_info_list: List[dict]) -> List[dict]
     return flattened_data
 
 
-def create_google_sheets_agent(composio_api_key: str, openai_api_key: str) -> Agent:
-    # composio_toolset = ComposioToolSet(api_key=composio_api_key)
-    composio_toolset = ComposioToolSet(api_key='8fsy14yf2vd3nuekyc03g5')
+def create_google_sheets_agent(composio_api_key: str, openai_api_key: str, openai_api_model_type:str, openai_api_base_url:str) -> Agent:
+    composio_toolset = ComposioToolSet(api_key=composio_api_key)
 
     google_sheets_tool = composio_toolset.get_tools(actions=[Action.GOOGLESHEETS_SHEET_FROM_JSON])[0]
 
     google_sheets_agent = Agent(
-        model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
+                         base_url=openai_api_base_url),
         tools=[google_sheets_tool],
         show_tool_calls=True,
         system_message="You are an expert at creating and updating Google Sheets. You will be given user information in JSON format, and you need to write it into a new Google Sheet.",
@@ -116,8 +115,8 @@ def create_google_sheets_agent(composio_api_key: str, openai_api_key: str) -> Ag
     return google_sheets_agent
 
 
-def write_to_google_sheets(flattened_data: List[dict], composio_api_key: str, openai_api_key: str) -> str:
-    google_sheets_agent = create_google_sheets_agent(composio_api_key, openai_api_key)
+def write_to_google_sheets(flattened_data: List[dict], composio_api_key: str, openai_api_key: str, openai_api_model_type:str, openai_api_base_url:str) -> str:
+    google_sheets_agent = create_google_sheets_agent(composio_api_key, openai_api_key, openai_api_model_type, openai_api_base_url)
 
     try:
         message = (
@@ -140,10 +139,10 @@ def write_to_google_sheets(flattened_data: List[dict], composio_api_key: str, op
     return None
 
 
-def create_prompt_transformation_agent(openai_api_key: str) -> Agent:
+def create_prompt_transformation_agent(openai_api_key: str, openai_api_model_type:str, openai_api_base_url:str) -> Agent:
     return Agent(
-        model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
+                         base_url=openai_api_base_url),
         system_message="""You are an expert at transforming detailed user queries into concise company descriptions.
 Your task is to extract the core business/product focus in 3-4 words.
 
@@ -172,18 +171,23 @@ def main():
 
     with st.sidebar:
         st.header("API Keys")
-        firecrawl_api_key = st.text_input("Firecrawl API Key", type="password")
+        firecrawl_api_key = st.text_input("Firecrawl API Key", type="password",
+                                          value=st.session_state.get('firecrawl_api_key'))
         st.caption(" Get your Firecrawl API key from [Firecrawl's website](https://www.firecrawl.dev/app/api-keys)")
-        openai_api_key = st.text_input("OpenAI API Key", type="password")
+        openai_api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.text_input("OpenAI API Model Type",
+                                              value=st.session_state.get('openai_api_model_type'))
+        openai_api_base_url = st.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
         st.caption(" Get your OpenAI API key from [OpenAI's website](https://platform.openai.com/api-keys)")
-        composio_api_key = st.text_input("Composio API Key", type="password")
+        composio_api_key = st.text_input("Composio API Key", type="password",
+                                         value=st.session_state.get('composio_api_key'))
         st.caption(" Get your Composio API key from [Composio's website](https://composio.ai)")
 
         num_links = st.number_input("Number of links to search", min_value=1, max_value=10, value=3)
 
-        if st.button("Reset"):
-            st.session_state.clear()
-            st.experimental_rerun()
+        # if st.button("Reset"):
+        #     st.session_state.clear()
+        #     st.experimental_rerun()
 
     user_query = st.text_area(
         "Describe what kind of leads you're looking for:",
@@ -192,18 +196,19 @@ def main():
     )
 
     if st.button("Generate Leads"):
-        if not all([firecrawl_api_key, openai_api_key, composio_api_key, user_query]):
+        if not all([firecrawl_api_key, openai_api_key, composio_api_key, user_query, openai_api_model_type,
+                    openai_api_base_url]):
             st.error("Please fill in all the API keys and describe what leads you're looking for.")
         else:
             with st.spinner("Processing your query..."):
-                transform_agent = create_prompt_transformation_agent(openai_api_key)
+                transform_agent = create_prompt_transformation_agent(openai_api_key, openai_api_model_type,
+                                                                     openai_api_base_url)
                 company_description = transform_agent.run(
                     f"Transform this query into a concise 3-4 word company description: {user_query}")
                 st.write("🎯 Searching for:", company_description.content)
 
             with st.spinner("Searching for relevant URLs..."):
-                # urls = search_for_urls(company_description.content, firecrawl_api_key, num_links)
-                urls = search_for_urls(company_description.content, 'fc-bd7f59397c2544e79a7236038b0ba662', num_links)
+                urls = search_for_urls(company_description.content, firecrawl_api_key, num_links)
 
             if urls:
                 st.subheader("Quora Links Used:")
@@ -217,7 +222,7 @@ def main():
                     flattened_data = format_user_info_to_flattened_json(user_info_list)
 
                 with st.spinner("Writing to Google Sheets..."):
-                    google_sheets_link = write_to_google_sheets(flattened_data, composio_api_key, openai_api_key)
+                    google_sheets_link = write_to_google_sheets(flattened_data, composio_api_key, openai_api_key, openai_api_model_type, openai_api_base_url)
 
                 if google_sheets_link:
                     st.success("Lead generation and data writing to Google Sheets completed successfully!")

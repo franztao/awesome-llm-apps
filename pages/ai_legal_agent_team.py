@@ -13,6 +13,14 @@ def init_session_state():
     """Initialize session state variables"""
     if 'openai_api_key' not in st.session_state:
         st.session_state.openai_api_key = None
+    if 'openai_api_model_type' not in st.session_state:
+        st.session_state.openai_api_model_type = None
+    if 'openai_api_vlm_model_type' not in st.session_state:
+        st.session_state.openai_api_vlm_model_type = None
+    if 'openai_api_embedding_model_type' not in st.session_state:
+        st.session_state.openai_api_embedding_model_type = None
+    if 'openai_api_base_url' not in st.session_state:
+        st.session_state.openai_api_base_url = None
     if 'qdrant_api_key' not in st.session_state:
         st.session_state.qdrant_api_key = None
     if 'qdrant_url' not in st.session_state:
@@ -37,13 +45,12 @@ def init_qdrant():
         # Create Agno's Qdrant instance which implements VectorDb
         vector_db = Qdrant(
             collection=COLLECTION_NAME,
-            # url=st.session_state.qdrant_url,
-            url="http://localhost:6333/",
-            api_key="123",#st.session_state.qdrant_api_key,
+            url=st.session_state.qdrant_url,
+            api_key=st.session_state.qdrant_api_key,
             embedder=OpenAIEmbedder(
-                id="text-embedding-v3",
-                base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
-                api_key="sk-f7f3039f52e3402bbafda926f4da7cb3"  #st.session_state.openai_api_key
+                id=st.session_state.openai_api_embedding_model_type,
+                base_url=st.session_state.openai_api_base_url,
+                api_key=st.session_state.openai_api_key
             )
         )
         return vector_db
@@ -125,6 +132,23 @@ def main():
         if openai_key:
             st.session_state.openai_api_key = openai_key
 
+        openai_api_vlm_model_type = st.text_input(
+            "OpenAI API VLM Model Type",
+            value=st.session_state.openai_api_vlm_model_type if st.session_state.openai_api_vlm_model_type else "",
+            help="Enter your OpenAI API VLM Model Type"
+        )
+        if openai_api_vlm_model_type:
+            st.session_state.openai_api_vlm_model_type = openai_api_vlm_model_type
+
+
+        openai_api_embedding_model_type = st.text_input(
+            "OpenAI API Embedding Model Type",
+            value=st.session_state.openai_api_embedding_model_type if st.session_state.openai_api_embedding_model_type else "",
+            help="Enter your OpenAI API Embedding Model Type"
+        )
+        if openai_api_embedding_model_type:
+            st.session_state.openai_api_embedding_model_type = openai_api_embedding_model_type
+
         qdrant_key = st.text_input(
             "Qdrant API Key",
             type="password",
@@ -175,7 +199,7 @@ def main():
                                 legal_researcher = Agent(
                                     name="Legal Researcher",
                                     role="Legal research specialist",
-                                    model=OpenAIChat(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+                                    model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
                                     tools=[DuckDuckGoTools()],
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
@@ -192,7 +216,7 @@ def main():
                                 contract_analyst = Agent(
                                     name="Contract Analyst",
                                     role="Contract analysis specialist",
-                                    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+                                    model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
                                     instructions=[
@@ -206,7 +230,7 @@ def main():
                                 legal_strategist = Agent(
                                     name="Legal Strategist",
                                     role="Legal strategy specialist",
-                                    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+                                    model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
                                     instructions=[

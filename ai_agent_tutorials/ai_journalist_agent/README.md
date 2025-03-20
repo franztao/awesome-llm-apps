@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 5. Run the Streamlit App
 ```bash
-streamlit run journalist_agent.py
+streamlit run ai_journalist_agent.py
 ```
 
 ### How it Works?

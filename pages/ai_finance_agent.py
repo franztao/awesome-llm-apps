@@ -2,23 +2,31 @@ from textwrap import dedent
 from agno.agent import Agent
 from agno.tools.serpapi import SerpApiTools
 import streamlit as st
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat, OpenAILike
 
 # Set up the Streamlit app
-st.title("AI Personal Finance Planner 💰")
-st.caption("Manage your finances with AI Personal Finance Manager by creating personalized budgets, investment plans, and savings strategies using GPT-4o")
-
+st.title("💰 AI个人财务代理")
+# st.caption("Manage your finances with AI Personal Finance Manager by creating personalized budgets, investment plans, and savings strategies using GPT-4o")
+st.markdown("""这款 Streamlit 应用是一款人工智能个人理财规划器，可使用LLM生成个性化财务计划。它可以自动完成研究、规划和创建量身定制的预算、投资策略和储蓄目标的过程，让您轻松掌控自己的财务未来。
+### 特征
+- 设定您的财务目标并提供有关您当前财务状况的详细信息
+- 使用LLM生成智能个性化的财务建议
+- 获得定制的预算、投资计划和储蓄策略
+""")
 # Get OpenAI API key from user
-openai_api_key = st.text_input("Enter OpenAI API Key to access GPT-4o", type="password")
-
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                      value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+# OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url)
 # Get SerpAPI key from the user
-serp_api_key = st.text_input("Enter Serp API Key for Search functionality", type="password")
+serp_api_key = st.sidebar.text_input("Enter Serp API Key for Search functionality", type="password", value=st.session_state.get('serpapi_api_key'))
 
 if openai_api_key and serp_api_key:
     researcher = Agent(
         name="Researcher",
         role="Searches for financial advice, investment opportunities, and savings strategies based on user preferences",
-        model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
         description=dedent(
             """\
         You are a world-class financial researcher. Given a user's financial goals and current financial situation,
@@ -38,7 +46,7 @@ if openai_api_key and serp_api_key:
     planner = Agent(
         name="Planner",
         role="Generates a personalized financial plan based on user preferences and research results",
-        model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
         description=dedent(
             """\
         You are a senior financial planner. Given a user's financial goals, current financial situation, and a list of research results,

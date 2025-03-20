@@ -4,23 +4,38 @@ from agno.agent import Agent
 from agno.tools.serpapi import SerpApiTools
 from agno.tools.newspaper4k import Newspaper4kTools
 import streamlit as st
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat, OpenAILike
 
 # Set up the Streamlit app
-st.title("AI Journalist Agent 🗞️")
-st.caption("Generate High-quality articles with AI Journalist by researching, wriritng and editing quality articles on autopilot using GPT-4o")
-
+st.title("🗞️ AI记者代理")
+# st.caption("Generate High-quality articles with AI Journalist by researching, wriritng and editing quality articles on autopilot using GPT-4o")
+st.markdown("""
+这款 Streamlit 应用是一款由人工智能驱动的记者代理，可使用LLM生成高质量文章。它可以自动执行研究、撰写和编辑文章的过程，让您轻松创建任何主题的引人入胜的内容。
+### 特征
+- 在网络上搜索关于特定主题的相关信息
+- 撰写结构良好、内容丰富且引人入胜的文章
+- 编辑和完善生成的内容以满足《纽约时报》的高标准
+### 它是如何工作的？
+人工智能记者代理利用三个主要组件：
+- 搜索器：负责根据给定的主题生成搜索词，并使用 SerpAPI 在网络上搜索相关的 URL。
+- 作者：使用 NewspaperToolkit 从提供的 URL 中检索文本，并根据提取的信息撰写高质量的文章。
+- 编辑：协调搜索者和作者之间的工作流程，并对生成的文章进行最终的编辑和完善。
+""")
 # Get OpenAI API key from user
-openai_api_key = st.text_input("Enter OpenAI API Key to access GPT-4o", type="password")
-
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                      value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+# OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url)
 # Get SerpAPI key from the user
-serp_api_key = st.text_input("Enter Serp API Key for Search functionality", type="password")
+serp_api_key = st.sidebar.text_input("Enter Serp API Key for Search functionality", type="password", value=st.session_state.get('serpapi_api_key'))
 
 if openai_api_key and serp_api_key:
     searcher = Agent(
         name="Searcher",
         role="Searches for top URLs based on a topic",
-        model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
+                           base_url=openai_api_base_url),
         description=dedent(
             """\
         You are a world-class journalist for the New York Times. Given a topic, generate a list of 3 search terms
@@ -40,7 +55,7 @@ if openai_api_key and serp_api_key:
     writer = Agent(
         name="Writer",
         role="Retrieves text from URLs and writes a high-quality article",
-        model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
         description=dedent(
             """\
         You are a senior writer for the New York Times. Given a topic and a list of URLs,
@@ -64,7 +79,7 @@ if openai_api_key and serp_api_key:
 
     editor = Agent(
         name="Editor",
-        model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
         team=[searcher, writer],
         description="You are a senior NYT editor. Given a topic, your goal is to write a NYT worthy article.",
         instructions=[

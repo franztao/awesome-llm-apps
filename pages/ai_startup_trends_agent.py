@@ -71,7 +71,7 @@ if st.button("Generate Analysis"):
 
                 # The multi agent Team setup of phidata:
                 agent_team = Agent(
-                    agents=[news_collector, summary_writer, trend_analyzer],
+                    team=[news_collector, summary_writer, trend_analyzer],
                     instructions=[
                         "First, search DuckDuckGo for recent news articles related to the user's specified topic.",
                         "Then, provide the collected article links to the summary writer.",

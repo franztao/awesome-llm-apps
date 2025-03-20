@@ -10,27 +10,38 @@ from agno.models.openai import OpenAIChat, OpenAILike
 
 if "GOOGLE_API_KEY" not in st.session_state:
     st.session_state.GOOGLE_API_KEY = None
+if "openai_api_key" not in st.session_state:
+    st.session_state.openai_api_key = None
 
 with st.sidebar:
     st.title("ℹ️ Configuration")
     
-    if not st.session_state.GOOGLE_API_KEY:
-        api_key = st.text_input(
-            "Enter your Google API Key:",
-            type="password"
-        )
-        st.caption(
-            "Get your API key from [Google AI Studio]"
-            "(https://aistudio.google.com/apikey) 🔑"
-        )
-        if api_key:
-            st.session_state.GOOGLE_API_KEY = api_key
-            st.success("API Key saved!")
-            st.rerun()
+    if not st.session_state.openai_api_key:
+        # api_key = st.text_input(
+        #     "Enter your Google API Key:",
+        #     type="password"
+        # )
+        # st.caption(
+        #     "Get your API key from [Google AI Studio]"
+        #     "(https://aistudio.google.com/apikey) 🔑"
+        # )
+        # if api_key:
+        #     st.session_state.GOOGLE_API_KEY = api_key
+        #     st.success("API Key saved!")
+        #     st.rerun()
+        # Get OpenAI API key from user
+        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+                                               value=st.session_state.get('openai_api_key'))
+        openai_api_vlm_model_type = st.sidebar.text_input("OpenAI API VLM Model Type",
+                                                      value=st.session_state.get('openai_api_vlm_model_type'))
+        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+                                                    value=st.session_state.get('openai_api_base_url'))
+
     else:
         st.success("API Key is configured")
         if st.button("🔄 Reset API Key"):
-            st.session_state.GOOGLE_API_KEY = None
+            # st.session_state.GOOGLE_API_KEY = None
+            st.session_state.openai_api_key = None
             st.rerun()
     
     st.info(
@@ -49,8 +60,7 @@ medical_agent = Agent(
     #     # api_key=st.session_state.GOOGLE_API_KEY
     #     api_key='AIzaSyC2VJnKhQJPMmYuvN7JGvEsDyB5O8rm-Js'
     # ),
-    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+    model=OpenAILike(id=openai_api_vlm_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
     tools=[DuckDuckGoTools()],
     markdown=True
 ) if st.session_state.GOOGLE_API_KEY else None
@@ -97,7 +107,36 @@ IMPORTANT: Use the DuckDuckGo search tool to:
 Format your response using clear markdown headers and bullet points. Be concise yet thorough.
 """
 
-st.title("🏥 Medical Imaging Diagnosis Agent")
+st.title("🏥 医学影像诊断代理")
+st.markdown("""
+- 基于LLM 的 agno 构建的医学影像诊断代理，提供对各种扫描的医学图像的 AI 辅助分析。该代理充当医学影像诊断专家，分析各种类型的医学图像和视频，提供详细的诊断见解和解释。
+## 特征
+- 综合图像分析
+- 图像类型识别（X 射线、MRI、CT 扫描、超声波）
+- 解剖区域检测
+- 主要发现和观察
+- 潜在异常检测
+- 图像质量评估
+- 研究与参考
+## 分析组件
+- **图像类型和区域**
+  - 识别成像方式
+  - 指定解剖区域
+- **主要发现**
+  - 系统地列出观察结果
+  - 详细外观描述
+  - 异常突出显示
+- **诊断评估**
+  - 潜在诊断排名
+  - 鉴别诊断
+  - 严重程度评估
+- **患者友好的解释**
+  - 简化术语
+  - 详细的第一性原理解释
+  - 视觉参考点
+## 免责声明
+此工具仅用于教育和信息目的。所有分析均应由合格的医疗保健专业人员审查。请勿仅根据此分析做出医疗决定。
+""")
 st.write("Upload a medical image for professional analysis")
 
 # Create containers for better organization

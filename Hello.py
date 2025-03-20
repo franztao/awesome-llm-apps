@@ -5,16 +5,18 @@ st.set_page_config(
     page_icon="👋",
 )
 
-
-st.sidebar.page_link(r"pages/ai_investment_agent.py", label="👨📈 AI 智能投资代理")
-st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨‍⚖️ AI 法律agent团队")
-st.sidebar.page_link(r"pages/ai_recruitment_agent_team.py", label="👨💼 AI 招聘代理团队")
-st.sidebar.page_link(r"pages/ai_competitor_agent_team.py", label="🧲 AI 竞争对手情报代理团队")
+st.sidebar.page_link(r"pages/ai_investment_agent.py", label="👨📈 AI智能投资代理")
+st.sidebar.page_link(r"pages/ai_legal_agent_team.py", label="👨‍⚖️ AI法律agent团队")
+st.sidebar.page_link(r"pages/ai_recruitment_agent_team.py", label="👨💼 AI招聘代理团队")
+st.sidebar.page_link(r"pages/ai_competitor_agent_team.py", label="🧲 AI竞争对手情报代理团队")
 st.sidebar.page_link(r"pages/ai_health_agent.py", label="️‍♂️ AI 健康与健身规划代理")
-st.sidebar.page_link(r"pages/ai_startup_trends_agent.py", label="️📈 AI 初创企业趋势分析代理")
+st.sidebar.page_link(r"pages/ai_startup_trends_agent.py", label="️📈 AI初创企业趋势分析代理")
+st.sidebar.page_link(r"pages/ai_journalist_agent.py", label="️🗞️ AI记者代理")
+st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨🎯 AI潜在客户生成代理")
+st.sidebar.page_link(r"pages/ai_finance_agent.py", label="💰 AI个人财务代理")
+st.sidebar.page_link(r"pages/ai_medical_imaging.py", label="🩻 AI医学影像诊断代理")
 
-# 📈 AI 初创企业趋势分析代理
-# 🏋
+
 st.write("# 欢迎使用 沐曦Agent智能体! 👋")
 # st.write(
 #     "A curated collection of awesome LLM apps built with RAG and AI agents. This repository features LLM apps that use models from OpenAI, Anthropic, Google, and open-source models like DeepSeek, Qwen or Llama that you can run locally on your computer.")
@@ -41,11 +43,18 @@ st.header("API Keys")
 
 # OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url)
 openai_api_key = st.text_input("Similar OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+st.session_state['openai_api_key'] = openai_api_key
 openai_api_model_type = st.text_input("OpenAI API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
+st.session_state['openai_api_model_type'] = openai_api_model_type
+openai_api_vlm_model_type = st.text_input("OpenAI API VLM Model Type",
+                                          value=st.session_state.get('openai_api_vlm_model_type'))
+st.session_state['openai_api_vlm_model_type'] = openai_api_vlm_model_type
+openai_api_embedding_model_type = st.text_input("OpenAI API Embedding Model Type",
+                                                value=st.session_state.get('openai_api_embedding_model_type'))
+st.session_state['openai_api_embedding_model_type'] = openai_api_embedding_model_type
 openai_api_base_url = st.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
 st.session_state['openai_api_key'] = openai_api_key
-
 st.caption(" Get your OpenAI API key from [OpenAI's website](https://platform.openai.com/api-keys)")
 
 firecrawl_api_key = st.text_input("Firecrawl API Key", type="password", value=st.session_state.get('firecrawl_api_key'))
@@ -56,22 +65,26 @@ composio_api_key = st.text_input("Composio API Key", type="password", value=st.s
 st.session_state['composio_api_key'] = composio_api_key
 st.caption(" Get your Composio API key from [Composio's website](https://composio.ai)")
 
-
-perplexity_api_key = st.text_input("Perplexity API Key", type="password")
+perplexity_api_key = st.text_input("Perplexity API Key", type="password", value=st.session_state.get('perplexity_api_key'))
 st.session_state['perplexity_api_key'] = perplexity_api_key
-exa_api_key = st.text_input("Exa API Key", type="password")
+exa_api_key = st.text_input("Exa API Key", type="password", value=st.session_state.get('exa_api_key'))
 st.session_state['exa_api_key'] = exa_api_key
+
+serpapi_api_key = st.text_input("Enter your SerpAPI Key", type="password", value=st.session_state.get('serpapi_api_key'))
+st.session_state['serpapi_api_key'] = serpapi_api_key
 
 st.subheader("Zoom Settings")
 zoom_account_id = st.text_input("Zoom Account ID", type="password", value=st.session_state.get('zoom_account_id'))
 st.session_state['zoom_account_id'] = zoom_account_id
 zoom_client_id = st.text_input("Zoom Client ID", type="password", value=st.session_state.get('zoom_client_id'))
 st.session_state['zoom_client_id'] = zoom_client_id
-zoom_client_secret = st.text_input("Zoom Client Secret", type="password", value=st.session_state.get('zoom_client_secret'))
+zoom_client_secret = st.text_input("Zoom Client Secret", type="password",
+                                   value=st.session_state.get('zoom_client_secret'))
 st.session_state['zoom_client_secret'] = zoom_client_secret
 
 st.subheader("Email Settings")
-email_sender = st.text_input("Sender Email", value=st.session_state.get('composio_api_key'), help="Email address to send from")
+email_sender = st.text_input("Sender Email", value=st.session_state.get('composio_api_key'),
+                             help="Email address to send from")
 st.session_state['email_sender'] = email_sender
 email_passkey = st.text_input("Email App Password", type="password", value=st.session_state.get('composio_api_key'),
                               help="App-specific password for email")
@@ -80,12 +93,17 @@ company_name = st.text_input("Company Name", value=st.session_state.get('composi
                              help="Name to use in email communications")
 st.session_state['company_name'] = company_name
 
+st.subheader("Qdrant Settings")
+qdrant_url = st.text_input("qdrant_url", value=st.session_state.get('qdrant_url'))
+st.session_state['qdrant_url'] = qdrant_url
+qdrant_api_key = st.text_input("qdrant_api_key", value=st.session_state.get('qdrant_api_key'))
+st.session_state['qdrant_api_key'] = qdrant_api_key
 
 st.session_state['openai_api_model_type'] = "qwen-plus"
 st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
 st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'
-st.session_state['composio_api_key'] ='8fsy14yf2vd3nuekyc03g5'
+st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'
 
 # zoom_tools = CustomZoomTool(
 #     account_id='CRGZvs0ARnaGntbxJuFjbw',
@@ -106,7 +124,13 @@ st.session_state['email_sender'] = 'franztaoheng@gmail.com'
 st.session_state['email_passkey'] = 'ynzr izpr amec imlz'
 st.session_state['company_name'] = 'muxi tao'
 
-
 st.session_state['exa_api_key'] = '94692c17-1768-426e-8828-b41b4dab63b1'
 
-#
+st.session_state['serpapi_api_key'] = '4daaca7da2c5287775d7783777c9b416cd91ac961ff24cb41ddb45f7c7176a19'
+
+st.session_state['qdrant_url'] = "http://localhost:6333/"
+st.session_state['qdrant_api_key'] = "123"
+
+
+st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
+st.session_state['openai_api_vlm_model_type'] = "qwen_vl_plus"

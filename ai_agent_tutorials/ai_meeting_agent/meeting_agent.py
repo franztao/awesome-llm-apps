@@ -1,7 +1,7 @@
 import streamlit as st
 from crewai import Agent, Task, Crew, LLM
 from crewai.process import Process
-from crewai_tools import SerperDevTool
+from crewai.tools import SerperDevTool
 import os
 
 # Streamlit app setup
@@ -19,6 +19,7 @@ if anthropic_api_key and serper_api_key:
     os.environ["ANTHROPIC_API_KEY"] = anthropic_api_key
     os.environ["SERPER_API_KEY"] = serper_api_key
 
+    # claude = LLM(model="claude-3-5-sonnet-20240620", temperature= 0.7, api_key=anthropic_api_key)
     claude = LLM(model="claude-3-5-sonnet-20240620", temperature= 0.7, api_key=anthropic_api_key)
     search_tool = SerperDevTool()
 

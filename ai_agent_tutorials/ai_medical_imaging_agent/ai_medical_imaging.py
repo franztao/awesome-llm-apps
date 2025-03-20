@@ -6,6 +6,8 @@ import streamlit as st
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.media import Image as AgnoImage
 
+from agno.models.openai import OpenAIChat, OpenAILike
+
 if "GOOGLE_API_KEY" not in st.session_state:
     st.session_state.GOOGLE_API_KEY = None
 
@@ -42,10 +44,13 @@ with st.sidebar:
     )
 
 medical_agent = Agent(
-    model=Gemini(
-        id="gemini-2.0-flash",
-        api_key=st.session_state.GOOGLE_API_KEY
-    ),
+    # model=Gemini(
+    #     id="gemini-2.0-flash",
+    #     # api_key=st.session_state.GOOGLE_API_KEY
+    #     api_key='AIzaSyC2VJnKhQJPMmYuvN7JGvEsDyB5O8rm-Js'
+    # ),
+    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
+                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
     tools=[DuckDuckGoTools()],
     markdown=True
 ) if st.session_state.GOOGLE_API_KEY else None

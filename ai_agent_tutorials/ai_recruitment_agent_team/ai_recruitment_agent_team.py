@@ -9,11 +9,12 @@ import pytz
 
 import streamlit as st
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat,OpenAILike
 from agno.tools.email import EmailTools
 from phi.tools.zoom import ZoomTool
 from phi.utils.log import logger
 from streamlit_pdf_viewer import pdf_viewer
+
 
 
 
@@ -105,10 +106,7 @@ def create_resume_analyzer() -> Agent:
         return None
 
     return Agent(
-        model=OpenAIChat(
-            id="gpt-4o",
-            api_key=st.session_state.openai_api_key
-        ),
+        model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
         description="You are an expert technical recruiter who analyzes resumes.",
         instructions=[
             "Analyze the resume against the provided job requirements",
@@ -122,15 +120,18 @@ def create_resume_analyzer() -> Agent:
 
 def create_email_agent() -> Agent:
     return Agent(
-        model=OpenAIChat(
-            id="gpt-4o",
-            api_key=st.session_state.openai_api_key
-        ),
+        model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+        # tools=[EmailTools(
+        #     receiver_email=st.session_state.candidate_email,
+        #     sender_email=st.session_state.email_sender,
+        #     sender_name=st.session_state.company_name,
+        #     sender_passkey=st.session_state.email_passkey
+        # )],
         tools=[EmailTools(
             receiver_email=st.session_state.candidate_email,
-            sender_email=st.session_state.email_sender,
-            sender_name=st.session_state.company_name,
-            sender_passkey=st.session_state.email_passkey
+            sender_email='franztaoheng@gmail.com',
+            sender_name='muxi tao',
+            sender_passkey='ynzr izpr amec imlz'
         )],
         description="You are a professional recruitment coordinator handling email communications.",
         instructions=[
@@ -145,20 +146,24 @@ def create_email_agent() -> Agent:
         show_tool_calls=True
     )
 
-
 def create_scheduler_agent() -> Agent:
+    # zoom_tools = CustomZoomTool(
+    #     account_id=st.session_state.zoom_account_id,
+    #     client_id=st.session_state.zoom_client_id,
+    #     client_secret=st.session_state.zoom_client_secret
+    # )
+    # CRGZvs0ARnaGntbxJuFjbw
+    # dmp7GbYhSICJERYeIF5M6w
+    # 6zKv8ANAycFZTUQ8SfGicAsMGrrq6MOg
     zoom_tools = CustomZoomTool(
-        account_id=st.session_state.zoom_account_id,
-        client_id=st.session_state.zoom_client_id,
-        client_secret=st.session_state.zoom_client_secret
+        account_id='CRGZvs0ARnaGntbxJuFjbw',
+        client_id='dmp7GbYhSICJERYeIF5M6w',
+        client_secret='6zKv8ANAycFZTUQ8SfGicAsMGrrq6MOg'
     )
 
     return Agent(
         name="Interview Scheduler",
-        model=OpenAIChat(
-            id="gpt-4o",
-            api_key=st.session_state.openai_api_key
-        ),
+        model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
         tools=[zoom_tools],
         description="You are an interview scheduling coordinator.",
         instructions=[
@@ -217,6 +222,7 @@ def analyze_resume(
         )
 
         assistant_message = next((msg.content for msg in response.messages if msg.role == 'assistant'), None)
+        print(assistant_message)
         if not assistant_message:
             raise ValueError("No assistant message found in response.")
 
@@ -516,6 +522,6 @@ def main() -> None:
             if key != 'openai_api_key':
                 del st.session_state[key]
         st.rerun()
-
+# zoom heng.tao@metax-tech.com Muxi1212
 if __name__ == "__main__":
     main()

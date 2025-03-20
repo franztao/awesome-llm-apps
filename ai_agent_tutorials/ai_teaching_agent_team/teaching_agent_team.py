@@ -1,12 +1,12 @@
 import streamlit as st
 from agno.agent import Agent, RunResponse
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat, OpenAILike
 from composio_phidata import Action, ComposioToolSet
 import os
 from agno.tools.arxiv import ArxivTools
 from agno.utils.pprint import pprint_run_response
 from agno.tools.serpapi import SerpApiTools
-
+#
 # Set page configuration
 st.set_page_config(page_title="👨‍🏫 AI Teaching Agent Team", layout="centered")
 
@@ -26,7 +26,8 @@ with st.sidebar:
     st.session_state['openai_api_key'] = st.text_input("Enter your OpenAI API Key", type="password").strip()
     st.session_state['composio_api_key'] = st.text_input("Enter your Composio API Key", type="password").strip()
     st.session_state['serpapi_api_key'] = st.text_input("Enter your SerpAPI Key", type="password").strip()
-    
+    st.session_state['serpapi_api_key'] = '4daaca7da2c5287775d7783777c9b416cd91ac961ff24cb41ddb45f7c7176a19'
+    st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'
     # Add info about terminal responses
     st.info("Note: You can also view detailed agent responses\nin your terminal after execution.")
 
@@ -50,7 +51,8 @@ except Exception as e:
 professor_agent = Agent(
     name="Professor",
     role="Research and Knowledge Specialist", 
-    model=OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
+                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),#OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
     tools=[google_docs_tool],
     instructions=[
         "Create a comprehensive knowledge base that covers fundamental concepts, advanced topics, and current developments of the given topic.",
@@ -66,7 +68,8 @@ professor_agent = Agent(
 academic_advisor_agent = Agent(
     name="Academic Advisor",
     role="Learning Path Designer",
-    model=OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
+                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'), #OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
     tools=[google_docs_tool],
     instructions=[
         "Using the knowledge base for the given topic, create a detailed learning roadmap.",
@@ -84,7 +87,8 @@ academic_advisor_agent = Agent(
 research_librarian_agent = Agent(
     name="Research Librarian",
     role="Learning Resource Specialist",
-    model=OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
+                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'), #OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
     tools=[google_docs_tool, SerpApiTools(api_key=st.session_state['serpapi_api_key']) ],
     instructions=[
         "Make a list of high-quality learning resources for the given topic.",
@@ -101,7 +105,8 @@ research_librarian_agent = Agent(
 teaching_assistant_agent = Agent(
     name="Teaching Assistant",
     role="Exercise Creator",
-    model=OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
+                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'), #OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
     tools=[google_docs_tool, SerpApiTools(api_key=st.session_state['serpapi_api_key'])],
     instructions=[
         "Create comprehensive practice materials for the given topic.",

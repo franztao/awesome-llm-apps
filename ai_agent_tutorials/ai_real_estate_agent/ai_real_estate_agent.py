@@ -1,7 +1,7 @@
 from typing import Dict, List
 from pydantic import BaseModel, Field
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat,OpenAILike
 from firecrawl import FirecrawlApp
 import streamlit as st
 
@@ -40,11 +40,12 @@ class PropertyFindingAgent:
     
     def __init__(self, firecrawl_api_key: str, openai_api_key: str, model_id: str = "o3-mini"):
         self.agent = Agent(
-            model=OpenAIChat(id=model_id, api_key=openai_api_key),
+            model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
+                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),#OpenAIChat(id=model_id, api_key=openai_api_key),
             markdown=True,
             description="I am a real estate expert who helps find and analyze properties based on user preferences."
         )
-        self.firecrawl = FirecrawlApp(api_key=firecrawl_api_key)
+        self.firecrawl = FirecrawlApp(api_key='fc-bd7f59397c2544e79a7236038b0ba662') #FirecrawlApp(api_key=firecrawl_api_key)
 
     def find_properties(
         self, 

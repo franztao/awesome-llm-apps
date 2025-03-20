@@ -3,7 +3,7 @@ from agno.agent import Agent
 from agno.knowledge.pdf import PDFKnowledgeBase, PDFReader
 from agno.vectordb.qdrant import Qdrant
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat,OpenAILike
 from agno.embedder.openai import OpenAIEmbedder
 import tempfile
 import os
@@ -37,11 +37,13 @@ def init_qdrant():
         # Create Agno's Qdrant instance which implements VectorDb
         vector_db = Qdrant(
             collection=COLLECTION_NAME,
-            url=st.session_state.qdrant_url,
-            api_key=st.session_state.qdrant_api_key,
+            # url=st.session_state.qdrant_url,
+            url="http://localhost:6333/",
+            api_key="123",#st.session_state.qdrant_api_key,
             embedder=OpenAIEmbedder(
-                id="text-embedding-3-small", 
-                api_key=st.session_state.openai_api_key
+                id="text-embedding-v3",
+                base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+                api_key="sk-f7f3039f52e3402bbafda926f4da7cb3"  #st.session_state.openai_api_key
             )
         )
         return vector_db
@@ -62,17 +64,17 @@ def process_document(uploaded_file, vector_db: Qdrant):
     """
     if not st.session_state.openai_api_key:
         raise ValueError("OpenAI API key not provided")
-        
+
     os.environ['OPENAI_API_KEY'] = st.session_state.openai_api_key
-    
+
     try:
         # Save the uploaded file to a temporary location
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
             temp_file.write(uploaded_file.getvalue())
             temp_file_path = temp_file.name
-        
+
         st.info("Loading and processing document...")
-        
+
         # Create a PDFKnowledgeBase with the vector_db
         knowledge_base = PDFKnowledgeBase(
             path=temp_file_path,  # Single string path, not a list
@@ -83,7 +85,7 @@ def process_document(uploaded_file, vector_db: Qdrant):
                 overlap=200
             )
         )
-        
+
         # Load the documents into the knowledge base
         with st.spinner('📤 Loading documents into knowledge base...'):
             try:
@@ -92,15 +94,15 @@ def process_document(uploaded_file, vector_db: Qdrant):
             except Exception as e:
                 st.error(f"Error loading documents: {str(e)}")
                 raise
-        
+
         # Clean up the temporary file
         try:
             os.unlink(temp_file_path)
         except Exception:
             pass
-            
+
         return knowledge_base
-            
+
     except Exception as e:
         st.error(f"Document processing error: {str(e)}")
         raise Exception(f"Error processing document: {str(e)}")
@@ -113,7 +115,7 @@ def main():
 
     with st.sidebar:
         st.header("🔑 API Configuration")
-   
+
         openai_key = st.text_input(
             "OpenAI API Key",
             type="password",
@@ -155,7 +157,7 @@ def main():
         if all([st.session_state.openai_api_key, st.session_state.vector_db]):
             st.header("📄 Document Upload")
             uploaded_file = st.file_uploader("Upload Legal Document", type=['pdf'])
-            
+
             if uploaded_file:
                 # Check if this file has already been processed
                 if uploaded_file.name not in st.session_state.processed_files:
@@ -163,17 +165,17 @@ def main():
                         try:
                             # Process the document and get the knowledge base
                             knowledge_base = process_document(uploaded_file, st.session_state.vector_db)
-                            
+
                             if knowledge_base:
                                 st.session_state.knowledge_base = knowledge_base
                                 # Add the file to processed files
                                 st.session_state.processed_files.add(uploaded_file.name)
-                                
+
                                 # Initialize agents
                                 legal_researcher = Agent(
                                     name="Legal Researcher",
                                     role="Legal research specialist",
-                                    model=OpenAIChat(id="gpt-4o"),
+                                    model=OpenAIChat(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
                                     tools=[DuckDuckGoTools()],
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
@@ -190,7 +192,7 @@ def main():
                                 contract_analyst = Agent(
                                     name="Contract Analyst",
                                     role="Contract analysis specialist",
-                                    model=OpenAIChat(id="gpt-4o"),
+                                    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
                                     instructions=[
@@ -202,9 +204,9 @@ def main():
                                 )
 
                                 legal_strategist = Agent(
-                                    name="Legal Strategist", 
+                                    name="Legal Strategist",
                                     role="Legal strategy specialist",
-                                    model=OpenAIChat(id="gpt-4o"),
+                                    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
                                     instructions=[
@@ -219,7 +221,7 @@ def main():
                                 st.session_state.legal_team = Agent(
                                     name="Legal Team Lead",
                                     role="Legal team coordinator",
-                                    model=OpenAIChat(id="gpt-4o"),
+                                    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
                                     team=[legal_researcher, contract_analyst, legal_strategist],
                                     knowledge=st.session_state.knowledge_base,
                                     search_knowledge=True,
@@ -233,9 +235,9 @@ def main():
                                     show_tool_calls=True,
                                     markdown=True
                                 )
-                                
+
                                 st.success("✅ Document processed and team initialized!")
-                                
+
                         except Exception as e:
                             st.error(f"Error processing document: {str(e)}")
                 else:
@@ -274,7 +276,7 @@ def main():
 
         # Dynamic header with icon
         st.header(f"{analysis_icons[analysis_type]} {analysis_type} Analysis")
-  
+
         analysis_configs = {
             "Contract Review": {
                 "query": "Review this contract and identify key terms, obligations, and potential issues.",
@@ -324,7 +326,7 @@ def main():
                     try:
                         # Ensure OpenAI API key is set
                         os.environ['OPENAI_API_KEY'] = st.session_state.openai_api_key
-                        
+
                         # Combine predefined and user queries
                         if analysis_type != "Custom Query":
                             combined_query = f"""
@@ -346,10 +348,10 @@ def main():
                             """
 
                         response = st.session_state.legal_team.run(combined_query)
-                        
+
                         # Display results in tabs
                         tabs = st.tabs(["Analysis", "Key Points", "Recommendations"])
-                        
+
                         with tabs[0]:
                             st.markdown("### Detailed Analysis")
                             if response.content:
@@ -358,7 +360,7 @@ def main():
                                 for message in response.messages:
                                     if message.role == 'assistant' and message.content:
                                         st.markdown(message.content)
-                        
+
                         with tabs[1]:
                             st.markdown("### Key Points")
                             key_points_response = st.session_state.legal_team.run(
@@ -374,7 +376,7 @@ def main():
                                 for message in key_points_response.messages:
                                     if message.role == 'assistant' and message.content:
                                         st.markdown(message.content)
-                        
+
                         with tabs[2]:
                             st.markdown("### Recommendations")
                             recommendations_response = st.session_state.legal_team.run(
@@ -397,4 +399,4 @@ def main():
         st.info("Please upload a legal document to begin analysis")
 
 if __name__ == "__main__":
-    main() 
+    main()

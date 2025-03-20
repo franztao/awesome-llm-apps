@@ -128,12 +128,12 @@ def write_to_google_sheets(flattened_data: List[dict], composio_api_key: str, op
 
         create_sheet_response = google_sheets_agent.run(message)
 
-        st.success(str(create_sheet_response))
+        # st.success(str(create_sheet_response))
 
-        return f"https://docs.google.com/spreadsheets/d/XXX"
-        # if "https://docs.google.com/spreadsheets/d/" in create_sheet_response.content:
-        #     google_sheets_link = create_sheet_response.content.split("https://docs.google.com/spreadsheets/d/")[1].split(" ")[0]
-        #     return f"https://docs.google.com/spreadsheets/d/{google_sheets_link}"
+        # return f"https://docs.google.com/spreadsheets/d/XXX"
+        if "https://docs.google.com/spreadsheets/d/" in create_sheet_response.content:
+            google_sheets_link = create_sheet_response.content.split("https://docs.google.com/spreadsheets/d/")[1].split(" ")[0]
+            return f"https://docs.google.com/spreadsheets/d/{google_sheets_link}"
     except Exception:
         pass
     return None
@@ -165,9 +165,22 @@ Always focus on the core product/service and keep it concise but clear.""",
 
 
 def main():
-    st.title("🎯 AI Lead Generation Agent")
-    st.info(
-        "This firecrawl powered agent helps you generate leads from Quora by searching for relevant posts and extracting user information.")
+    st.title("🎯 AI 潜在客户生成Agent")
+    st.markdown(
+        """
+        AI 潜在客户生成代理可自动完成从 Quora 查找和筛选潜在客户的过程。它使用 Firecrawl 的搜索功能和新的 Extract 端点来识别相关用户资料、提取有价值的信息，并将其组织成 Google 表格中的结构化格式。此代理可帮助销售和营销团队高效地建立有针对性的潜在客户列表，同时节省数小时的手动研究时间。
+        ### 特征
+        有针对性的搜索：使用 Firecrawl 的搜索端点根据您的搜索条件查找相关的 Quora URL
+        
+        智能提取：利用 Firecrawl 的新提取端点从 Quora 个人资料中提取用户信息
+        
+        自动化处理：将提取的用户信息格式化为干净的结构化格式
+        
+        Google 表格集成：自动创建并使用潜在客户信息填充 Google 表格
+        
+        可自定义的标准：允许您定义特定的搜索参数，以找到适合您的细分市场的理想线索
+        """
+    )
 
     with st.sidebar:
         st.header("API Keys")

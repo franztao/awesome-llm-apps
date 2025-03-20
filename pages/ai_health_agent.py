@@ -1,6 +1,7 @@
 import streamlit as st
 from agno.agent import Agent
 from agno.models.google import Gemini
+from agno.models.openai import OpenAIChat,OpenAILike
 
 st.set_page_config(
     page_title="AI Health & Fitness Planner",
@@ -41,13 +42,13 @@ st.markdown("""
 def display_dietary_plan(plan_content):
     with st.expander("📋 Your Personalized Dietary Plan", expanded=True):
         col1, col2 = st.columns([2, 1])
-        
+
         with col1:
             st.markdown("### 🎯 Why this plan works")
             st.info(plan_content.get("why_this_plan_works", "Information not available"))
             st.markdown("### 🍽️ Meal Plan")
             st.write(plan_content.get("meal_plan", "Plan not available"))
-        
+
         with col2:
             st.markdown("### ⚠️ Important Considerations")
             considerations = plan_content.get("important_considerations", "").split('\n')
@@ -58,13 +59,13 @@ def display_dietary_plan(plan_content):
 def display_fitness_plan(plan_content):
     with st.expander("💪 Your Personalized Fitness Plan", expanded=True):
         col1, col2 = st.columns([2, 1])
-        
+
         with col1:
             st.markdown("### 🎯 Goals")
             st.success(plan_content.get("goals", "Goals not specified"))
             st.markdown("### 🏋️‍♂️ Exercise Routine")
             st.write(plan_content.get("routine", "Routine not available"))
-        
+
         with col2:
             st.markdown("### 💡 Pro Tips")
             tips = plan_content.get("tips", "").split('\n')
@@ -79,40 +80,62 @@ def main():
         st.session_state.qa_pairs = []
         st.session_state.plans_generated = False
 
-    st.title("🏋️‍♂️ AI Health & Fitness Planner")
+    st.title("🏋AI 健康与健身规划师代理🏋️‍♂️")
+    # st.markdown("""
+    #     <div style='background-color: #00008B; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;'>
+    #     Get personalized dietary and fitness plans tailored to your goals and preferences.
+    #     Our AI-powered system considers your unique profile to create the perfect plan for you.
+    #     </div>
+    # """, unsafe_allow_html=True)
     st.markdown("""
-        <div style='background-color: #00008B; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;'>
-        Get personalized dietary and fitness plans tailored to your goals and preferences.
-        Our AI-powered system considers your unique profile to create the perfect plan for you.
-        </div>
-    """, unsafe_allow_html=True)
+    AI **Health & Fitness Planner**是一款个性化的健康和健身代理，由 Agno AI Agent 框架提供支持。该应用根据用户输入（例如年龄、体重、身高、活动水平、饮食偏好和健身目标）生成量身定制的饮食和健身计划。
+    ## 特征
+    - **健康代理和健身代理**
+      - 该应用程序有两个 phidata 代理，分别专门提供饮食建议和健身/锻炼建议。
+    - **个性化饮食计划**：
+      - 生成详细的膳食计划（早餐、午餐、晚餐和零食）。
+      - 包括水合作用、电解质和纤维摄入量等重要考虑因素。
+      - 支持各种饮食偏好，如生酮饮食、素食、低碳水化合物等。
+    - **个性化健身计划**：
+      - 根据健身目标提供定制的锻炼方案。
+      - 包括热身、主要锻炼和放松。
+      - 包括可操作的健身技巧和进度跟踪建议。
+    - **交互式问答**：允许用户询问有关其计划的后续问题。
+    """)
 
     with st.sidebar:
         st.header("🔑 API Configuration")
-        gemini_api_key = st.text_input(
-            "Gemini API Key",
-            type="password",
-            help="Enter your Gemini API key to access the service"
-        )
-        
-        if not gemini_api_key:
-            st.warning("⚠️ Please enter your Gemini API Key to proceed")
-            st.markdown("[Get your API key here](https://aistudio.google.com/apikey)")
+        # gemini_api_key = st.text_input(
+        #     "Gemini API Key",
+        #     type="password",
+        #     help="Enter your Gemini API key to access the service"
+        #     ,value=st.session_state.openai_api_key
+        # )
+        openai_api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.text_input("OpenAI API Model Type",
+                                              value=st.session_state.get('openai_api_model_type'))
+        openai_api_base_url = st.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+
+        if not openai_api_key:
+            st.warning("⚠️ Please enter your  API Key to proceed")
+            # st.markdown("[Get your API key here](https://aistudio.google.com/apikey)")
             return
-        
+
         st.success("API Key accepted!")
 
-    if gemini_api_key:
+    if openai_api_key:
         try:
-            gemini_model = Gemini(id="gemini-1.5-flash", api_key=gemini_api_key)
+            # gemini_model = Gemini(id="gemini-1.5-flash", api_key=gemini_api_key)
+            gemini_model = OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
+                               base_url=openai_api_base_url)
         except Exception as e:
             st.error(f"❌ Error initializing Gemini model: {e}")
             return
 
         st.header("👤 Your Profile")
-        
+
         col1, col2 = st.columns(2)
-        
+
         with col1:
             age = st.number_input("Age", min_value=10, max_value=100, step=1, help="Enter your age")
             height = st.number_input("Height (cm)", min_value=100.0, max_value=250.0, step=0.1)

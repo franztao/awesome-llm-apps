@@ -1,29 +1,40 @@
 import streamlit as st
 from agno.agent import Agent
+from agno.models.openai import OpenAILike
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.models.anthropic import Claude
+# from agno.models.anthropic import Claude
 from agno.tools.newspaper4k import Newspaper4kTools
-from agno.tools import Tool
+# from agno.tools import Tool
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
 # Setting up Streamlit app
-st.title("AI Startup Trend Analysis Agent 📈")
-st.caption("Get the latest trend analysis and startup opportunities based on your topic of interest in a click!.")
-
+st.title("📈 AI 初创企业趋势分析代理")
+# st.caption("Get the latest trend analysis and startup opportunities based on your topic of interest in a click!.")
+st.markdown("""
+AI 创业趋势分析代理是一款面向新兴企业家的工具，可通过识别新兴趋势、潜在市场空白和特定行业的增长机会来生成可操作的见解。企业家可以利用这些数据驱动的见解来验证想法、发现市场机会并对其创业项目做出明智的决策。它结合 Newspaper4k 和 DuckDuckGo 来扫描和分析以创业公司为重点的文章和市场数据。它使用LLM 来处理这些信息以提取新兴模式并使企业家能够识别有前途的创业机会。
+  ### 特征
+  - **用户提示**：创业者可以输入自己感兴趣的具体创业领域或者技术进行研究。
+  - **新闻收集**：该代理使用 DuckDuckGo 收集最近的创业新闻、融资轮次和市场分析。
+  - **摘要生成**：使用 Newspaper4k 生成已验证信息的简明摘要。
+  - **趋势分析**：系统通过分析的故事识别初创企业资金、技术采用和市场机会方面的新兴模式。
+  - **Streamlit UI**：该应用程序具有使用 Streamlit 构建的用户友好界面，可轻松进行交互。
+  """)
 topic = st.text_input("Enter the area of interest for your Startup:")
-anthropic_api_key = st.sidebar.text_input("Enter Anthropic API Key", type="password")
+# anthropic_api_key = st.sidebar.text_input("Enter Anthropic API Key", type="password")
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.openai_api_key)
 
 if st.button("Generate Analysis"):
-    if not anthropic_api_key:
+    if not openai_api_key:
         st.warning("Please enter the required API key.")
     else:
         with st.spinner("Processing your request..."):
             try:
                 # Initialize Anthropic model
-                anthropic_model = Claude(id ="claude-3-5-sonnet-20240620",api_key=anthropic_api_key)
-
+                # anthropic_model = Claude(id ="claude-3-5-sonnet-20240620",api_key=anthropic_api_key)
+                anthropic_model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,
+                           base_url=st.session_state.openai_api_base_url)
                 # Define News Collector Agent - Duckduckgo_search tool enables an Agent to search the web for information.
                 search_tool = DuckDuckGoTools(search=True, news=True, fixed_max_results=5)
                 news_collector = Agent(

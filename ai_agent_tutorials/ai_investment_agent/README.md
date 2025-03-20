@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 4. Run the Streamlit App
 ```bash
-streamlit run investment_agent.py
+streamlit run ai_investment_agent.py
 ```
 
 ### How it Works?

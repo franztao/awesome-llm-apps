@@ -47,7 +47,7 @@ Before anything else, Please get a free Gemini API Key provided by Google AI her
     ```
 3. **Run the Streamlit app**
     ```bash
-    streamlit run health_agent.py
+    streamlit run ai_health_agent.py
     ```
 
 

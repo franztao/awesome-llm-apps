@@ -106,7 +106,7 @@ def create_resume_analyzer() -> Agent:
         return None
 
     return Agent(
-        model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
         description="You are an expert technical recruiter who analyzes resumes.",
         instructions=[
             "Analyze the resume against the provided job requirements",
@@ -120,18 +120,12 @@ def create_resume_analyzer() -> Agent:
 
 def create_email_agent() -> Agent:
     return Agent(
-        model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
-        # tools=[EmailTools(
-        #     receiver_email=st.session_state.candidate_email,
-        #     sender_email=st.session_state.email_sender,
-        #     sender_name=st.session_state.company_name,
-        #     sender_passkey=st.session_state.email_passkey
-        # )],
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
         tools=[EmailTools(
             receiver_email=st.session_state.candidate_email,
-            sender_email='franztaoheng@gmail.com',
-            sender_name='muxi tao',
-            sender_passkey='ynzr izpr amec imlz'
+            sender_email=st.session_state.email_sender,
+            sender_name=st.session_state.company_name,
+            sender_passkey=st.session_state.email_passkey
         )],
         description="You are a professional recruitment coordinator handling email communications.",
         instructions=[
@@ -147,23 +141,15 @@ def create_email_agent() -> Agent:
     )
 
 def create_scheduler_agent() -> Agent:
-    # zoom_tools = CustomZoomTool(
-    #     account_id=st.session_state.zoom_account_id,
-    #     client_id=st.session_state.zoom_client_id,
-    #     client_secret=st.session_state.zoom_client_secret
-    # )
-    # CRGZvs0ARnaGntbxJuFjbw
-    # dmp7GbYhSICJERYeIF5M6w
-    # 6zKv8ANAycFZTUQ8SfGicAsMGrrq6MOg
     zoom_tools = CustomZoomTool(
-        account_id='CRGZvs0ARnaGntbxJuFjbw',
-        client_id='dmp7GbYhSICJERYeIF5M6w',
-        client_secret='6zKv8ANAycFZTUQ8SfGicAsMGrrq6MOg'
+        account_id=st.session_state.zoom_account_id,
+        client_id=st.session_state.zoom_client_id,
+        client_secret=st.session_state.zoom_client_secret
     )
 
     return Agent(
         name="Interview Scheduler",
-        model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
         tools=[zoom_tools],
         description="You are an interview scheduling coordinator.",
         instructions=[
@@ -321,8 +307,52 @@ def schedule_interview(scheduler: Agent, candidate_email: str, email_agent: Agen
 
 
 def main() -> None:
-    st.title("AI Recruitment System")
-
+    st.title("💼 AI 招聘代理团队")
+    st.markdown("""
+    Streamlit 应用程序模拟了一支全方位服务的招聘团队，使用多个 AI 代理来自动化和简化招聘流程。每个代理代表不同的招聘专家角色 - 从简历分析和候选人评估到面试安排和沟通 - 共同提供全面的招聘解决方案。该系统将技术招聘人员、人力资源协调员和调度专家的专业知识整合到一个有凝聚力的自动化工作流程中。
+    #### 专门的人工智能代理
+    - 技术招聘代理：分析简历并评估技术技能
+    - 通讯代理：处理专业电子邮件通信
+    - 调度协调员代理：管理面试安排和协调
+    - 每位经纪人都有特定的专业知识，并相互合作，进行全面的招聘
+    
+    #### 端到端招聘流程
+    - 自动简历筛选和分析
+    - 针对具体角色的技术评估
+    - 专业候选人沟通
+    - 自动安排面试
+    - 综合反馈系统
+    
+    #### 系统组件
+      - **简历分析器代理**
+        - 技能匹配算法
+        - 经验验证
+        - 技术评估
+        - 选择决策
+      - **电子邮件通讯代理**
+        - 专业电子邮件起草
+        - 自动通知
+        - 反馈沟通
+        - 后续管理
+      - **面试安排员**
+        - Zoom 会议协调
+        - 日历管理
+        - 时区处理
+        - 提醒系统
+      - **候选人体验**
+        - 简单的上传接口
+        - 实时反馈
+        - 清晰的沟通
+        - 简化流程
+    #### 免责声明
+    此工具旨在协助招聘流程，但不应完全取代人工判断。所有自动化决策都应由人工招聘人员审核以获得最终批准。
+    #### 未来的增强功能
+    - 与 ATS 系统集成
+    - 高级候选人评分
+    - 视频面试能力
+    - 技能评估整合
+    - 多语言支持
+    """)
     init_session_state()
     with st.sidebar:
         st.header("Configuration")

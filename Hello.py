@@ -1,16 +1,25 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="你好",
+    page_title="沐曦Agent智能体",
     page_icon="👋",
 )
 
-st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨‍⚖️ AI 法律agent团队")
-# st.sidebar.page_link("pages/weather_country.py", label="天气")
 
+st.sidebar.page_link(r"pages/ai_investment_agent.py", label="👨📈 AI 智能投资代理")
+st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨‍⚖️ AI 法律agent团队")
+st.sidebar.page_link(r"pages/ai_recruitment_agent_team.py", label="👨💼 AI 招聘代理团队")
+st.sidebar.page_link(r"pages/ai_competitor_agent_team.py", label="🧲 AI 竞争对手情报代理团队")
+st.sidebar.page_link(r"pages/ai_health_agent.py", label="️‍♂️ AI 健康与健身规划代理")
+st.sidebar.page_link(r"pages/ai_startup_trends_agent.py", label="️📈 AI 初创企业趋势分析代理")
+
+# 📈 AI 初创企业趋势分析代理
+# 🏋
 st.write("# 欢迎使用 沐曦Agent智能体! 👋")
+# st.write(
+#     "A curated collection of awesome LLM apps built with RAG and AI agents. This repository features LLM apps that use models from OpenAI, Anthropic, Google, and open-source models like DeepSeek, Qwen or Llama that you can run locally on your computer.")
 st.write(
-    "A curated collection of awesome LLM apps built with RAG and AI agents. This repository features LLM apps that use models from OpenAI, Anthropic, Google, and open-source models like DeepSeek, Qwen or Llama that you can run locally on your computer.")
+    "精选的 LLM 应用集合，使用 RAG 和 AI 代理构建。此存储库包含使用 OpenAI、Anthropic、Google 的模型以及 DeepSeek、Qwen 或 Llama 等开源模型的 LLM 应用，您可以在计算机上本地运行这些应用。")
 
 st.sidebar.success("在上方选择一个演示。")
 # st.markdown(
@@ -30,7 +39,7 @@ st.header("API Keys")
 # OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
 #                          base_url='https://dashscope.aliyuncs.com/compatible-mode/v1')
 
-
+# OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url)
 openai_api_key = st.text_input("Similar OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
 openai_api_model_type = st.text_input("OpenAI API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
@@ -47,8 +56,57 @@ composio_api_key = st.text_input("Composio API Key", type="password", value=st.s
 st.session_state['composio_api_key'] = composio_api_key
 st.caption(" Get your Composio API key from [Composio's website](https://composio.ai)")
 
-st.session_state['openai_api_model_type'] = "qwen-max"
+
+perplexity_api_key = st.text_input("Perplexity API Key", type="password")
+st.session_state['perplexity_api_key'] = perplexity_api_key
+exa_api_key = st.text_input("Exa API Key", type="password")
+st.session_state['exa_api_key'] = exa_api_key
+
+st.subheader("Zoom Settings")
+zoom_account_id = st.text_input("Zoom Account ID", type="password", value=st.session_state.get('zoom_account_id'))
+st.session_state['zoom_account_id'] = zoom_account_id
+zoom_client_id = st.text_input("Zoom Client ID", type="password", value=st.session_state.get('zoom_client_id'))
+st.session_state['zoom_client_id'] = zoom_client_id
+zoom_client_secret = st.text_input("Zoom Client Secret", type="password", value=st.session_state.get('zoom_client_secret'))
+st.session_state['zoom_client_secret'] = zoom_client_secret
+
+st.subheader("Email Settings")
+email_sender = st.text_input("Sender Email", value=st.session_state.get('composio_api_key'), help="Email address to send from")
+st.session_state['email_sender'] = email_sender
+email_passkey = st.text_input("Email App Password", type="password", value=st.session_state.get('composio_api_key'),
+                              help="App-specific password for email")
+st.session_state['email_passkey'] = email_passkey
+company_name = st.text_input("Company Name", value=st.session_state.get('composio_api_key'),
+                             help="Name to use in email communications")
+st.session_state['company_name'] = company_name
+
+
+st.session_state['openai_api_model_type'] = "qwen-plus"
 st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
 st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'
 st.session_state['composio_api_key'] ='8fsy14yf2vd3nuekyc03g5'
+
+# zoom_tools = CustomZoomTool(
+#     account_id='CRGZvs0ARnaGntbxJuFjbw',
+#     client_id='dmp7GbYhSICJERYeIF5M6w',
+#     client_secret='6zKv8ANAycFZTUQ8SfGicAsMGrrq6MOg'
+# )
+st.session_state['zoom_account_id'] = 'CRGZvs0ARnaGntbxJuFjbw'
+st.session_state['zoom_client_id'] = 'dmp7GbYhSICJERYeIF5M6w'
+st.session_state['zoom_client_secret'] = '6zKv8ANAycFZTUQ8SfGicAsMGrrq6MOg'
+
+# tools=[EmailTools(
+#             receiver_email=st.session_state.candidate_email,
+#             sender_email='franztaoheng@gmail.com',
+#             sender_name='muxi tao',
+#             sender_passkey='ynzr izpr amec imlz'
+#         )],
+st.session_state['email_sender'] = 'franztaoheng@gmail.com'
+st.session_state['email_passkey'] = 'ynzr izpr amec imlz'
+st.session_state['company_name'] = 'muxi tao'
+
+
+st.session_state['exa_api_key'] = '94692c17-1768-426e-8828-b41b4dab63b1'
+
+#

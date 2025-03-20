@@ -2,7 +2,7 @@ import streamlit as st
 from exa_py import Exa
 from agno.agent import Agent
 from agno.tools.firecrawl import FirecrawlTools
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat,OpenAILike
 from agno.tools.duckduckgo import DuckDuckGoTools
 import pandas as pd
 import requests
@@ -12,23 +12,24 @@ from typing import List, Optional
 import json
 
 # Streamlit UI
-st.set_page_config(page_title="AI Competitor Intelligence Agent Team", layout="wide")
+# st.set_page_config(page_title="🧲 AI 竞争对手情报代理团队", layout="wide")
 
 # Sidebar for API keys
 st.sidebar.title("API Keys")
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
-firecrawl_api_key = st.sidebar.text_input("Firecrawl API Key", type="password")
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.openai_api_key)
+firecrawl_api_key = st.sidebar.text_input("Firecrawl API Key", type="password",
+                                          value=st.session_state.firecrawl_api_key)
 
 # Add search engine selection before API keys
 search_engine = st.sidebar.selectbox(
     "Select Search Endpoint",
-    options=["Perplexity AI - Sonar Pro", "Exa AI"],
+    options=["Exa AI", "Perplexity AI - Sonar Pro"],  #
     help="Choose which AI service to use for finding competitor URLs"
 )
 
 # Show relevant API key input based on selection
 if search_engine == "Perplexity AI - Sonar Pro":
-    perplexity_api_key = st.sidebar.text_input("Perplexity API Key", type="password")
+    perplexity_api_key = st.sidebar.text_input("Perplexity API Key", type="password", value=st.session_state.perplexity_api_key)
     # Store API keys in session state
     if openai_api_key and firecrawl_api_key and perplexity_api_key:
         st.session_state.openai_api_key = openai_api_key
@@ -37,7 +38,7 @@ if search_engine == "Perplexity AI - Sonar Pro":
     else:
         st.sidebar.warning("Please enter all required API keys to proceed.")
 else:  # Exa AI
-    exa_api_key = st.sidebar.text_input("Exa API Key", type="password")
+    exa_api_key = st.sidebar.text_input("Exa API Key", type="password", value=st.session_state.exa_api_key)
     # Store API keys in session state
     if openai_api_key and firecrawl_api_key and exa_api_key:
         st.session_state.openai_api_key = openai_api_key
@@ -47,14 +48,48 @@ else:  # Exa AI
         st.sidebar.warning("Please enter all required API keys to proceed.")
 
 # Main UI
-st.title("🧲 AI Competitor Intelligence Agent Team")
-st.info(
-    """
-    This app helps businesses analyze their competitors by extracting structured data from competitor websites and generating insights using AI.
-    - Provide a **URL** or a **description** of your company.
-    - The app will fetch competitor URLs, extract relevant information, and generate a detailed analysis report.
-    """
-)
+st.title("🧲 AI 竞争对手情报代理团队")
+st.markdown("""
+AI 竞争对手情报代理团队是一款功能强大的竞争对手分析工具，由 Firecrawl 和 Agno 的 AI Agent 框架提供支持。此应用可帮助企业通过从竞争对手网站提取结构化数据并使用 AI 生成可操作的见解来分析其竞争对手。
+
+## 特征
+
+- **多代理系统**
+  - **Firecrawl Agent**：专门抓取并汇总竞争对手的网站
+  - **分析代理**：生成详细的竞争分析报告
+  - **比较代理**：在竞争对手之间创建结构化的比较
+- **竞争对手发现**：
+  - 使用 Exa AI 的 URL 匹配功能查找类似公司
+  - 根据业务描述发现竞争对手
+  - 自动提取相关竞争对手的 URL
+- **综合分析**：
+  - 提供结构化分析报告，内容如下：
+    - 市场空白与机遇
+    - 竞争对手的弱点
+    - 推荐功能
+    - 定价策略
+    - 增长机会
+    - 切实可行的建议
+- **交互式分析**：用户可以输入公司网址或描述进行分析
+
+## 用法
+
+1. 在侧栏中输入您的 API 密钥
+2. 输入：
+   - 贵公司的网站网址
+   - 贵公司的描述
+3. 点击“分析竞争对手”生成：
+   - 竞争对手对比表
+   - 详细分析报告
+   - 战略建议
+""")
+# st.info(
+#     """
+#     This app helps businesses analyze their competitors by extracting structured data from competitor websites and generating insights using AI.
+#     - Provide a **URL** or a **description** of your company.
+#     - The app will fetch competitor URLs, extract relevant information, and generate a detailed analysis report.
+#     """
+# )
 st.success("For better results, provide both URL and a 5-6 word description of your company!")
 
 # Input fields for URL and description
@@ -64,8 +99,8 @@ description = st.text_area("Enter a description of your company (if URL is not a
 # Initialize API keys and tools
 if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_state:
     if (search_engine == "Perplexity AI - Sonar Pro" and "perplexity_api_key" in st.session_state) or \
-       (search_engine == "Exa AI" and "exa_api_key" in st.session_state):
-        
+            (search_engine == "Exa AI" and "exa_api_key" in st.session_state):
+
         # Initialize Exa only if selected
         if search_engine == "Exa AI":
             exa = Exa(api_key=st.session_state.exa_api_key)
@@ -78,24 +113,25 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
         )
 
         firecrawl_agent = Agent(
-            model=OpenAIChat(id="gpt-4o", api_key=st.session_state.openai_api_key),
+            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
             tools=[firecrawl_tools, DuckDuckGoTools()],
             show_tool_calls=True,
             markdown=True
         )
 
         analysis_agent = Agent(
-            model=OpenAIChat(id="gpt-4o", api_key=st.session_state.openai_api_key),
+            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
             show_tool_calls=True,
             markdown=True
         )
 
         # New agent for comparing competitor data
         comparison_agent = Agent(
-            model=OpenAIChat(id="gpt-4o", api_key=st.session_state.openai_api_key),
+            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
             show_tool_calls=True,
             markdown=True
         )
+
 
         def get_competitor_urls(url: str = None, description: str = None) -> list[str]:
             if not url and not description:
@@ -103,7 +139,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
             if search_engine == "Perplexity AI - Sonar Pro":
                 perplexity_url = "https://api.perplexity.ai/chat/completions"
-                
+
                 content = "Find me 3 competitor company URLs similar to the company with "
                 if url and description:
                     content += f"URL: {url} and description: {description}"
@@ -128,7 +164,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
                     "max_tokens": 1000,
                     "temperature": 0.2,
                 }
-                
+
                 headers = {
                     "Authorization": f"Bearer {st.session_state.perplexity_api_key}",
                     "Content-Type": "application/json"
@@ -165,6 +201,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
                     st.error(f"Error fetching competitor URLs from Exa: {str(e)}")
                     return []
 
+
         class CompetitorDataSchema(BaseModel):
             company_name: str = Field(description="Name of the company")
             pricing: str = Field(description="Pricing details, tiers, and plans")
@@ -173,14 +210,15 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
             marketing_focus: str = Field(description="Main marketing angles and target audience")
             customer_feedback: str = Field(description="Customer testimonials, reviews, and feedback")
 
+
         def extract_competitor_info(competitor_url: str) -> Optional[dict]:
             try:
                 # Initialize FirecrawlApp with API key
                 app = FirecrawlApp(api_key=st.session_state.firecrawl_api_key)
-                
+
                 # Add wildcard to crawl subpages
                 url_pattern = f"{competitor_url}/*"
-                
+
                 extraction_prompt = """
                 Extract detailed information about the company's offerings, including:
                 - Company name and basic information
@@ -192,7 +230,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
                 
                 Analyze the entire website content to provide comprehensive information for each field.
                 """
-                
+
                 response = app.extract(
                     [url_pattern],
                     {
@@ -200,34 +238,35 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
                         'schema': CompetitorDataSchema.model_json_schema(),
                     }
                 )
-                
+
                 if response.get('success') and response.get('data'):
                     extracted_info = response['data']
-                    
+
                     # Create JSON structure
                     competitor_json = {
                         "competitor_url": competitor_url,
                         "company_name": extracted_info.get('company_name', 'N/A'),
                         "pricing": extracted_info.get('pricing', 'N/A'),
                         "key_features": extracted_info.get('key_features', [])[:5],  # Top 5 features
-                        "tech_stack": extracted_info.get('tech_stack', [])[:5],      # Top 5 tech stack items
+                        "tech_stack": extracted_info.get('tech_stack', [])[:5],  # Top 5 tech stack items
                         "marketing_focus": extracted_info.get('marketing_focus', 'N/A'),
                         "customer_feedback": extracted_info.get('customer_feedback', 'N/A')
                     }
-                    
+
                     return competitor_json
-                    
+
                 else:
                     return None
-                    
+
             except Exception as e:
                 return None
+
 
         def generate_comparison_report(competitor_data: list) -> None:
             # Format the competitor data for the prompt
             formatted_data = json.dumps(competitor_data, indent=2)
             print(formatted_data)
-            
+
             # Updated system prompt for more structured output
             system_prompt = f"""
             As an expert business analyst, analyze the following competitor data in JSON format and create a structured comparison.
@@ -249,52 +288,53 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
             # Get comparison data from agent
             comparison_response = comparison_agent.run(system_prompt)
-            
+
             try:
                 # Split the response into lines and clean them
                 table_lines = [
-                    line.strip() 
-                    for line in comparison_response.content.split('\n') 
+                    line.strip()
+                    for line in comparison_response.content.split('\n')
                     if line.strip() and '|' in line
                 ]
-                
+
                 # Extract headers (first row)
                 headers = [
-                    col.strip() 
-                    for col in table_lines[0].split('|') 
+                    col.strip()
+                    for col in table_lines[0].split('|')
                     if col.strip()
                 ]
-                
+
                 # Extract data rows (skip header and separator rows)
                 data_rows = []
                 for line in table_lines[2:]:  # Skip header and separator rows
                     row_data = [
-                        cell.strip() 
-                        for cell in line.split('|') 
+                        cell.strip()
+                        for cell in line.split('|')
                         if cell.strip()
                     ]
                     if len(row_data) == len(headers):
                         data_rows.append(row_data)
-                
+
                 # Create DataFrame
                 df = pd.DataFrame(
                     data_rows,
                     columns=headers
                 )
-                
+
                 # Display the table
                 st.subheader("Competitor Comparison")
                 st.table(df)
-                
+
             except Exception as e:
                 st.error(f"Error creating comparison table: {str(e)}")
                 st.write("Raw comparison data for debugging:", comparison_response.content)
+
 
         def generate_analysis_report(competitor_data: list):
             # Format the competitor data for the prompt
             formatted_data = json.dumps(competitor_data, indent=2)
             print("Analysis Data:", formatted_data)  # For debugging
-            
+
             report = analysis_agent.run(
                 f"""Analyze the following competitor data in JSON format and identify market opportunities to improve my own company:
                 
@@ -314,31 +354,32 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
             )
             return report.content
 
+
         # Run analysis when the user clicks the button
         if st.button("Analyze Competitors"):
             if url or description:
                 with st.spinner("Fetching competitor URLs..."):
                     competitor_urls = get_competitor_urls(url=url, description=description)
                     st.write(f"Competitor URLs: {competitor_urls}")
-                
+
                 competitor_data = []
                 for comp_url in competitor_urls:
                     with st.spinner(f"Analyzing Competitor: {comp_url}..."):
                         competitor_info = extract_competitor_info(comp_url)
                         if competitor_info is not None:
                             competitor_data.append(competitor_info)
-                
+
                 if competitor_data:
                     # Generate and display comparison report
                     with st.spinner("Generating comparison table..."):
                         generate_comparison_report(competitor_data)
-                    
+
                     # Generate and display final analysis report
                     with st.spinner("Generating analysis report..."):
                         analysis_report = generate_analysis_report(competitor_data)
                         st.subheader("Competitor Analysis Report")
                         st.markdown(analysis_report)
-                    
+
                     st.success("Analysis complete!")
                 else:
                     st.error("Could not extract data from any competitor URLs")

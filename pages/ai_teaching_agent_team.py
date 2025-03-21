@@ -1,11 +1,12 @@
+import os
+
 import streamlit as st
 from agno.agent import Agent, RunResponse
-from agno.models.openai import OpenAIChat, OpenAILike
-from composio_phidata import Action, ComposioToolSet
-import os
-from agno.tools.arxiv import ArxivTools
-from agno.utils.pprint import pprint_run_response
+from agno.models.openai import OpenAILike
 from agno.tools.serpapi import SerpApiTools
+from agno.utils.pprint import pprint_run_response
+from composio_phidata import Action, ComposioToolSet
+
 #
 # Set page configuration
 st.set_page_config(page_title="👨‍🏫 AI教学Agent团队", layout="centered")
@@ -51,7 +52,8 @@ except Exception as e:
 professor_agent = Agent(
     name="Professor",
     role="Research and Knowledge Specialist", 
-    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
     tools=[google_docs_tool],
     instructions=[
         "Create a comprehensive knowledge base that covers fundamental concepts, advanced topics, and current developments of the given topic.",
@@ -67,7 +69,8 @@ professor_agent = Agent(
 academic_advisor_agent = Agent(
     name="Academic Advisor",
     role="Learning Path Designer",
-    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
     tools=[google_docs_tool],
     instructions=[
         "Using the knowledge base for the given topic, create a detailed learning roadmap.",
@@ -85,7 +88,8 @@ academic_advisor_agent = Agent(
 research_librarian_agent = Agent(
     name="Research Librarian",
     role="Learning Resource Specialist",
-    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
     tools=[google_docs_tool, SerpApiTools(api_key=st.session_state['serpapi_api_key']) ],
     instructions=[
         "Make a list of high-quality learning resources for the given topic.",
@@ -102,7 +106,8 @@ research_librarian_agent = Agent(
 teaching_assistant_agent = Agent(
     name="Teaching Assistant",
     role="Exercise Creator",
-    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
     tools=[google_docs_tool, SerpApiTools(api_key=st.session_state['serpapi_api_key'])],
     instructions=[
         "Create comprehensive practice materials for the given topic.",

@@ -1,10 +1,11 @@
 # Import the required libraries
 from textwrap import dedent
-from agno.agent import Agent
-from agno.tools.serpapi import SerpApiTools
-from agno.tools.newspaper4k import Newspaper4kTools
+
 import streamlit as st
-from agno.models.openai import OpenAIChat, OpenAILike
+from agno.agent import Agent
+from agno.models.openai import OpenAILike
+from agno.tools.newspaper4k import Newspaper4kTools
+from agno.tools.serpapi import SerpApiTools
 
 # Set up the Streamlit app
 st.title("🗞️ AI记者Agent")
@@ -35,7 +36,8 @@ if openai_api_key and serp_api_key:
         name="Searcher",
         role="Searches for top URLs based on a topic",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
-                           base_url=openai_api_base_url),
+                           base_url=openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         description=dedent(
             """\
         You are a world-class journalist for the New York Times. Given a topic, generate a list of 3 search terms
@@ -55,7 +57,8 @@ if openai_api_key and serp_api_key:
     writer = Agent(
         name="Writer",
         role="Retrieves text from URLs and writes a high-quality article",
-        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         description=dedent(
             """\
         You are a senior writer for the New York Times. Given a topic and a list of URLs,
@@ -79,7 +82,8 @@ if openai_api_key and serp_api_key:
 
     editor = Agent(
         name="Editor",
-        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         team=[searcher, writer],
         description="You are a senior NYT editor. Given a topic, your goal is to write a NYT worthy article.",
         instructions=[

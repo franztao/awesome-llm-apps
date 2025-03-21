@@ -34,7 +34,8 @@ if st.button("Generate Analysis"):
                 # Initialize Anthropic model
                 # anthropic_model = Claude(id ="claude-3-5-sonnet-20240620",api_key=anthropic_api_key)
                 anthropic_model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,
-                           base_url=st.session_state.openai_api_base_url)
+                           base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文")
                 # Define News Collector Agent - Duckduckgo_search tool enables an Agent to search the web for information.
                 search_tool = DuckDuckGoTools(search=True, news=True, fixed_max_results=5)
                 news_collector = Agent(

@@ -1,21 +1,18 @@
-from typing import Literal, Tuple, Dict, Optional
-import os
-import time
 import json
-import requests
-import PyPDF2
+import time
 from datetime import datetime, timedelta
-import pytz
+from typing import Literal, Tuple, Dict, Optional
 
+import PyPDF2
+import pytz
+import requests
 import streamlit as st
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat,OpenAILike
+from agno.models.openai import OpenAILike
 from agno.tools.email import EmailTools
 from phi.tools.zoom import ZoomTool
 from phi.utils.log import logger
 from streamlit_pdf_viewer import pdf_viewer
-
-
 
 
 class CustomZoomTool(ZoomTool):
@@ -106,7 +103,8 @@ def create_resume_analyzer() -> Agent:
         return None
 
     return Agent(
-        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         description="You are an expert technical recruiter who analyzes resumes.",
         instructions=[
             "Analyze the resume against the provided job requirements",
@@ -120,7 +118,8 @@ def create_resume_analyzer() -> Agent:
 
 def create_email_agent() -> Agent:
     return Agent(
-        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         tools=[EmailTools(
             receiver_email=st.session_state.candidate_email,
             sender_email=st.session_state.email_sender,
@@ -149,7 +148,8 @@ def create_scheduler_agent() -> Agent:
 
     return Agent(
         name="Interview Scheduler",
-        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         tools=[zoom_tools],
         description="You are an interview scheduling coordinator.",
         instructions=[

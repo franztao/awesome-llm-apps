@@ -1,13 +1,15 @@
+import os
+import tempfile
+
 import streamlit as st
 from agno.agent import Agent
-from agno.knowledge.pdf import PDFKnowledgeBase, PDFReader
-from agno.vectordb.qdrant import Qdrant
-from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.models.openai import OpenAIChat,OpenAILike
-from agno.embedder.openai import OpenAIEmbedder
-import tempfile
-import os
 from agno.document.chunking.document import DocumentChunking
+from agno.embedder.openai import OpenAIEmbedder
+from agno.knowledge.pdf import PDFKnowledgeBase, PDFReader
+from agno.models.openai import OpenAILike
+from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.vectordb.qdrant import Qdrant
+
 
 def init_session_state():
     """Initialize session state variables"""
@@ -199,7 +201,8 @@ def main():
                             legal_researcher = Agent(
                                 name="Legal Researcher",
                                 role="Legal research specialist",
-                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
                                 tools=[DuckDuckGoTools()],
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,
@@ -216,7 +219,8 @@ def main():
                             contract_analyst = Agent(
                                 name="Contract Analyst",
                                 role="Contract analysis specialist",
-                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,
                                 instructions=[
@@ -230,7 +234,8 @@ def main():
                             legal_strategist = Agent(
                                 name="Legal Strategist",
                                 role="Legal strategy specialist",
-                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,
                                 instructions=[
@@ -245,7 +250,8 @@ def main():
                             st.session_state.legal_team = Agent(
                                 name="Legal Team Lead",
                                 role="Legal team coordinator",
-                                model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
                                 team=[legal_researcher, contract_analyst, legal_strategist],
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,

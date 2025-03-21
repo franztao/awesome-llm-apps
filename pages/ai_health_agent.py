@@ -1,7 +1,6 @@
 import streamlit as st
 from agno.agent import Agent
-from agno.models.google import Gemini
-from agno.models.openai import OpenAIChat,OpenAILike
+from agno.models.openai import OpenAILike
 
 st.set_page_config(
     page_title="AI Health & Fitness Planner",
@@ -127,7 +126,8 @@ def main():
         try:
             # gemini_model = Gemini(id="gemini-1.5-flash", api_key=gemini_api_key)
             gemini_model = OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
-                               base_url=openai_api_base_url)
+                               base_url=openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文")
         except Exception as e:
             st.error(f"❌ Error initializing Gemini model: {e}")
             return

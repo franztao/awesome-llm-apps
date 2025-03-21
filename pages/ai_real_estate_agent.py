@@ -1,9 +1,11 @@
 from typing import Dict, List
-from pydantic import BaseModel, Field
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat,OpenAILike
-from firecrawl import FirecrawlApp
+
 import streamlit as st
+from agno.agent import Agent
+from agno.models.openai import OpenAILike
+from firecrawl import FirecrawlApp
+from pydantic import BaseModel, Field
+
 
 class PropertyData(BaseModel):
     """Schema for property data extraction"""
@@ -40,7 +42,8 @@ class PropertyFindingAgent:
     
     def __init__(self, firecrawl_api_key: str, openai_api_key: str, model_id: str = "o3-mini"):
         self.agent = Agent(
-            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=openai_api_key,base_url=st.session_state.openai_api_base_url),
+            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
             markdown=True,
             description="I am a real estate expert who helps find and analyze properties based on user preferences."
         )

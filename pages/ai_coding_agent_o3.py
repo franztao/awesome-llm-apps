@@ -46,6 +46,7 @@ def create_agents() -> tuple[Agent, Agent, Agent]:
     vision_agent = Agent(
         model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
         markdown=True,
+                system_prompt="最后输出的英文内容必须翻译成中文"
     )
 
     coding_agent = Agent(
@@ -56,7 +57,7 @@ def create_agents() -> tuple[Agent, Agent, Agent]:
             2. Write clean, efficient Python code to solve it
             3. Include proper documentation and type hints
             4. The code will be executed in an e2b sandbox environment
-            Please ensure your code is complete and handles edge cases appropriately.""")
+            Please ensure your code is complete and handles edge cases appropriately.最后输出的英文内容必须翻译成中文""")
         ,
         markdown=True
     )
@@ -69,7 +70,7 @@ def create_agents() -> tuple[Agent, Agent, Agent]:
             2. Execute it in the e2b sandbox
             3. Format and explain the results clearly
             4. Handle any execution errors gracefully
-            Always ensure proper error handling and clear output formatting."""
+            Always ensure proper error handling and clear output formatting.最后输出的英文内容必须翻译成中文"""
         ),
         markdown=True
     )

@@ -20,7 +20,8 @@ openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
 openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 if openai_api_key:
     assistant = Agent(
-        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
+                system_prompt="最后输出的英文内容必须翻译成中文"),
         tools=[
             YFinanceTools(stock_price=True, analyst_recommendations=True, stock_fundamentals=True)
         ],

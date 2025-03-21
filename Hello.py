@@ -25,7 +25,7 @@ st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房�
 # st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI Agent")
 st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析Agent")
 # st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持Agent")
-st.sidebar.page_link(r"pages/ai_system_architect_r1.py", label="🤖AI 系统架构师顾问")
+st.sidebar.page_link(r"pages/ai_system_architect.py", label="🤖AI 系统架构师顾问")
 
 
 

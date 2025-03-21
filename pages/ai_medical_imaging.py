@@ -29,12 +29,12 @@ with st.sidebar:
         #     st.session_state.GOOGLE_API_KEY = api_key
         #     st.success("API Key saved!")
         #     st.rerun()
-        # Get OpenAI API key from user
-        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+        # Get LLM API Key from user
+        openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
                                                value=st.session_state.get('openai_api_key'))
         openai_api_vlm_model_type = st.sidebar.text_input("OpenAI API VLM Model Type",
                                                       value=st.session_state.get('openai_api_vlm_model_type'))
-        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+        openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))
 
     else:

@@ -118,13 +118,13 @@ st.title("📝 Multi Agent AI Researcher")
 # Sidebar for API key input
 with st.sidebar:
     st.header("Configuration")
-    api_key = st.text_input("Enter your OpenAI API Key:", type="password")
+    api_key = st.text_input("Enter your LLM API Key:", type="password")
     if api_key:
         os.environ["OPENAI_API_KEY"] = api_key
         gpt4_model = ChatOpenAI(model_name="gpt-4o-mini")
         st.success("API Key set successfully!")
     else:
-        st.info("Please enter your OpenAI API Key to proceed.")
+        st.info("Please enter your LLM API Key to proceed.")
 
 # Main content
 st.markdown("Generate detailed articles on any topic using AI agents!")
@@ -133,7 +133,7 @@ topic = st.text_input("Enter the topic for the article:", placeholder="e.g., The
 
 if st.button("Generate Article"):
     if not api_key:
-        st.error("Please enter your OpenAI API Key in the sidebar.")
+        st.error("Please enter your LLM API Key in the sidebar.")
     elif not topic:
         st.warning("Please enter a topic for the article.")
     else:

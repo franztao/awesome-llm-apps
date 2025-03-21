@@ -5,26 +5,26 @@ st.set_page_config(
     page_icon="👋",
 )
 
-st.sidebar.page_link(r"pages/ai_investment_agent.py", label="👨📈 AI智能投资代理")
+st.sidebar.page_link(r"pages/ai_investment_agent.py", label="👨📈 AI智能投资Agent")
 st.sidebar.page_link(r"pages/ai_legal_agent_team.py", label="👨‍⚖️ AI法律agent团队")
-st.sidebar.page_link(r"pages/ai_recruitment_agent_team.py", label="👨💼 AI招聘代理团队")
-st.sidebar.page_link(r"pages/ai_competitor_agent_team.py", label="🧲 AI竞争对手情报代理团队")
-st.sidebar.page_link(r"pages/ai_health_agent.py", label="️‍♂️ AI 健康与健身规划代理")
-st.sidebar.page_link(r"pages/ai_startup_trends_agent.py", label="️📈 AI初创企业趋势分析代理")
-st.sidebar.page_link(r"pages/ai_journalist_agent.py", label="️🗞️ AI记者代理")
-st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨🎯 AI潜在客户生成代理")
-st.sidebar.page_link(r"pages/ai_finance_agent.py", label="💰 AI个人财务代理")
-st.sidebar.page_link(r"pages/ai_medical_imaging.py", label="🩻 AI医学影像诊断代理")
-st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI教学代理团队")
+st.sidebar.page_link(r"pages/ai_recruitment_agent_team.py", label="👨💼 AI招聘Agent团队")
+st.sidebar.page_link(r"pages/ai_competitor_agent_team.py", label="🧲 AI竞争对手情报Agent团队")
+st.sidebar.page_link(r"pages/ai_health_agent.py", label="️‍♂️ AI 健康与健身规划Agent")
+st.sidebar.page_link(r"pages/ai_startup_trends_agent.py", label="️📈 AI初创企业趋势分析Agent")
+st.sidebar.page_link(r"pages/ai_journalist_agent.py", label="️🗞️ AI记者Agent")
+st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨🎯 AI潜在客户生成Agent")
+st.sidebar.page_link(r"pages/ai_finance_agent.py", label="💰 AI个人财务Agent")
+st.sidebar.page_link(r"pages/ai_medical_imaging.py", label="🩻 AI医学影像诊断Agent")
+st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI教学Agent团队")
 st.sidebar.page_link(r"pages/ai_travel_agent.py", label="🛫 AI智能旅行社")
-st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作代理")
-st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码代理团队")
-# st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备代理")
+st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作Agent")
+st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码Agent团队")
+# st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备Agent")
 st.sidebar.page_link(r"pages/ai_chess_agent.py", label="♜ 白Agent vs 黑Agent：棋局对决")
 st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房地产经纪人")
-# st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI 代理")
-st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析代理")
-st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持代理")
+# st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI Agent")
+st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析Agent")
+st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持Agent")
 
 
 
@@ -32,7 +32,7 @@ st.write("# 欢迎使用 沐曦Agent智能体! 👋")
 # st.write(
 #     "A curated collection of awesome LLM apps built with RAG and AI agents. This repository features LLM apps that use models from OpenAI, Anthropic, Google, and open-source models like DeepSeek, Qwen or Llama that you can run locally on your computer.")
 st.write(
-    "精选的 LLM 应用集合，使用 RAG 和 AI 代理构建。此存储库包含使用 OpenAI、Anthropic、Google 的模型以及 DeepSeek、Qwen 或 Llama 等开源模型的 LLM 应用，您可以在计算机上本地运行这些应用。")
+    "精选的 LLM 应用集合，使用 RAG 和 AI Agent构建。此存储库包含使用 OpenAI、Anthropic、Google 的模型以及 DeepSeek、Qwen 或 Llama 等开源模型的 LLM 应用，您可以在计算机上本地运行这些应用。")
 
 st.sidebar.success("在上方选择一个演示。")
 # st.markdown(
@@ -53,9 +53,9 @@ st.header("API Keys")
 #                          base_url='https://dashscope.aliyuncs.com/compatible-mode/v1')
 
 # OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url)
-openai_api_key = st.text_input("Similar OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_key = st.text_input("Similar LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 st.session_state['openai_api_key'] = openai_api_key
-openai_api_model_type = st.text_input("OpenAI API Model Type",
+openai_api_model_type = st.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
 st.session_state['openai_api_model_type'] = openai_api_model_type
 openai_api_vlm_model_type = st.text_input("OpenAI API VLM Model Type",
@@ -64,9 +64,9 @@ st.session_state['openai_api_vlm_model_type'] = openai_api_vlm_model_type
 openai_api_embedding_model_type = st.text_input("OpenAI API Embedding Model Type",
                                                 value=st.session_state.get('openai_api_embedding_model_type'))
 st.session_state['openai_api_embedding_model_type'] = openai_api_embedding_model_type
-openai_api_base_url = st.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 st.session_state['openai_api_key'] = openai_api_key
-st.caption(" Get your OpenAI API key from [OpenAI's website](https://platform.openai.com/api-keys)")
+st.caption(" Get your LLM API Key from [OpenAI's website](https://platform.openai.com/api-keys)")
 
 firecrawl_api_key = st.text_input("Firecrawl API Key", type="password", value=st.session_state.get('firecrawl_api_key'))
 st.session_state['firecrawl_api_key'] = firecrawl_api_key

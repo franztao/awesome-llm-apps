@@ -111,10 +111,10 @@ def main():
         #     help="Enter your Gemini API key to access the service"
         #     ,value=st.session_state.openai_api_key
         # )
-        openai_api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-        openai_api_model_type = st.text_input("OpenAI API Model Type",
+        openai_api_key = st.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.text_input("LLM API Model Type",
                                               value=st.session_state.get('openai_api_model_type'))
-        openai_api_base_url = st.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+        openai_api_base_url = st.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 
         if not openai_api_key:
             st.warning("⚠️ Please enter your  API Key to proceed")

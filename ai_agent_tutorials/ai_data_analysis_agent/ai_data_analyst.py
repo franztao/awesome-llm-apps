@@ -52,12 +52,12 @@ st.title("📊 Data Analyst Agent")
 # Sidebar for API keys
 with st.sidebar:
     st.header("API Keys")
-    openai_key = st.text_input("Enter your OpenAI API key:", type="password")
+    openai_key = st.text_input("Enter your LLM API Key:", type="password")
     if openai_key:
         st.session_state.openai_key = openai_key
         st.success("API key saved!")
     else:
-        st.warning("Please enter your OpenAI API key to proceed.")
+        st.warning("Please enter your LLM API Key to proceed.")
 
 # File upload widget
 uploaded_file = st.file_uploader("Upload a CSV or Excel file", type=["csv", "xlsx"])

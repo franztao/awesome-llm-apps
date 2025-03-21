@@ -30,13 +30,13 @@ def initialize_session_state() -> None:
 def setup_sidebar() -> None:
     with st.sidebar:
         st.title("API Configuration")
-        st.session_state.openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+        st.session_state.openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
                                                value=st.session_state.get('openai_api_key'))
-        st.session_state.openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+        st.session_state.openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                                       value=st.session_state.get('openai_api_model_type'))
         st.session_state.openai_api_vlm_model_type = st.sidebar.text_input("OpenAI API VLM Model Type",
                                                       value=st.session_state.get('openai_api_vlm_model_type'))
-        st.session_state.openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+        st.session_state.openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))
         st.session_state.e2b_key = st.text_input("E2B API Key",
                                                 value=st.session_state.e2b_key,

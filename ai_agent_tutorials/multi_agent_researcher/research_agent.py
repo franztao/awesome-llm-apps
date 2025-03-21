@@ -8,8 +8,8 @@ from agno.models.openai import OpenAIChat
 st.title("Multi-Agent AI Researcher 🔍🤖")
 st.caption("This app allows you to research top stories and users on HackerNews and write blogs, reports and social posts.")
 
-# Get OpenAI API key from user
-openai_api_key = st.text_input("OpenAI API Key", type="password")
+# Get LLM API Key from user
+openai_api_key = st.text_input("LLM API Key", type="password")
 
 if openai_api_key:
     # Create instances of the Assistant

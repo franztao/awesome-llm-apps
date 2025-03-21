@@ -14,10 +14,10 @@ loader = GithubLoader(
 st.title("Chat with GitHub Repository 💬")
 st.caption("This app allows you to chat with a GitHub Repo using OpenAI API")
 
-# Get OpenAI API key from user
-openai_access_token = st.text_input("OpenAI API Key", type="password")
+# Get LLM API Key from user
+openai_access_token = st.text_input("LLM API Key", type="password")
 
-# If OpenAI API key is provided, create an instance of App
+# If LLM API Key is provided, create an instance of App
 if openai_access_token:
     os.environ["OPENAI_API_KEY"] = openai_access_token
     # Create an instance of Embedchain App

@@ -70,7 +70,7 @@ def process_document(uploaded_file, vector_db: Qdrant):
         PDFKnowledgeBase: Initialized knowledge base with processed documents
     """
     if not st.session_state.openai_api_key:
-        raise ValueError("OpenAI API key not provided")
+        raise ValueError("LLM API Key not provided")
 
     os.environ['OPENAI_API_KEY'] = st.session_state.openai_api_key
 
@@ -124,10 +124,10 @@ def main():
         st.header("🔑 API Configuration")
 
         openai_key = st.text_input(
-            "OpenAI API Key",
+            "LLM API Key",
             type="password",
             value=st.session_state.openai_api_key if st.session_state.openai_api_key else "",
-            help="Enter your OpenAI API key"
+            help="Enter your LLM API Key"
         )
         if openai_key:
             st.session_state.openai_api_key = openai_key
@@ -348,7 +348,7 @@ def main():
             else:
                 with st.spinner("Analyzing document..."):
                     try:
-                        # Ensure OpenAI API key is set
+                        # Ensure LLM API Key is set
                         os.environ['OPENAI_API_KEY'] = st.session_state.openai_api_key
 
                         # Combine predefined and user queries

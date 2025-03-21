@@ -7,7 +7,7 @@ from litellm import completion
 st.title("Multi-LLM App with Shared Memory 🧠")
 st.caption("LLM App with a personalized memory layer that remembers each user's choices and interests across multiple users and LLMs")
 
-openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
+openai_api_key = st.text_input("Enter LLM API Key", type="password")
 anthropic_api_key = st.text_input("Enter Anthropic API Key", type="password")
 
 if openai_api_key and anthropic_api_key:

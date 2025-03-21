@@ -1,10 +1,12 @@
-from typing import Dict, Optional
 from dataclasses import dataclass
-from pydantic import BaseModel, Field
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat, OpenAILike
-from firecrawl import FirecrawlApp
+from typing import Dict, Optional
+
 import streamlit as st
+from agno.agent import Agent
+from agno.models.openai import OpenAILike
+from firecrawl import FirecrawlApp
+from pydantic import BaseModel, Field
+
 
 class AQIResponse(BaseModel):
     success: bool
@@ -102,7 +104,8 @@ class HealthRecommendationAgent:
                 id=openai_key['openai_api_model_type'],
                 name="Health Recommendation Agent",
                 api_key=openai_key['openai'],
-                base_url=openai_key['openai_api_base_url']
+                base_url=openai_key['openai_api_base_url'],
+                system_prompt="最后输出的英文内容必须翻译成中文"
             )
         )
 
@@ -224,17 +227,17 @@ def render_sidebar():
             help="Enter your Firecrawl API key"
         )
         new_openai_key = st.text_input(
-            "OpenAI API Key",
+            "LLM API Key",
             type="password",
             value=st.session_state.get('openai_api_key') if st.session_state.get('openai_api_key') else st.session_state.api_keys['openai'],
-            help="Enter your OpenAI API key"
+            help="Enter your LLM API Key"
         )
-        # Get OpenAI API key from user
-        # openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+        # Get LLM API Key from user
+        # openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
         #                                        value=st.session_state.get('openai_api_key'))
-        openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+        openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                                       value=st.session_state.get('openai_api_model_type'))
-        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+        openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))
         
         if (new_firecrawl_key and new_openai_key and
@@ -253,9 +256,9 @@ def render_main_content():
     col1, col2 = st.columns(2)
     
     with col1:
-        city = st.text_input("City", placeholder="e.g., Mumbai")
+        city = st.text_input("City", placeholder="e.g., Washington")
         state = st.text_input("State", placeholder="If it's a Union Territory or a city in the US, leave it blank")
-        country = st.text_input("Country", value="India", placeholder="United States")
+        country = st.text_input("Country", value="USA", placeholder="United States")
     
     with col2:
         st.header("👤 Personal Details")

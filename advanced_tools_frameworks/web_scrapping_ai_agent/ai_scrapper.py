@@ -6,8 +6,8 @@ from scrapegraphai.graphs import SmartScraperGraph
 st.title("Web Scrapping AI Agent 🕵️‍♂️")
 st.caption("This app allows you to scrape a website using OpenAI API")
 
-# Get OpenAI API key from user
-openai_access_token = st.text_input("OpenAI API Key", type="password")
+# Get LLM API Key from user
+openai_access_token = st.text_input("LLM API Key", type="password")
 
 if openai_access_token:
     model = st.radio(

@@ -35,10 +35,10 @@ def fetch_video_data(video_url: str) -> Tuple[str, str]:
 st.title("Chat with YouTube Video 📺")
 st.caption("This app allows you to chat with a YouTube video using OpenAI API")
 
-# Get OpenAI API key from user
-openai_access_token = st.text_input("OpenAI API Key", type="password")
+# Get LLM API Key from user
+openai_access_token = st.text_input("LLM API Key", type="password")
 
-# If OpenAI API key is provided, create an instance of App
+# If LLM API Key is provided, create an instance of App
 if openai_access_token:
     # Create a temporary directory to store the database
     db_path = tempfile.mkdtemp()

@@ -14,10 +14,10 @@ st.markdown("""
     - 获取最新的公司新闻和分析师建议
 """)
 
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 if openai_api_key:
     assistant = Agent(
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),

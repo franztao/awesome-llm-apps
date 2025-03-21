@@ -45,7 +45,7 @@ def setup_sidebar():
     with st.sidebar:
         st.subheader("API Configuration")
         st.session_state.anthropic_api_key = st.text_input("Anthropic API Key", value=st.session_state.anthropic_api_key, type="password", help="Required for Claude 3 model")
-        st.session_state.openai_api_key = st.text_input("OpenAI API Key", value=st.session_state.openai_api_key, type="password")
+        st.session_state.openai_api_key = st.text_input("LLM API Key", value=st.session_state.openai_api_key, type="password")
         st.session_state.tavily_api_key = st.text_input("Tavily API Key", value=st.session_state.tavily_api_key, type="password")
         st.session_state.qdrant_url = st.text_input("Qdrant URL", value=st.session_state.qdrant_url)
         st.session_state.qdrant_api_key = st.text_input("Qdrant API Key", value=st.session_state.qdrant_api_key, type="password")

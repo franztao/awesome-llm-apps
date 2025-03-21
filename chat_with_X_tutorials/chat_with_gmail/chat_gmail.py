@@ -16,13 +16,13 @@ def embedchain_bot(db_path, api_key):
 st.title("Chat with your Gmail Inbox 📧")
 st.caption("This app allows you to chat with your Gmail inbox using OpenAI API")
 
-# Get the OpenAI API key from the user
-openai_access_token = st.text_input("Enter your OpenAI API Key", type="password")
+# Get the LLM API Key from the user
+openai_access_token = st.text_input("Enter your LLM API Key", type="password")
 
 # Set the Gmail filter statically
 gmail_filter = "to: me label:inbox"
 
-# Add the Gmail data to the knowledge base if the OpenAI API key is provided
+# Add the Gmail data to the knowledge base if the LLM API Key is provided
 if openai_access_token:
     # Create a temporary directory to store the database
     db_path = tempfile.mkdtemp()

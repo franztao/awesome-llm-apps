@@ -5,7 +5,7 @@ from litellm import completion
 st.title("Multi-LLM Chat Playground")
 
 # Get API keys from the user
-openai_api_key = st.text_input("Enter your OpenAI API Key:", type="password")
+openai_api_key = st.text_input("Enter your LLM API Key:", type="password")
 anthropic_api_key = st.text_input("Enter your Anthropic API Key:", type="password")
 cohere_api_key = st.text_input("Enter your Cohere API Key:", type="password")
 

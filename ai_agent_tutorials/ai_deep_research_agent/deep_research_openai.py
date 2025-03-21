@@ -23,7 +23,7 @@ if "firecrawl_api_key" not in st.session_state:
 with st.sidebar:
     st.title("API Configuration")
     openai_api_key = st.text_input(
-        "OpenAI API Key", 
+        "LLM API Key", 
         value=st.session_state.openai_api_key,
         type="password"
     )

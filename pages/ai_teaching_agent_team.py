@@ -23,9 +23,9 @@ if 'topic' not in st.session_state:
 # Streamlit sidebar for API keys
 with st.sidebar:
     st.title("API Keys Configuration")
-    st.session_state['openai_api_key'] = st.text_input("Enter your OpenAI API Key", type="password",value=st.session_state.get('openai_api_key'))
-    st.session_state['openai_api_model_type'] = st.sidebar.text_input("OpenAI API Model Type", value=st.session_state.get('openai_api_model_type'))
-    st.session_state['openai_api_base_url'] = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+    st.session_state['openai_api_key'] = st.text_input("Enter your LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
+    st.session_state['openai_api_model_type'] = st.sidebar.text_input("LLM API Model Type", value=st.session_state.get('openai_api_model_type'))
+    st.session_state['openai_api_base_url'] = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
     st.session_state['composio_api_key'] = st.text_input("Enter your Composio API Key", type="password",value=st.session_state.get('composio_api_key'))
     st.session_state['serpapi_api_key'] = st.text_input("Enter your SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
     # Add info about terminal responses
@@ -36,7 +36,7 @@ if not st.session_state['openai_api_key'] or not st.session_state['composio_api_
     st.error("Please enter OpenAI, Composio, and SerpAPI keys in the sidebar.")
     st.stop()
 
-# Set the OpenAI API key and Composio API key from session state
+# Set the LLM API Key and Composio API key from session state
 os.environ["OPENAI_API_KEY"] = st.session_state['openai_api_key']
 
 try:

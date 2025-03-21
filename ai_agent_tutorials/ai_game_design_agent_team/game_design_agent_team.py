@@ -15,7 +15,7 @@ if 'output' not in st.session_state:
 
 # Sidebar for API key input
 st.sidebar.title("API Key")
-api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password")
+api_key = st.sidebar.text_input("Enter your LLM API Key", type="password")
 
 # Add guidance in sidebar
 st.sidebar.success("""
@@ -91,7 +91,7 @@ depth = st.selectbox("Level of Detail in Response", ["Low", "Medium", "High"])
 if st.button("Generate Game Concept"):
     # Check if API key is provided
     if not api_key:
-        st.error("Please enter your OpenAI API key.")
+        st.error("Please enter your LLM API Key.")
     else:
         with st.spinner('🤖 AI Agents are collaborating on your game concept...'):
             # Prepare the task based on user inputs

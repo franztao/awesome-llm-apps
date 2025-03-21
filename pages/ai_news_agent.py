@@ -22,11 +22,11 @@ st.markdown("""
 - 用户友好的 Streamlit 界面
 """)
 
-# Get OpenAI API key from user
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+# Get LLM API Key from user
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 
 
 

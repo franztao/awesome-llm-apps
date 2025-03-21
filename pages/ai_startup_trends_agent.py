@@ -23,7 +23,7 @@ AI 创业趋势分析Agent是一款面向新兴企业家的工具，可通过识
   """)
 topic = st.text_input("Enter the area of interest for your Startup:")
 # anthropic_api_key = st.sidebar.text_input("Enter Anthropic API Key", type="password")
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.openai_api_key)
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.openai_api_key)
 
 if st.button("Generate Analysis"):
     if not openai_api_key:

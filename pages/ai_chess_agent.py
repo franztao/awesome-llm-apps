@@ -17,11 +17,11 @@ if "max_turns" not in st.session_state:
     st.session_state.max_turns = 5
 
 st.sidebar.title("Chess Agent Configuration")
-# Get OpenAI API key from user
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+# Get LLM API Key from user
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 if openai_api_key:
     st.session_state.openai_api_key = openai_api_key
     st.sidebar.success("API key saved!")
@@ -271,4 +271,4 @@ The game is managed by a **Game Master** that:
         st.error(f"An error occurred: {e}. Please check your API key and try again.")
 
 else:
-    st.warning("Please enter your OpenAI API key in the sidebar to start the game.")
+    st.warning("Please enter your LLM API Key in the sidebar to start the game.")

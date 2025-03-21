@@ -187,11 +187,11 @@ def main():
         firecrawl_api_key = st.text_input("Firecrawl API Key", type="password",
                                           value=st.session_state.get('firecrawl_api_key'))
         st.caption(" Get your Firecrawl API key from [Firecrawl's website](https://www.firecrawl.dev/app/api-keys)")
-        openai_api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-        openai_api_model_type = st.text_input("OpenAI API Model Type",
+        openai_api_key = st.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.text_input("LLM API Model Type",
                                               value=st.session_state.get('openai_api_model_type'))
-        openai_api_base_url = st.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
-        st.caption(" Get your OpenAI API key from [OpenAI's website](https://platform.openai.com/api-keys)")
+        openai_api_base_url = st.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
+        st.caption(" Get your LLM API Key from [OpenAI's website](https://platform.openai.com/api-keys)")
         composio_api_key = st.text_input("Composio API Key", type="password",
                                          value=st.session_state.get('composio_api_key'))
         st.caption(" Get your Composio API key from [Composio's website](https://composio.ai)")

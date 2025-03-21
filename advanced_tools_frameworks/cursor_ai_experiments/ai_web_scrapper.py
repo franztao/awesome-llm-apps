@@ -8,8 +8,8 @@ st.title("AI Web Scraper")
 prompt = st.text_input("Enter the information you want to extract:")
 source_url = st.text_input("Enter the source URL:")
 
-# Input field for OpenAI API key
-api_key = st.text_input("Enter your OpenAI API key:", type="password")
+# Input field for LLM API Key
+api_key = st.text_input("Enter your LLM API Key:", type="password")
 
 # Configuration for the scraping pipeline
 graph_config = {
@@ -44,6 +44,6 @@ st.markdown("""
 ### Instructions
 1. Enter the information you want to extract in the first input box.
 2. Enter the source URL from which you want to extract the information.
-3. Enter your OpenAI API key.
+3. Enter your LLM API Key.
 4. Click on the "Scrape" button to start the scraping process.
 """)

@@ -8,7 +8,7 @@ st.set_page_config(page_title="Multimodal Chatbot with Gemini Flash", layout="wi
 st.title("Multimodal Chatbot with Gemini Flash ⚡️")
 st.caption("Chat with Google's Gemini Flash model using image and text input to get lightning fast results. 🌟")
 
-# Get OpenAI API key from user
+# Get LLM API Key from user
 api_key = st.text_input("Enter Google API Key", type="password")
 
 # Set up the Gemini model

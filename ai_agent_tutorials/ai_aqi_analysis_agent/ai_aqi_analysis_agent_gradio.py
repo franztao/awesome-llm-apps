@@ -200,9 +200,9 @@ def create_demo() -> gr.Blocks:
                 placeholder="Enter your Firecrawl API key"
             )
             openai_key = gr.Textbox(
-                label="OpenAI API Key",
+                label="LLM API Key",
                 type="password",
-                placeholder="Enter your OpenAI API key"
+                placeholder="Enter your LLM API Key"
             )
         
         # Location Details

@@ -15,8 +15,8 @@ def embedchain_bot(db_path, api_key):
 st.title("Chat with Substack Newsletter 📝")
 st.caption("This app allows you to chat with Substack newsletter using OpenAI API")
 
-# Get OpenAI API key from user
-openai_access_token = st.text_input("OpenAI API Key", type="password")
+# Get LLM API Key from user
+openai_access_token = st.text_input("LLM API Key", type="password")
 
 if openai_access_token:
     # Create a temporary directory to store the database

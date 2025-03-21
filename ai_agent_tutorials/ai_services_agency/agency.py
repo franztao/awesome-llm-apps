@@ -86,16 +86,16 @@ def main() -> None:
     with st.sidebar:
         st.header("🔑 API Configuration")
         openai_api_key = st.text_input(
-            "OpenAI API Key",
+            "LLM API Key",
             type="password",
-            help="Enter your OpenAI API key to continue"
+            help="Enter your LLM API Key to continue"
         )
 
         if openai_api_key:
             st.session_state.api_key = openai_api_key
             st.success("API Key accepted!")
         else:
-            st.warning("⚠️ Please enter your OpenAI API Key to proceed")
+            st.warning("⚠️ Please enter your LLM API Key to proceed")
             st.markdown("[Get your API key here](https://platform.openai.com/api-keys)")
             return
         

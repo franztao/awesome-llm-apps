@@ -11,8 +11,8 @@ if 'output' not in st.session_state:
         'followup': ''
     }
 
-st.sidebar.title("OpenAI API Key")
-api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password")
+st.sidebar.title("LLM API Key")
+api_key = st.sidebar.text_input("Enter your LLM API Key", type="password")
 
 st.sidebar.warning("""
 ## ⚠️ Important Notice
@@ -67,7 +67,7 @@ current_symptoms = st.multiselect(
 
 if st.button("Get Support Plan"):
     if not api_key:
-        st.error("Please enter your OpenAI API key.")
+        st.error("Please enter your LLM API Key.")
     else:
         with st.spinner('🤖 AI Agents are analyzing your situation...'):
             try:

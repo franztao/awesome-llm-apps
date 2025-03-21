@@ -6,8 +6,8 @@ from mem0 import Memory
 st.title("AI Travel Agent with Memory 🧳")
 st.caption("Chat with a travel assistant who remembers your preferences and past interactions.")
 
-# Set the OpenAI API key
-openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
+# Set the LLM API Key
+openai_api_key = st.text_input("Enter LLM API Key", type="password")
 
 if openai_api_key:
     # Initialize OpenAI client

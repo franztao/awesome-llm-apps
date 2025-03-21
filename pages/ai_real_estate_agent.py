@@ -230,12 +230,12 @@ def main():
             type="password",
             help="Enter your Firecrawl API key",value=st.session_state.get("firecrawl_api_key")
         )
-        # Get OpenAI API key from user
-        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+        # Get LLM API Key from user
+        openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
                                                value=st.session_state.get('openai_api_key'))
-        openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+        openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                                       value=st.session_state.get('openai_api_model_type'))
-        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+        openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))
         st.session_state.openai_api_model_type=openai_api_model_type
         st.session_state.openai_api_base_url = openai_api_base_url

@@ -102,7 +102,7 @@ def init_session_state() -> None:
 def create_resume_analyzer() -> Agent:
     """Creates and returns a resume analysis agent."""
     if not st.session_state.openai_api_key:
-        st.error("Please enter your OpenAI API key first.")
+        st.error("Please enter your LLM API Key first.")
         return None
 
     return Agent(
@@ -359,7 +359,7 @@ def main() -> None:
         
         # OpenAI Configuration
         st.subheader("OpenAI Settings")
-        api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.openai_api_key, help="Get your API key from platform.openai.com")
+        api_key = st.text_input("LLM API Key", type="password", value=st.session_state.openai_api_key, help="Get your API key from platform.openai.com")
         if api_key: st.session_state.openai_api_key = api_key
 
         st.subheader("Zoom Settings")
@@ -379,7 +379,7 @@ def main() -> None:
         if email_passkey: st.session_state.email_passkey = email_passkey
         if company_name: st.session_state.company_name = company_name
 
-        required_configs = {'OpenAI API Key': st.session_state.openai_api_key, 'Zoom Account ID': st.session_state.zoom_account_id,
+        required_configs = {'LLM API Key': st.session_state.openai_api_key, 'Zoom Account ID': st.session_state.zoom_account_id,
                           'Zoom Client ID': st.session_state.zoom_client_id, 'Zoom Client Secret': st.session_state.zoom_client_secret,
                           'Email Sender': st.session_state.email_sender, 'Email Password': st.session_state.email_passkey,
                           'Company Name': st.session_state.company_name}
@@ -390,7 +390,7 @@ def main() -> None:
         return
 
     if not st.session_state.openai_api_key:
-        st.warning("Please enter your OpenAI API key in the sidebar to continue.")
+        st.warning("Please enter your LLM API Key in the sidebar to continue.")
         return
 
     role = st.selectbox("Select the role you're applying for:", ["ai_ml_engineer", "frontend_engineer", "backend_engineer"])

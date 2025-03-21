@@ -6,7 +6,7 @@ from openai import OpenAI
 st.title("LLM App with Memory 🧠")
 st.caption("LLM App with personalized memory layer that remembers ever user's choice and interests")
 
-openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
+openai_api_key = st.text_input("Enter LLM API Key", type="password")
 os.environ["OPENAI_API_KEY"] = openai_api_key
 
 if openai_api_key:

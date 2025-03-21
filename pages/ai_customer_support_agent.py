@@ -17,13 +17,13 @@ st.markdown("""
 - 用于测试和演示的合成数据生成
 - 利用 LLM 实现智能响应
 """)
-# Set the OpenAI API key
-# openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
-# Get OpenAI API key from user
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+# Set the LLM API Key
+# openai_api_key = st.text_input("Enter LLM API Key", type="password")
+# Get LLM API Key from user
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 
 st.subheader("Qdrant Settings")
 qdrant_url = st.sidebar.text_input("qdrant_url", value=st.session_state.get('qdrant_url'))
@@ -223,4 +223,4 @@ if openai_api_key:
         st.error("Please enter a customer ID to start the chat.")
 
 else:
-    st.warning("Please enter your OpenAI API key to use the customer support agent.")
+    st.warning("Please enter your LLM API Key to use the customer support agent.")

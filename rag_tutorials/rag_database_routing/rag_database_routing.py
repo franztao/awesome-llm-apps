@@ -291,9 +291,9 @@ def main():
     with st.sidebar:
         st.header("Configuration")
         
-        # OpenAI API Key
+        # LLM API Key
         api_key = st.text_input(
-            "Enter OpenAI API Key:",
+            "Enter LLM API Key:",
             type="password",
             value=st.session_state.openai_api_key,
             key="api_key_input"

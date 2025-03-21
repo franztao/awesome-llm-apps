@@ -16,7 +16,7 @@ import json
 
 # Sidebar for API keys
 st.sidebar.title("API Keys")
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.openai_api_key)
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.openai_api_key)
 firecrawl_api_key = st.sidebar.text_input("Firecrawl API Key", type="password",
                                           value=st.session_state.firecrawl_api_key)
 

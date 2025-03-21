@@ -88,7 +88,7 @@ def main():
             api_key = st.text_input("Deepseek API Key", type="password",
                                   help="Get your API key from https://platform.deepseek.com")
         else:
-            api_key = st.text_input("OpenAI API Key", type="password",
+            api_key = st.text_input("LLM API Key", type="password",
                                   help="Get your API key from https://platform.openai.com")
 
     # Main content area

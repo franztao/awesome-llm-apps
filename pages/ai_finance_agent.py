@@ -13,11 +13,11 @@ st.markdown("""这款 Streamlit 应用是一款人工智能个人理财规划器
 - 使用LLM生成智能个性化的财务建议
 - 获得定制的预算、投资计划和储蓄策略
 """)
-# Get OpenAI API key from user
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+# Get LLM API Key from user
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 # OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url)
 # Get SerpAPI key from the user
 serp_api_key = st.sidebar.text_input("Enter Serp API Key for Search functionality", type="password", value=st.session_state.get('serpapi_api_key'))

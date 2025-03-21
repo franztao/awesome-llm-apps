@@ -23,9 +23,9 @@ AI电影制作Agent利用三个主要组件：
 """)
 with st.sidebar:
     st.title("API Keys Configuration")
-    openai_api_key = st.text_input("Enter your OpenAI API Key", type="password",value=st.session_state.get('openai_api_key'))
-    openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type", value=st.session_state.get('openai_api_model_type'))
-    openai_api_base_url= st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+    openai_api_key = st.text_input("Enter your LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
+    openai_api_model_type = st.sidebar.text_input("LLM API Model Type", value=st.session_state.get('openai_api_model_type'))
+    openai_api_base_url= st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
     serpapi_api_key = st.text_input("Enter your SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
 
 if openai_api_key and serpapi_api_key:

@@ -24,7 +24,7 @@ with st.sidebar:
         value=st.session_state.api_keys["deepseek"]
     )
     st.session_state.api_keys["openai"] = st.text_input(
-        "OpenAI API Key",
+        "LLM API Key",
         type="password",
         value=st.session_state.api_keys["openai"]
     )

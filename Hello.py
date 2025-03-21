@@ -24,7 +24,8 @@ st.sidebar.page_link(r"pages/ai_chess_agent.py", label="♜ 白Agent vs 黑Agent
 st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房地产经纪人")
 # st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI Agent")
 st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析Agent")
-st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持Agent")
+# st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持Agent")
+st.sidebar.page_link(r"pages/ai_system_architect_r1.py", label="🤖AI 系统架构师顾问")
 
 
 
@@ -53,20 +54,20 @@ st.header("API Keys")
 #                          base_url='https://dashscope.aliyuncs.com/compatible-mode/v1')
 
 # OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url)
-openai_api_key = st.text_input("Similar LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_key = st.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 st.session_state['openai_api_key'] = openai_api_key
 openai_api_model_type = st.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
 st.session_state['openai_api_model_type'] = openai_api_model_type
-openai_api_vlm_model_type = st.text_input("OpenAI API VLM Model Type",
+openai_api_vlm_model_type = st.text_input("VLM API Model Type",
                                           value=st.session_state.get('openai_api_vlm_model_type'))
 st.session_state['openai_api_vlm_model_type'] = openai_api_vlm_model_type
-openai_api_embedding_model_type = st.text_input("OpenAI API Embedding Model Type",
+openai_api_embedding_model_type = st.text_input("Embedding API  Model Type",
                                                 value=st.session_state.get('openai_api_embedding_model_type'))
 st.session_state['openai_api_embedding_model_type'] = openai_api_embedding_model_type
 openai_api_base_url = st.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 st.session_state['openai_api_key'] = openai_api_key
-st.caption(" Get your LLM API Key from [OpenAI's website](https://platform.openai.com/api-keys)")
+# st.caption(" Get your LLM API Key from [OpenAI's website](https://platform.openai.com/api-keys)")
 
 firecrawl_api_key = st.text_input("Firecrawl API Key", type="password", value=st.session_state.get('firecrawl_api_key'))
 st.session_state['firecrawl_api_key'] = firecrawl_api_key
@@ -99,13 +100,13 @@ zoom_client_secret = st.text_input("Zoom Client Secret", type="password",
 st.session_state['zoom_client_secret'] = zoom_client_secret
 
 st.subheader("Email Settings")
-email_sender = st.text_input("Sender Email", value=st.session_state.get('composio_api_key'),
+email_sender = st.text_input("Sender Email", value=st.session_state.get('email_sender'),
                              help="Email address to send from")
 st.session_state['email_sender'] = email_sender
-email_passkey = st.text_input("Email App Password", type="password", value=st.session_state.get('composio_api_key'),
+email_passkey = st.text_input("Email App Password", type="password", value=st.session_state.get('email_passkey'),
                               help="App-specific password for email")
 st.session_state['email_passkey'] = email_passkey
-company_name = st.text_input("Company Name", value=st.session_state.get('composio_api_key'),
+company_name = st.text_input("Company Name", value=st.session_state.get('email_passkey'),
                              help="Name to use in email communications")
 st.session_state['company_name'] = company_name
 

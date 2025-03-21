@@ -1,19 +1,19 @@
-from typing import Optional, List, Dict, Any, Union
-import os
 import time
-import streamlit as st
-from openai import OpenAI
-import anthropic
-from dotenv import load_dotenv
-from pydantic import BaseModel, Field
 from enum import Enum
-import json
+from typing import List, Dict, Any, Union
+
+import streamlit as st
 from agno.agent import Agent, RunResponse
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAILike
+from openai import OpenAI
+# from agno.models.anthropic import Claude
+# from openai import OpenAI
+from pydantic import BaseModel, Field
 
 # Model Constants
-DEEPSEEK_MODEL: str = "deepseek-reasoner"
-CLAUDE_MODEL: str = "claude-3-5-sonnet-20241022"
+# DEEPSEEK_MODEL: str = "deepseek-reasoner"
+# CLAUDE_MODEL: str = "claude-3-5-sonnet-20241022"
+
 
 class ArchitecturePattern(str, Enum):
     """Architectural patterns for system design."""
@@ -22,11 +22,13 @@ class ArchitecturePattern(str, Enum):
     SERVERLESS = "serverless"  # Function-as-a-Service architecture
     EVENT_DRIVEN = "event_driven"  # Asynchronous event-based communication
 
+
 class DatabaseType(str, Enum):
     """Types of database systems."""
     SQL = "sql"  # Relational databases with ACID properties
     NOSQL = "nosql"  # Non-relational databases for flexible schemas
     HYBRID = "hybrid"  # Combined SQL and NoSQL approach
+
 
 class ComplianceStandard(str, Enum):
     """Regulatory compliance standards."""
@@ -35,12 +37,14 @@ class ComplianceStandard(str, Enum):
     SOC2 = "soc2"  # Service organization security controls
     ISO27001 = "iso27001"  # Information security management
 
+
 class ArchitectureDecision(BaseModel):
     """Represents architectural decisions and their justifications."""
     pattern: ArchitecturePattern
     rationale: str = Field(..., min_length=50)  # Detailed explanation for the choice
     trade_offs: Dict[str, List[str]] = Field(..., alias="trade_offs")  # Pros and cons
     estimated_cost: Dict[str, float]  # Cost breakdown
+
 
 class SecurityMeasure(BaseModel):
     """Security controls and implementation details."""
@@ -49,12 +53,14 @@ class SecurityMeasure(BaseModel):
     compliance_standards: List[ComplianceStandard]  # Applicable standards
     data_classification: str  # Data sensitivity level
 
+
 class InfrastructureResource(BaseModel):
     """Infrastructure components and specifications."""
     resource_type: str  # Type of infrastructure resource
     specifications: Dict[str, str]  # Technical specifications
     scaling_policy: Dict[str, str]  # Scaling rules and thresholds
     estimated_cost: float  # Estimated cost per resource
+
 
 class TechnicalAnalysis(BaseModel):
     """Complete technical analysis of the system architecture."""
@@ -68,35 +74,45 @@ class TechnicalAnalysis(BaseModel):
 
 
 class ModelChain:
-    def __init__(self, deepseek_api_key: str, anthropic_api_key: str) -> None:
+    def __init__(self, openai_api_key, openai_api_model_type, openai_api_base_url) -> None:
         self.client = OpenAI(
-            api_key=deepseek_api_key,
-            base_url="https://api.deepseek.com" 
+
+            base_url=openai_api_base_url,
+            api_key=openai_api_key
         )
-        self.claude_client = anthropic.Anthropic(api_key=anthropic_api_key)
-        
+        # self.client =OpenAILike(id=openai_api_model_type, api_key=openai_api_key, base_url=openai_api_base_url)
+        # self.claude_client = anthropic.Anthropic(api_key=anthropic_api_key)
+
         # Create Claude model with system prompt
-        claude_model = Claude(
-            id="claude-3-5-sonnet-20241022", 
-            api_key=anthropic_api_key,
-            system_prompt="""Given the user's query and the DeepSeek reasoning:
+        claude_model = OpenAILike(id=openai_api_model_type, api_key=openai_api_key, base_url=openai_api_base_url,
+                                  system_prompt="""Given the user's query and the  reasoning:
             1. Provide a detailed analysis of the architecture decisions
             2. Generate a project implementation roadmap
             3. Create a comprehensive technical specification document
             4. Format the output in clean markdown with proper sections
-            5. Include diagrams descriptions in mermaid.js format"""
-        )
-        
+            5. Include diagrams descriptions in mermaid.js format""")
+        # claude_model = Claude(
+        #     id="claude-3-5-sonnet-20241022",
+        #     api_key=anthropic_api_key,
+        #     system_prompt="""Given the user's query and the DeepSeek reasoning:
+        #     1. Provide a detailed analysis of the architecture decisions
+        #     2. Generate a project implementation roadmap
+        #     3. Create a comprehensive technical specification document
+        #     4. Format the output in clean markdown with proper sections
+        #     5. Include diagrams descriptions in mermaid.js format"""
+        # )
+
         # Initialize agent with configured model
         self.agent = Agent(
             model=claude_model,
             markdown=True
         )
-        
+
         self.deepseek_messages: List[Dict[str, str]] = []
         self.claude_messages: List[Dict[str, Any]] = []
-        self.current_model: str = CLAUDE_MODEL
-    def get_deepseek_reasoning(self, user_input: str) -> tuple[str, str]:    
+        # self.current_model: str = CLAUDE_MODEL
+
+    def get_deepseek_reasoning(self, user_input: str,openai_api_model_type) -> tuple[str, str]:
         start_time = time.time()
 
         system_prompt = """You are an expert software architect and technical advisor. Analyze the user's project requirements 
@@ -184,44 +200,44 @@ class ModelChain:
 
         try:
             deepseek_response = self.client.chat.completions.create(
-                model="deepseek-reasoner",
+                model=openai_api_model_type,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_input}
                 ],
                 max_tokens=3000,
-                stream=False   
+                stream=False
             )
 
-            reasoning_content = deepseek_response.choices[0].message.reasoning_content
+            # reasoning_content = deepseek_response.choices[0].message.reasoning_content
+            reasoning_content = deepseek_response.choices[0].message.content
             normal_content = deepseek_response.choices[0].message.content
-            
+
             # Display the reasoning separately
-            with st.expander("DeepSeek Reasoning", expanded=True):
+            with st.expander(" Reasoning", expanded=True):
                 st.markdown(reasoning_content)
-            
-                
+
             with st.expander("💭 Technical Analysis", expanded=True):
                 st.markdown(normal_content)
                 elapsed_time = time.time() - start_time
-                time_str = f"{elapsed_time/60:.1f} minutes" if elapsed_time >= 60 else f"{elapsed_time:.1f} seconds"
+                time_str = f"{elapsed_time / 60:.1f} minutes" if elapsed_time >= 60 else f"{elapsed_time:.1f} seconds"
                 st.caption(f"⏱️ Analysis completed in {time_str}")
 
                 # Return both reasoning and normal content
                 return reasoning_content, normal_content
 
         except Exception as e:
-            st.error(f"Error in DeepSeek analysis: {str(e)}")
+            st.error(f"Error in  analysis: {str(e)}")
             return "Error occurred while analyzing", ""
-        
+
     def get_claude_response(self, user_input: str, deepseek_output: tuple[str, str]) -> str:
         try:
             reasoning_content, normal_content = deepseek_output
-            
+
             # Create expander for Claude's response
             with st.expander("🤖 Claude's Response", expanded=True):
                 response_placeholder = st.empty()
-                
+
                 # Prepare the message with user input, reasoning and normal output
                 message = f"""User Query: {user_input}
 
@@ -229,12 +245,12 @@ class ModelChain:
 
                 DeepSeek Technical Analysis: {normal_content}
                 Give detailed explanation for each key value pair in brief in the JSON object, and why we chose it clearly. Dont use your own opinions, use the reasoning and the structured output to explain the choices."""
-                
+
                 # Use Phi Agent to get response
                 response: RunResponse = self.agent.run(
                     message=message
                 )
-                
+
                 dub = response.content
                 st.markdown(dub)
                 return dub
@@ -243,10 +259,43 @@ class ModelChain:
             st.error(f"Error in Claude response: {str(e)}")
             return "Error occurred while getting response"
 
+
 def main() -> None:
     """Main function to run the Streamlit app."""
-    st.title("🤖 AI System Architect Advisor with R1")
-
+    st.title("🤖AI 系统架构师顾问")
+    st.markdown("""
+    Agno Agent系统使用结合 LLM提供专家软件架构分析和建议。该系统为复杂的软件系统提供详细的技术分析、实施路线图和架构决策。
+## 特征
+- **综合分析组件**
+  - 架构模式选择
+  - 基础设施资源规划
+  - 安全措施与合规性
+  - 数据库架构
+  - 性能要求
+  - 成本估算
+  - 风险评估
+- **分析类型**
+  - 实时事件处理系统
+  - 医疗数据平台
+  - 金融交易平台
+  - 多租户 SaaS 解决方案
+  - 数字内容交付网络
+  - 供应链管理系统
+#  使用界面
+- 在侧栏中输入 API 凭据
+- 用以下方式构建你的提示：
+  - 项目背景
+  - 要求
+  - 约束
+  - 规模
+  - 安全/合规需求
+- 查看详细分析结果
+## 测试提示示例：
+### 1. 金融交易平台
+“我们需要构建一个高频交易平台，处理市场数据流，以亚毫秒级延迟执行交易，维护审计线索，并处理复杂的风险计算。该系统需要全球分布，每秒处理 100,000 笔交易，并具有强大的灾难恢复能力。”
+### 2. 多租户 SaaS 平台
+“为企业资源规划设计一个多租户 SaaS 平台，该平台需要支持每个租户的定制、处理不同的数据驻留要求、支持离线功能并保持租户之间的性能隔离。该系统应扩展到 10,000 个并发用户并支持自定义集成。”
+    """)
     # Add prompt guidance
     st.info("""
     📝 For best results, structure your prompt with:
@@ -271,9 +320,16 @@ def main() -> None:
     # Sidebar for API keys
     with st.sidebar:
         st.header("⚙️ Configuration")
-        deepseek_api_key = st.text_input("DeepSeek API Key", type="password")
-        anthropic_api_key = st.text_input("Anthropic API Key", type="password")
-        
+        # deepseek_api_key = st.text_input("DeepSeek API Key", type="password")
+        # anthropic_api_key = st.text_input("Anthropic API Key", type="password")
+        # Get OpenAI API key from user
+        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+                                               value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                                      value=st.session_state.get('openai_api_model_type'))
+        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+                                                    value=st.session_state.get('openai_api_base_url'))
+
         if st.button("🗑️ Clear Chat History"):
             st.session_state.messages = []
             st.rerun()
@@ -289,12 +345,12 @@ def main() -> None:
 
     # Chat input
     if prompt := st.chat_input("What would you like to know?"):
-        if not deepseek_api_key or not anthropic_api_key:
+        if not openai_api_key or not openai_api_base_url or not openai_api_model_type:
             st.error("⚠️ Please enter both API keys in the sidebar.")
             return
 
         # Initialize ModelChain
-        chain = ModelChain(deepseek_api_key, anthropic_api_key)
+        chain = ModelChain(openai_api_key, openai_api_model_type, openai_api_base_url)
 
         # Add user message to chat
         st.session_state.messages.append({"role": "user", "content": prompt})
@@ -304,12 +360,12 @@ def main() -> None:
         # Get AI response
         with st.chat_message("assistant"):
             with st.spinner("🤔 Thinking..."):
-                deepseek_output = chain.get_deepseek_reasoning(prompt)
-            
-            
+                deepseek_output = chain.get_deepseek_reasoning(prompt,openai_api_model_type)
+
             with st.spinner("✍️ Responding..."):
                 response = chain.get_claude_response(prompt, deepseek_output)
                 st.session_state.messages.append({"role": "assistant", "content": response})
+
 
 if __name__ == "__main__":
     main()

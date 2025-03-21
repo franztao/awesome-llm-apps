@@ -133,18 +133,18 @@ def main():
             st.session_state.openai_api_key = openai_key
 
         openai_api_vlm_model_type = st.text_input(
-            "OpenAI API VLM Model Type",
+            "VLM API Model Type",
             value=st.session_state.openai_api_vlm_model_type if st.session_state.openai_api_vlm_model_type else "",
-            help="Enter your OpenAI API VLM Model Type"
+            help="Enter your VLM API Model Type"
         )
         if openai_api_vlm_model_type:
             st.session_state.openai_api_vlm_model_type = openai_api_vlm_model_type
 
 
         openai_api_embedding_model_type = st.text_input(
-            "OpenAI API Embedding Model Type",
+            "Embedding API  Model Type",
             value=st.session_state.openai_api_embedding_model_type if st.session_state.openai_api_embedding_model_type else "",
-            help="Enter your OpenAI API Embedding Model Type"
+            help="Enter your Embedding API  Model Type"
         )
         if openai_api_embedding_model_type:
             st.session_state.openai_api_embedding_model_type = openai_api_embedding_model_type

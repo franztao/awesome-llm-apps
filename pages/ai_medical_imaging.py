@@ -32,7 +32,7 @@ with st.sidebar:
         # Get LLM API Key from user
         openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
                                                value=st.session_state.get('openai_api_key'))
-        openai_api_vlm_model_type = st.sidebar.text_input("OpenAI API VLM Model Type",
+        openai_api_vlm_model_type = st.sidebar.text_input("VLM API Model Type",
                                                       value=st.session_state.get('openai_api_vlm_model_type'))
         openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))

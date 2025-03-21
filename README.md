@@ -136,3 +136,7 @@ Contributions are welcome! If you have any ideas, improvements, or new apps to a
 [![Star History Chart](https://api.star-history.com/svg?repos=Shubhamsaboo/awesome-llm-apps&type=Date)](https://star-history.com/#Shubhamsaboo/awesome-llm-apps&Date)
 
 🌟 **Don’t miss out on future updates! Star the repo now and be the first to know about new and exciting LLM apps with RAG and AI Agents.**
+
+docker run -it  -w /qdrant -p 6333:6333 -p 6334:6334 -p 8501:8501 -p 8502:8502 -p 8503:8503  \
+    -v "$(pwd)/qdrant_storage:/qdrant/storage:z" -v /home/hengtao:/home/hengtao --shm-size 16G d936dd218d4f  \
+    qdrant/qdrant

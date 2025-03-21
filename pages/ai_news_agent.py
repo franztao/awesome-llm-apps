@@ -31,7 +31,7 @@ openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session
 
 
 MODEL =  OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文")
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文")
 def search_news(topic):
     """Search for news articles using DuckDuckGo"""
     with DDGS() as ddg:

@@ -114,7 +114,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
         firecrawl_agent = Agent(
             model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             tools=[firecrawl_tools, DuckDuckGoTools()],
             show_tool_calls=True,
             markdown=True
@@ -122,7 +122,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
         analysis_agent = Agent(
             model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             show_tool_calls=True,
             markdown=True
         )
@@ -130,7 +130,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
         # New agent for comparing competitor data
         comparison_agent = Agent(
             model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             show_tool_calls=True,
             markdown=True
         )

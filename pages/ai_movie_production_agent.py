@@ -32,7 +32,7 @@ if openai_api_key and serpapi_api_key:
     script_writer = Agent(
         name="ScriptWriter",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are an expert screenplay writer. Given a movie idea and genre, 
@@ -49,7 +49,7 @@ if openai_api_key and serpapi_api_key:
     casting_director = Agent(
         name="CastingDirector",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a talented casting director. Given a script outline and character descriptions,
@@ -68,7 +68,7 @@ if openai_api_key and serpapi_api_key:
     movie_producer = Agent(
         name="MovieProducer",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         team=[script_writer, casting_director],
         description="Experienced movie producer overseeing script and casting.",
         instructions=[

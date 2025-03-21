@@ -61,7 +61,7 @@ medical_agent = Agent(
     #     api_key='AIzaSyC2VJnKhQJPMmYuvN7JGvEsDyB5O8rm-Js'
     # ),
     model=OpenAILike(id=openai_api_vlm_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
     tools=[DuckDuckGoTools()],
     markdown=True
 ) if st.session_state.GOOGLE_API_KEY else None

@@ -27,7 +27,7 @@ if openai_api_key and serp_api_key:
         name="Researcher",
         role="Searches for financial advice, investment opportunities, and savings strategies based on user preferences",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a world-class financial researcher. Given a user's financial goals and current financial situation,
@@ -48,7 +48,7 @@ if openai_api_key and serp_api_key:
         name="Planner",
         role="Generates a personalized financial plan based on user preferences and research results",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a senior financial planner. Given a user's financial goals, current financial situation, and a list of research results,

@@ -151,4 +151,4 @@ st.session_state['qdrant_api_key'] = "123"
 
 
 st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
-st.session_state['openai_api_vlm_model_type'] = "qwen_vl_max"
+st.session_state['openai_api_vlm_model_type'] = "qwen_vl_plus"

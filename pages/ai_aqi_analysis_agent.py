@@ -105,7 +105,7 @@ class HealthRecommendationAgent:
                 name="Health Recommendation Agent",
                 api_key=openai_key['openai'],
                 base_url=openai_key['openai_api_base_url'],
-                system_prompt="最后输出的英文内容必须翻译成中文"
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"
             )
         )
 

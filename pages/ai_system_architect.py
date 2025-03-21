@@ -91,7 +91,7 @@ class ModelChain:
             3. Create a comprehensive technical specification document
             4. Format the output in clean markdown with proper sections
             5. Include diagrams descriptions in mermaid.js format
-            最后输出的英文内容必须翻译成中文""")
+            最后输出的内容必须是中文内容呈现，不要是英文""")
         # claude_model = Claude(
         #     id="claude-3-5-sonnet-20241022",
         #     api_key=anthropic_api_key,

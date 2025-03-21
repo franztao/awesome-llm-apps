@@ -107,7 +107,7 @@ def create_google_sheets_agent(composio_api_key: str, openai_api_key: str, opena
     google_sheets_agent = Agent(
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
                          base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         tools=[google_sheets_tool],
         show_tool_calls=True,
         system_message="You are an expert at creating and updating Google Sheets. You will be given user information in JSON format, and you need to write it into a new Google Sheet.",
@@ -144,7 +144,7 @@ def create_prompt_transformation_agent(openai_api_key: str, openai_api_model_typ
     return Agent(
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
                          base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         system_message="""You are an expert at transforming detailed user queries into concise company descriptions.
 Your task is to extract the core business/product focus in 3-4 words.
 

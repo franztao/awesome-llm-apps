@@ -127,7 +127,7 @@ def main():
             # gemini_model = Gemini(id="gemini-1.5-flash", api_key=gemini_api_key)
             gemini_model = OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
                                base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文")
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文")
         except Exception as e:
             st.error(f"❌ Error initializing Gemini model: {e}")
             return

@@ -37,7 +37,7 @@ if openai_api_key and serp_api_key:
         role="Searches for top URLs based on a topic",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
                            base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a world-class journalist for the New York Times. Given a topic, generate a list of 3 search terms
@@ -58,7 +58,7 @@ if openai_api_key and serp_api_key:
         name="Writer",
         role="Retrieves text from URLs and writes a high-quality article",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a senior writer for the New York Times. Given a topic and a list of URLs,
@@ -83,7 +83,7 @@ if openai_api_key and serp_api_key:
     editor = Agent(
         name="Editor",
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         team=[searcher, writer],
         description="You are a senior NYT editor. Given a topic, your goal is to write a NYT worthy article.",
         instructions=[

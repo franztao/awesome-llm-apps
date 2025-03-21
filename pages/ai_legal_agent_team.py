@@ -120,7 +120,7 @@ def main():
     st.set_page_config(page_title="Legal Document Analyzer", layout="wide")
     init_session_state()
 
-    st.title("AI Legal Agent Team 👨‍⚖️")
+    st.title("‍⚖️ AI法律agent团队 👨‍⚖️")
 
     with st.sidebar:
         st.header("🔑 API Configuration")
@@ -202,7 +202,7 @@ def main():
                                 name="Legal Researcher",
                                 role="Legal research specialist",
                                 model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
                                 tools=[DuckDuckGoTools()],
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,
@@ -220,7 +220,7 @@ def main():
                                 name="Contract Analyst",
                                 role="Contract analysis specialist",
                                 model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,
                                 instructions=[
@@ -235,7 +235,7 @@ def main():
                                 name="Legal Strategist",
                                 role="Legal strategy specialist",
                                 model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,
                                 instructions=[
@@ -251,7 +251,7 @@ def main():
                                 name="Legal Team Lead",
                                 role="Legal team coordinator",
                                 model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
                                 team=[legal_researcher, contract_analyst, legal_strategist],
                                 knowledge=st.session_state.knowledge_base,
                                 search_knowledge=True,

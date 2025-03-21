@@ -43,7 +43,7 @@ class PropertyFindingAgent:
     def __init__(self, firecrawl_api_key: str, openai_api_key: str, model_id: str = "o3-mini"):
         self.agent = Agent(
             model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=openai_api_key,base_url=st.session_state.openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             markdown=True,
             description="I am a real estate expert who helps find and analyze properties based on user preferences."
         )

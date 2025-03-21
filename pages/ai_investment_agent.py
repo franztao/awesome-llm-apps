@@ -11,7 +11,6 @@ st.markdown("""
     - 比较两只股票的表现
     - 检索全面的公司信息
     - 获取最新的公司新闻和分析师建议
-    - 获取最新的公司新闻和分析师建议
 """)
 
 openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
@@ -21,7 +20,7 @@ openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session
 if openai_api_key:
     assistant = Agent(
         model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
-                system_prompt="最后输出的英文内容必须翻译成中文"),
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         tools=[
             YFinanceTools(stock_price=True, analyst_recommendations=True, stock_fundamentals=True)
         ],

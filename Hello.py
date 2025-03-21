@@ -19,7 +19,11 @@ st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI�
 st.sidebar.page_link(r"pages/ai_travel_agent.py", label="🛫 AI智能旅行社")
 st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作代理")
 st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码代理团队")
-st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备代理")
+# st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备代理")
+st.sidebar.page_link(r"pages/ai_chess_agent.py", label="♜ 白Agent vs 黑Agent：棋局对决")
+st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房地产经纪人")
+st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI 代理")
+
 
 
 st.write("# 欢迎使用 沐曦Agent智能体! 👋")
@@ -144,4 +148,4 @@ st.session_state['qdrant_api_key'] = "123"
 
 
 st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
-st.session_state['openai_api_vlm_model_type'] = "qwen_vl_plus"
+st.session_state['openai_api_vlm_model_type'] = "qwen_vl_max"

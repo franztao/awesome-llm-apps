@@ -40,12 +40,11 @@ class PropertyFindingAgent:
     
     def __init__(self, firecrawl_api_key: str, openai_api_key: str, model_id: str = "o3-mini"):
         self.agent = Agent(
-            model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),#OpenAIChat(id=model_id, api_key=openai_api_key),
+            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=openai_api_key,base_url=st.session_state.openai_api_base_url),
             markdown=True,
             description="I am a real estate expert who helps find and analyze properties based on user preferences."
         )
-        self.firecrawl = FirecrawlApp(api_key='fc-bd7f59397c2544e79a7236038b0ba662') #FirecrawlApp(api_key=firecrawl_api_key)
+        self.firecrawl = FirecrawlApp(api_key=firecrawl_api_key)
 
     def find_properties(
         self, 
@@ -200,9 +199,9 @@ def create_property_agent():
     """Create PropertyFindingAgent with API keys from session state"""
     if 'property_agent' not in st.session_state:
         st.session_state.property_agent = PropertyFindingAgent(
-            firecrawl_api_key=st.session_state.firecrawl_key,
-            openai_api_key=st.session_state.openai_key,
-            model_id=st.session_state.model_id
+            firecrawl_api_key=st.session_state.firecrawl_api_key,
+            openai_api_key=st.session_state.openai_api_key,
+            model_id=st.session_state.openai_api_model_type
         )
 
 def main():
@@ -215,41 +214,78 @@ def main():
     with st.sidebar:
         st.title("🔑 API Configuration")
         
-        st.subheader("🤖 Model Selection")
-        model_id = st.selectbox(
-            "Choose OpenAI Model",
-            options=["o3-mini", "gpt-4o"],
-            help="Select the AI model to use. Choose gpt-4o if your api doesn't have access to o3-mini"
-        )
-        st.session_state.model_id = model_id
-        
-        st.divider()
+        # st.subheader("🤖 Model Selection")
+        # model_id = st.selectbox(
+        #     "Choose OpenAI Model",
+        #     options=["o3-mini", "gpt-4o"],
+        #     help="Select the AI model to use. Choose gpt-4o if your api doesn't have access to o3-mini"
+        # )
+        # st.session_state.model_id = model_id
+        #
+        # st.divider()
         
         st.subheader("🔐 API Keys")
-        firecrawl_key = st.text_input(
+        firecrawl_api_key = st.text_input(
             "Firecrawl API Key",
             type="password",
-            help="Enter your Firecrawl API key"
+            help="Enter your Firecrawl API key",value=st.session_state.get("firecrawl_api_key")
         )
-        openai_key = st.text_input(
-            "OpenAI API Key",
-            type="password",
-            help="Enter your OpenAI API key"
-        )
-        
-        if firecrawl_key and openai_key:
-            st.session_state.firecrawl_key = firecrawl_key
-            st.session_state.openai_key = openai_key
+        # Get OpenAI API key from user
+        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+                                               value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                                      value=st.session_state.get('openai_api_model_type'))
+        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+                                                    value=st.session_state.get('openai_api_base_url'))
+        st.session_state.openai_api_model_type=openai_api_model_type
+        st.session_state.openai_api_base_url = openai_api_base_url
+
+        if firecrawl_api_key and openai_api_key:
+            st.session_state.firecrawl_api_key = firecrawl_api_key
+            st.session_state.openai_api_key = openai_api_key
             create_property_agent()
 
-    st.title("🏠 AI Real Estate Agent")
-    st.info(
-        """
-        Welcome to the AI Real Estate Agent! 
-        Enter your search criteria below to get property recommendations 
-        and location insights.
-        """
-    )
+    st.title("🏠 AI智能房地产经纪人")
+    # st.info(
+    #     """
+    #     Welcome to the AI Real Estate Agent!
+    #     Enter your search criteria below to get property recommendations
+    #     and location insights.
+    #     """
+    # )
+    st.markdown("""
+    AI 房地产代理使用 Firecrawl 的 Extract 端点和 Agno AI Agent 的洞察自动进行房产搜索和市场分析。它帮助用户找到符合其标准的房产，同时提供详细的位置趋势和投资建议。该代理通过整合来自多个房地产网站的数据并提供智能分析来简化房产搜索流程。
+### 特征
+- **智能房产搜索**：使用 Firecrawl 的 Extract 端点在多个房地产网站上查找房产
+- **多源集成**：汇总来自 99acres、Housing.com、Square Yards、Nobroker 和 MagicBricks 的数据
+- **位置分析**：提供不同地区的详细价格趋势和投资见解
+- **人工智能推荐**：使用 GPT 模型分析属性并提供结构化建议
+- **用户友好界面**：简洁的 Streamlit UI，方便搜索房产和查看结果
+- **可自定义搜索**：按城市、房产类型、类别和预算进行筛选
+### 使用代理
+1. **输入 API 密钥**：
+   - 在侧栏中输入您的 Firecrawl 和 LLM API 密钥
+   - 密钥安全地存储在会话状态中
+2. **设置搜索条件**：
+   - 输入城市名称
+   - 选择房产类别（住宅/商业）
+   - 选择房产类型（公寓/独立屋）
+   - 设定最高预算（以千万卢比为单位）
+3. **查看结果**：
+   - 详细分析的房产推荐
+   - 具有投资见解的区位趋势
+   - 可扩展部分，方便阅读
+### 详细功能
+- **房产搜寻**：
+  - 在多个房地产网站上进行搜索
+  - 返回符合条件的 3-6 个属性
+  - 提供详细的房产信息和分析
+- **位置分析**：
+  - 不同地区的价格趋势
+  - 租金收益分析
+  - 投资潜力评估
+  - 确定表现最佳的领域
+    """)
 
     col1, col2 = st.columns(2)
     

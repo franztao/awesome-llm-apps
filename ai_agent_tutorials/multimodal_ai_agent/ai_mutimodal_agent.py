@@ -12,7 +12,17 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Multimodal AI Agent 🧬")
+st.title("🧬 多模态 AI 代理")
+
+st.markdown("""
+Streamlit 应用程序使用LVM  模型将视频分析和网络搜索功能相结合。该代理可以分析上传的视频，并通过将视觉理解与网络搜索相结合来回答问题。
+### 特征
+- 使用 LVM 进行视频分析
+- 通过 DuckDuckGo 进行网络研究集成
+- 支持多种视频格式（MP4、MOV、AVI）
+- 实时视频处理
+- 结合视觉和文本分析
+""")
 
 # Get Gemini API key from user
 gemini_api_key = st.text_input("Enter your Gemini API Key", type="password")
@@ -81,3 +91,5 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
+# C:\Program Files (x86)\DingTalk\main\current\plugins\tblive\data\conf_res\background_res

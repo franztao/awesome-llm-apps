@@ -17,7 +17,11 @@ if "max_turns" not in st.session_state:
     st.session_state.max_turns = 5
 
 st.sidebar.title("Chess Agent Configuration")
-openai_api_key = st.sidebar.text_input("Enter your OpenAI API key:", type="password")
+# Get OpenAI API key from user
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                      value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
 if openai_api_key:
     st.session_state.openai_api_key = openai_api_key
     st.sidebar.success("API key saved!")
@@ -40,8 +44,25 @@ if max_turns_input:
     st.session_state.max_turns = max_turns_input
     st.sidebar.success(f"Max turns of total chess moves set to {st.session_state.max_turns}!")
 
-st.title("Chess with AutoGen Agents")
-
+st.title("♜ 白Agent vs 黑Agent：棋局对决")
+st.markdown("""
+一个先进的国际象棋游戏系统，其中两个 AI 代理使用 Streamlit 应用中的 Autogen 相互下棋。它具有强大的移动验证和游戏状态管理功能。
+## 特征
+### 多智能体架构
+- 玩家白：LLM支持的战略决策者
+- 玩家黑：由LLM提供支持的战术对手
+- 棋盘代理：移动合法性和游戏状态的验证代理
+### 安全与验证
+- 强大的动作验证系统
+- 预防非法搬家
+- 实时板状态监控
+- 安全的游戏进程控制
+### 策略游戏
+- 人工智能职位评估
+- 深入的战术分析
+- 动态策略调整
+- 完整的国际象棋规则集实现
+""")
 def available_moves() -> str:
     available_moves = [str(move) for move in st.session_state.board.legal_moves]
     return "Available moves are: " + ",".join(available_moves)
@@ -94,20 +115,24 @@ def check_made_move(msg):
         return True
     else:
         return False
-
+# model = "qwen-plus"
+# base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+# api_key = "sk-f7f3039f52e3402bbafda926f4da7cb3"
 if st.session_state.openai_api_key:
     try:
         agent_white_config_list = [
             {
-                "model": "gpt-4o-mini",
+                "model": openai_api_model_type,
                 "api_key": st.session_state.openai_api_key,
+                "base_url":openai_api_base_url,
             },
         ]
 
         agent_black_config_list = [
             {
-                "model": "gpt-4o-mini",
+                "model": openai_api_model_type,
                 "api_key": st.session_state.openai_api_key,
+                "base_url":openai_api_base_url,
             },
         ]
 
@@ -191,8 +216,8 @@ if st.session_state.openai_api_key:
 
         st.info("""
 This chess game is played between two AG2 AI agents:
-- **Agent White**: A GPT-4o-mini powered chess player controlling white pieces
-- **Agent Black**: A GPT-4o-mini powered chess player controlling black pieces
+- **Agent White**: A LLM powered chess player controlling white pieces
+- **Agent Black**: A LLM powered chess player controlling black pieces
 
 The game is managed by a **Game Master** that:
 - Validates all moves

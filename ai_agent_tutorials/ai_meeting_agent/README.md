@@ -35,5 +35,5 @@ pip install -r requirements.txt
 
 6. Run the Streamlit App
 ```bash
-streamlit run meeting_agent.py
+streamlit run ai_meeting_agent.py
 ```

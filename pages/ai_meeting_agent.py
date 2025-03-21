@@ -1,4 +1,5 @@
 import streamlit as st
+from agno.models.openai import OpenAILike
 from crewai import Agent, Task, Crew, LLM
 from crewai.process import Process
 from crewai.tools import SerperDevTool
@@ -6,21 +7,33 @@ import os
 
 # Streamlit app setup
 st.set_page_config(page_title="AI Meeting Agent 📝", layout="wide")
-st.title("AI Meeting Preparation Agent 📝")
+st.title("📝 AI 会议准备代理")
+st.markdown("""
+这款 Streamlit 应用程序利用多个 AI 代理来创建全面的会议准备材料。它使用 LLM 和用于网络搜索的 Serper API 来生成上下文分析、行业见解、会议策略和高管简报。
+特征
+用于周密会议准备的多智能体 AI 系统
+利用 LLM大语言模型
+使用 Serper API 的 Web 搜索功能
+生成详细的背景分析、行业见解、会议策略和高管简报
 
+""")
 # Sidebar for API keys
 st.sidebar.header("API Keys")
-anthropic_api_key = st.sidebar.text_input("Anthropic API Key", type="password")
-serper_api_key = st.sidebar.text_input("Serper API Key", type="password")
+# anthropic_api_key = st.sidebar.text_input("Anthropic API Key", type="password")
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                      value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+serper_api_key = st.sidebar.text_input("Serper API Key", type="password", value=st.session_state.get('serper_api_key'))
 
 # Check if all API keys are set
-if anthropic_api_key and serper_api_key:
+if openai_api_key and serper_api_key:
     # # Set API keys as environment variables
-    os.environ["ANTHROPIC_API_KEY"] = anthropic_api_key
+    os.environ["ANTHROPIC_API_KEY"] = openai_api_key
     os.environ["SERPER_API_KEY"] = serper_api_key
 
     # claude = LLM(model="claude-3-5-sonnet-20240620", temperature= 0.7, api_key=anthropic_api_key)
-    claude = LLM(model="claude-3-5-sonnet-20240620", temperature= 0.7, api_key=anthropic_api_key)
+    claude = OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url)
     search_tool = SerperDevTool()
 
     # Input fields

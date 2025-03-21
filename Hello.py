@@ -19,6 +19,7 @@ st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI�
 st.sidebar.page_link(r"pages/ai_travel_agent.py", label="🛫 AI智能旅行社")
 st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作代理")
 st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码代理团队")
+st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备代理")
 
 
 st.write("# 欢迎使用 沐曦Agent智能体! 👋")

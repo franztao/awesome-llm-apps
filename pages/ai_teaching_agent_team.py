@@ -8,7 +8,7 @@ from agno.utils.pprint import pprint_run_response
 from agno.tools.serpapi import SerpApiTools
 #
 # Set page configuration
-st.set_page_config(page_title="👨‍🏫 AI Teaching Agent Team", layout="centered")
+st.set_page_config(page_title="👨‍🏫 AI教学代理团队", layout="centered")
 
 # Initialize session state for API keys and topic
 if 'openai_api_key' not in st.session_state:
@@ -23,11 +23,11 @@ if 'topic' not in st.session_state:
 # Streamlit sidebar for API keys
 with st.sidebar:
     st.title("API Keys Configuration")
-    st.session_state['openai_api_key'] = st.text_input("Enter your OpenAI API Key", type="password").strip()
-    st.session_state['composio_api_key'] = st.text_input("Enter your Composio API Key", type="password").strip()
-    st.session_state['serpapi_api_key'] = st.text_input("Enter your SerpAPI Key", type="password").strip()
-    st.session_state['serpapi_api_key'] = '4daaca7da2c5287775d7783777c9b416cd91ac961ff24cb41ddb45f7c7176a19'
-    st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'
+    st.session_state['openai_api_key'] = st.text_input("Enter your OpenAI API Key", type="password",value=st.session_state.get('openai_api_key'))
+    st.session_state['openai_api_model_type'] = st.sidebar.text_input("OpenAI API Model Type", value=st.session_state.get('openai_api_model_type'))
+    st.session_state['openai_api_base_url'] = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+    st.session_state['composio_api_key'] = st.text_input("Enter your Composio API Key", type="password",value=st.session_state.get('composio_api_key'))
+    st.session_state['serpapi_api_key'] = st.text_input("Enter your SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
     # Add info about terminal responses
     st.info("Note: You can also view detailed agent responses\nin your terminal after execution.")
 
@@ -51,8 +51,7 @@ except Exception as e:
 professor_agent = Agent(
     name="Professor",
     role="Research and Knowledge Specialist", 
-    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),#OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
     tools=[google_docs_tool],
     instructions=[
         "Create a comprehensive knowledge base that covers fundamental concepts, advanced topics, and current developments of the given topic.",
@@ -68,8 +67,7 @@ professor_agent = Agent(
 academic_advisor_agent = Agent(
     name="Academic Advisor",
     role="Learning Path Designer",
-    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'), #OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
     tools=[google_docs_tool],
     instructions=[
         "Using the knowledge base for the given topic, create a detailed learning roadmap.",
@@ -87,8 +85,7 @@ academic_advisor_agent = Agent(
 research_librarian_agent = Agent(
     name="Research Librarian",
     role="Learning Resource Specialist",
-    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'), #OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
     tools=[google_docs_tool, SerpApiTools(api_key=st.session_state['serpapi_api_key']) ],
     instructions=[
         "Make a list of high-quality learning resources for the given topic.",
@@ -105,8 +102,7 @@ research_librarian_agent = Agent(
 teaching_assistant_agent = Agent(
     name="Teaching Assistant",
     role="Exercise Creator",
-    model=OpenAILike(id="qwen-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',
-                         base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'), #OpenAIChat(id="gpt-4o-mini", api_key=st.session_state['openai_api_key']),
+    model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
     tools=[google_docs_tool, SerpApiTools(api_key=st.session_state['serpapi_api_key'])],
     instructions=[
         "Create comprehensive practice materials for the given topic.",
@@ -121,11 +117,40 @@ teaching_assistant_agent = Agent(
 )
 
 # Streamlit main UI
-st.title("👨‍🏫 AI Teaching Agent Team")
-st.markdown("Enter a topic to generate a detailed learning path and resources")
-
+st.title("👨‍🏫 AI教学代理团队")
+# st.markdown("Enter a topic to generate a detailed learning path and resources")
+st.markdown("""Streamlit 应用程序汇集了一支专业的 AI 教学代理团队，他们像专业教学人员一样协作。每个代理都充当专业教育者：课程设计师、学习路径专家、资源管理员和实践指导员 - 共同努力通过 Google Docs 创造完整的教育体验。
+## 🪄 认识你的 AI 教学代理团队
+#### 🧠 教授agent
+- 在 Google Docs 中创建基础知识库
+- 使用适当的标题和部分来组织内容
+- 包括详细解释和示例
+- 输出：带有目录的综合知识库文档
+#### 🗺️ 学术顾问代理
+- 在结构化的 Google Doc 中设计学习路径
+- 创建渐进式里程碑标记
+- 包括时间估计和先决条件
+- 输出：具有清晰进展路径的视觉路线图文档
+#### 📚 研究图书管理员代理
+- 将资源汇编到有组织的 Google 文档中
+- 包含学术论文和教程的链接
+- 添加描述和难度级别
+- 输出：带有质量评级的分类资源列表
+#### ✍️ 助教代理
+- 在交互式 Google Doc 中开发练习
+- 创建结构化的练习部分
+- 包括解决方案指南
+- 输出： 完整的练习册及答案
+## 如何使用？
+- 在侧栏中输入您的 OpenAI API 密钥（如果未在环境中设置）
+- 在侧边栏中输入您的 Composio API 密钥
+- 输入你想了解的主题（例如，“Python 编程”、“机器学习”）
+- 点击“生成学习计划”
+- 等待代理生成您的个性化学习计划
+- 在界面中查看结果和终端输出
+""")
 # Add info message about Google Docs
-st.info("📝 The agents will create detailed Google Docs for each section (Professor, Academic Advisor, Research Librarian, and Teaching Assistant). The links to these documents will be displayed below after processing.")
+# st.info("📝 The agents will create detailed Google Docs for each section (Professor, Academic Advisor, Research Librarian, and Teaching Assistant). The links to these documents will be displayed below after processing.")
 
 # Query bar for topic input
 st.session_state['topic'] = st.text_input("Enter the topic you want to learn about:", placeholder="e.g., Machine Learning, LoRA, etc.")

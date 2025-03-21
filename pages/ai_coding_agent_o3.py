@@ -1,19 +1,27 @@
-from typing import Optional, Dict, Any
-import streamlit as st
-from agno.agent import Agent, RunResponse
-from agno.models.openai import OpenAIChat
-from agno.models.google import Gemini
-from e2b_code_interpreter import Sandbox
 import os
+from typing import Dict, Any
+
+import streamlit as st
 from PIL import Image
-from io import BytesIO
-import base64
+from agno.agent import Agent
+# from agno.models.google import Gemini
+from agno.models.openai import OpenAIChat, OpenAILike
+from e2b_code_interpreter import Sandbox
+
 
 def initialize_session_state() -> None:
-    if 'openai_key' not in st.session_state:
-        st.session_state.openai_key = ''
-    if 'gemini_key' not in st.session_state:
-        st.session_state.gemini_key = ''
+    if 'openai_api_key' not in st.session_state:
+        st.session_state.openai_api_key = ''
+    # if 'gemini_key' not in st.session_state:
+    #     st.session_state.gemini_key = ''
+    if 'openai_api_model_type' not in st.session_state:
+        st.session_state.openai_api_model_type = None
+    if 'openai_api_vlm_model_type' not in st.session_state:
+        st.session_state.openai_api_vlm_model_type = None
+    if 'openai_api_embedding_model_type' not in st.session_state:
+        st.session_state.openai_api_embedding_model_type = None
+    if 'openai_api_base_url' not in st.session_state:
+        st.session_state.openai_api_base_url = None
     if 'e2b_key' not in st.session_state:
         st.session_state.e2b_key = ''
     if 'sandbox' not in st.session_state:
@@ -22,41 +30,39 @@ def initialize_session_state() -> None:
 def setup_sidebar() -> None:
     with st.sidebar:
         st.title("API Configuration")
-        st.session_state.openai_key = st.text_input("OpenAI API Key", 
-                                                   value=st.session_state.openai_key,
-                                                   type="password")
-        st.session_state.gemini_key = st.text_input("Gemini API Key", 
-                                                   value=st.session_state.gemini_key,
-                                                   type="password")
+        st.session_state.openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+                                               value=st.session_state.get('openai_api_key'))
+        st.session_state.openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                                      value=st.session_state.get('openai_api_model_type'))
+        st.session_state.openai_api_vlm_model_type = st.sidebar.text_input("OpenAI API VLM Model Type",
+                                                      value=st.session_state.get('openai_api_vlm_model_type'))
+        st.session_state.openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+                                                    value=st.session_state.get('openai_api_base_url'))
         st.session_state.e2b_key = st.text_input("E2B API Key",
                                                 value=st.session_state.e2b_key,
                                                 type="password")
 
 def create_agents() -> tuple[Agent, Agent, Agent]:
     vision_agent = Agent(
-        model=Gemini(id="gemini-2.0-flash", api_key=st.session_state.gemini_key),
+        model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
         markdown=True,
     )
 
     coding_agent = Agent(
-        model=OpenAIChat(
-            id="o3-mini", 
-            api_key=st.session_state.openai_key,
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
             system_prompt="""You are an expert Python programmer. You will receive coding problems similar to LeetCode questions, 
             which may include problem statements, sample inputs, and examples. Your task is to:
             1. Analyze the problem carefully and Optimally with best possible time and space complexities.
             2. Write clean, efficient Python code to solve it
             3. Include proper documentation and type hints
             4. The code will be executed in an e2b sandbox environment
-            Please ensure your code is complete and handles edge cases appropriately."""
-        ),
+            Please ensure your code is complete and handles edge cases appropriately.""")
+        ,
         markdown=True
     )
     
     execution_agent = Agent(
-        model=OpenAIChat(
-            id="o3-mini",
-            api_key=st.session_state.openai_key,
+        model=OpenAIChat(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
             system_prompt="""You are an expert at executing Python code in sandbox environments.
             Your task is to:
             1. Take the provided Python code
@@ -169,8 +175,37 @@ def execute_code_with_agent(execution_agent: Agent, code: str, sandbox: Sandbox)
         return f"⚠️ Sandbox Error: {str(e)}"
 
 def main() -> None:
-    st.title("O3-Mini Coding Agent")
-    
+    st.title("💻 多模态 AI 编码代理团队")
+    st.markdown("""
+    一款由 AI 驱动的 Streamlit 应用程序，可充当您的个人编码助手，由基于LLM构建的多个代理提供支持。您还可以上传编码问题的图像或用文字描述它，AI 代理将进行分析、生成最佳解决方案并在沙盒环境中执行它。
+## 特征
+#### 多模态问题输入
+- 上传编码问题图片（支持PNG，JPG，JPEG）
+- 自然语言中的类型问题
+- 从图像中自动提取问题
+- 交互式问题处理
+#### 智能代码生成
+- 具有最佳时间/空间复杂度的最佳解决方案生成
+- 干净、有文档记录的 Python 代码输出
+- 类型提示和适当的文档
+- 边缘情况处理
+#### 安全代码执行
+- 沙盒代码执行环境
+- 实时执行结果
+- 错误处理和解释
+- 30 秒执行超时保护
+#### 多智能体架构
+- 用于图像处理的 Vision Agent
+- 用于生成解决方案的编码代理
+- 执行代理用于代码运行和结果分析
+- 用于安全代码执行的 E2B 沙盒
+## 用法
+1. 上传编码问题的图片或输入问题描述
+2. 点击“生成并执行解决方案”
+3. 查看生成的解决方案及其完整文档
+4. 查看执行结果和任何生成的文件
+5. 检查任何错误消息或执行超时
+    """)
     # Add timeout info in sidebar
     initialize_session_state()
     setup_sidebar()
@@ -178,8 +213,8 @@ def main() -> None:
         st.info("⏱️ Code execution timeout: 30 seconds")
     
     # Check all required API keys
-    if not (st.session_state.openai_key and 
-            st.session_state.gemini_key and 
+    if not (st.session_state.openai_api_key and 
+            #st.session_state.gemini_key and
             st.session_state.e2b_key):
         st.warning("Please enter all required API keys in the sidebar.")
         return

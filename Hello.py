@@ -15,6 +15,10 @@ st.sidebar.page_link(r"pages/ai_journalist_agent.py", label="️🗞️ AI记者
 st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨🎯 AI潜在客户生成代理")
 st.sidebar.page_link(r"pages/ai_finance_agent.py", label="💰 AI个人财务代理")
 st.sidebar.page_link(r"pages/ai_medical_imaging.py", label="🩻 AI医学影像诊断代理")
+st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI教学代理团队")
+st.sidebar.page_link(r"pages/ai_travel_agent.py", label="🛫 AI智能旅行社")
+st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作代理")
+st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码代理团队")
 
 
 st.write("# 欢迎使用 沐曦Agent智能体! 👋")
@@ -73,6 +77,11 @@ st.session_state['exa_api_key'] = exa_api_key
 serpapi_api_key = st.text_input("Enter your SerpAPI Key", type="password", value=st.session_state.get('serpapi_api_key'))
 st.session_state['serpapi_api_key'] = serpapi_api_key
 
+e2b_key = st.text_input("E2B API Key", value=st.session_state.get('e2b_key'),
+                                         type="password")
+st.session_state['e2b_key'] = e2b_key
+#
+
 st.subheader("Zoom Settings")
 zoom_account_id = st.text_input("Zoom Account ID", type="password", value=st.session_state.get('zoom_account_id'))
 st.session_state['zoom_account_id'] = zoom_account_id
@@ -105,6 +114,7 @@ st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compat
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'
 st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'
 
+st.session_state['e2b_key'] = 'sk_e2b_cd993c89f425970130e118828cfd78dbbad08394'
 # zoom_tools = CustomZoomTool(
 #     account_id='CRGZvs0ARnaGntbxJuFjbw',
 #     client_id='dmp7GbYhSICJERYeIF5M6w',

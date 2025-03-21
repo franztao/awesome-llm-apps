@@ -7,7 +7,7 @@ from agno.tools.serpapi import SerpApiTools
 from textwrap import dedent
 
 # Set up the Streamlit app
-st.title("🎬 AI 电影制作代理")
+st.title("🎬 AI 电影制作Agent")
 # st.caption("Bring your movie ideas to life with the teams of script writing and casting AI agents")
 st.markdown("""
 这款 Streamlit 应用是一款人工智能电影制作助手，它使用LLM帮助您将电影创意变为现实。它可自动执行剧本编写和选角流程，让您轻松创作引人入胜的电影概念。
@@ -16,7 +16,7 @@ st.markdown("""
 - 根据演员过往表现和当前空闲时间，推荐适合主要角色的演员
 - 提供简明的电影概念概述
 ### 它是如何工作的？
-AI电影制作代理利用三个主要组件：
+AI电影制作Agent利用三个主要组件：
 - **编剧**：根据给定的电影构思和类型，制定包含人物描述和关键情节点的引人入胜的剧本大纲。
 - **选角导演**：根据演员过往的表现和目前的时间安排，为主角推荐合适的演员。
 - **电影制片人**：监督整个过程，协调编剧和选角导演之间的关系，并提供简明的电影概念概述。

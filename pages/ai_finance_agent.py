@@ -5,7 +5,7 @@ import streamlit as st
 from agno.models.openai import OpenAIChat, OpenAILike
 
 # Set up the Streamlit app
-st.title("💰 AI个人财务代理")
+st.title("💰 AI个人财务Agent")
 # st.caption("Manage your finances with AI Personal Finance Manager by creating personalized budgets, investment plans, and savings strategies using GPT-4o")
 st.markdown("""这款 Streamlit 应用是一款人工智能个人理财规划器，可使用LLM生成个性化财务计划。它可以自动完成研究、规划和创建量身定制的预算、投资策略和储蓄目标的过程，让您轻松掌控自己的财务未来。
 ### 特征

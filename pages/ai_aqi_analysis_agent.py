@@ -168,14 +168,14 @@ def setup_page():
         layout="wide"
     )
     
-    st.title("🌍 AQI 分析代理")
+    st.title("🌍 AQI 分析Agent")
     # st.info("Get personalized health recommendations based on air quality conditions.")
     st.markdown("""
-    AQI 分析代理是一款功能强大的空气质量监测和健康建议工具，由 Firecrawl 和 Agno 的 AI Agent 框架提供支持。该应用通过分析实时空气质量数据并提供个性化的健康建议，帮助用户做出明智的户外活动决定。
+    AQI 分析Agent是一款功能强大的空气质量监测和健康建议工具，由 Firecrawl 和 Agno 的 AI Agent 框架提供支持。该应用通过分析实时空气质量数据并提供个性化的健康建议，帮助用户做出明智的户外活动决定。
 ## 特征
-- **多代理系统**
+- **多Agent系统**
   - **AQI 分析器**：获取并处理实时空气质量数据
-  - **健康推荐代理**：生成个性化的健康建议
+  - **健康推荐Agent**：生成个性化的健康建议
 - **空气质量指标**：
   - 总体空气质量指数 (AQI)
   - 颗粒物（PM2.5 和 PM10）

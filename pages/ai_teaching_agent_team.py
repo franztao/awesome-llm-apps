@@ -8,7 +8,7 @@ from agno.utils.pprint import pprint_run_response
 from agno.tools.serpapi import SerpApiTools
 #
 # Set page configuration
-st.set_page_config(page_title="👨‍🏫 AI教学代理团队", layout="centered")
+st.set_page_config(page_title="👨‍🏫 AI教学Agent团队", layout="centered")
 
 # Initialize session state for API keys and topic
 if 'openai_api_key' not in st.session_state:
@@ -117,26 +117,26 @@ teaching_assistant_agent = Agent(
 )
 
 # Streamlit main UI
-st.title("👨‍🏫 AI教学代理团队")
+st.title("👨‍🏫 AI教学Agent团队")
 # st.markdown("Enter a topic to generate a detailed learning path and resources")
-st.markdown("""Streamlit 应用程序汇集了一支专业的 AI 教学代理团队，他们像专业教学人员一样协作。每个代理都充当专业教育者：课程设计师、学习路径专家、资源管理员和实践指导员 - 共同努力通过 Google Docs 创造完整的教育体验。
-## 🪄 认识你的 AI 教学代理团队
+st.markdown("""Streamlit 应用程序汇集了一支专业的 AI 教学Agent团队，他们像专业教学人员一样协作。每个Agent都充当专业教育者：课程设计师、学习路径专家、资源管理员和实践指导员 - 共同努力通过 Google Docs 创造完整的教育体验。
+## 🪄 认识你的 AI 教学Agent团队
 #### 🧠 教授agent
 - 在 Google Docs 中创建基础知识库
 - 使用适当的标题和部分来组织内容
 - 包括详细解释和示例
 - 输出：带有目录的综合知识库文档
-#### 🗺️ 学术顾问代理
+#### 🗺️ 学术顾问Agent
 - 在结构化的 Google Doc 中设计学习路径
 - 创建渐进式里程碑标记
 - 包括时间估计和先决条件
 - 输出：具有清晰进展路径的视觉路线图文档
-#### 📚 研究图书管理员代理
+#### 📚 研究图书管理员Agent
 - 将资源汇编到有组织的 Google 文档中
 - 包含学术论文和教程的链接
 - 添加描述和难度级别
 - 输出：带有质量评级的分类资源列表
-#### ✍️ 助教代理
+#### ✍️ 助教Agent
 - 在交互式 Google Doc 中开发练习
 - 创建结构化的练习部分
 - 包括解决方案指南
@@ -146,7 +146,7 @@ st.markdown("""Streamlit 应用程序汇集了一支专业的 AI 教学代理团
 - 在侧边栏中输入您的 Composio API 密钥
 - 输入你想了解的主题（例如，“Python 编程”、“机器学习”）
 - 点击“生成学习计划”
-- 等待代理生成您的个性化学习计划
+- 等待Agent生成您的个性化学习计划
 - 在界面中查看结果和终端输出
 """)
 # Add info message about Google Docs

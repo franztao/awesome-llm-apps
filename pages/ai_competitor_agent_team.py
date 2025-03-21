@@ -12,7 +12,7 @@ from typing import List, Optional
 import json
 
 # Streamlit UI
-# st.set_page_config(page_title="🧲 AI 竞争对手情报代理团队", layout="wide")
+# st.set_page_config(page_title="🧲 AI 竞争对手情报Agent团队", layout="wide")
 
 # Sidebar for API keys
 st.sidebar.title("API Keys")
@@ -48,16 +48,16 @@ else:  # Exa AI
         st.sidebar.warning("Please enter all required API keys to proceed.")
 
 # Main UI
-st.title("🧲 AI 竞争对手情报代理团队")
+st.title("🧲 AI 竞争对手情报Agent团队")
 st.markdown("""
-AI 竞争对手情报代理团队是一款功能强大的竞争对手分析工具，由 Firecrawl 和 Agno 的 AI Agent 框架提供支持。此应用可帮助企业通过从竞争对手网站提取结构化数据并使用 AI 生成可操作的见解来分析其竞争对手。
+AI 竞争对手情报Agent团队是一款功能强大的竞争对手分析工具，由 Firecrawl 和 Agno 的 AI Agent 框架提供支持。此应用可帮助企业通过从竞争对手网站提取结构化数据并使用 AI 生成可操作的见解来分析其竞争对手。
 
 ## 特征
 
-- **多代理系统**
+- **多Agent系统**
   - **Firecrawl Agent**：专门抓取并汇总竞争对手的网站
-  - **分析代理**：生成详细的竞争分析报告
-  - **比较代理**：在竞争对手之间创建结构化的比较
+  - **分析Agent**：生成详细的竞争分析报告
+  - **比较Agent**：在竞争对手之间创建结构化的比较
 - **竞争对手发现**：
   - 使用 Exa AI 的 URL 匹配功能查找类似公司
   - 根据业务描述发现竞争对手

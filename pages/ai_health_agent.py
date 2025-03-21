@@ -80,7 +80,7 @@ def main():
         st.session_state.qa_pairs = []
         st.session_state.plans_generated = False
 
-    st.title("🏋AI 健康与健身规划师代理🏋️‍♂️")
+    st.title("🏋AI 健康与健身规划师Agent🏋️‍♂️")
     # st.markdown("""
     #     <div style='background-color: #00008B; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;'>
     #     Get personalized dietary and fitness plans tailored to your goals and preferences.
@@ -88,10 +88,10 @@ def main():
     #     </div>
     # """, unsafe_allow_html=True)
     st.markdown("""
-    AI **Health & Fitness Planner**是一款个性化的健康和健身代理，由 Agno AI Agent 框架提供支持。该应用根据用户输入（例如年龄、体重、身高、活动水平、饮食偏好和健身目标）生成量身定制的饮食和健身计划。
+    AI **Health & Fitness Planner**是一款个性化的健康和健身Agent，由 Agno AI Agent 框架提供支持。该应用根据用户输入（例如年龄、体重、身高、活动水平、饮食偏好和健身目标）生成量身定制的饮食和健身计划。
     ## 特征
-    - **健康代理和健身代理**
-      - 该应用程序有两个 phidata 代理，分别专门提供饮食建议和健身/锻炼建议。
+    - **健康Agent和健身Agent**
+      - 该应用程序有两个 phidata Agent，分别专门提供饮食建议和健身/锻炼建议。
     - **个性化饮食计划**：
       - 生成详细的膳食计划（早餐、午餐、晚餐和零食）。
       - 包括水合作用、电解质和纤维摄入量等重要考虑因素。

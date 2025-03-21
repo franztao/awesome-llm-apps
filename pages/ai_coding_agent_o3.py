@@ -175,9 +175,9 @@ def execute_code_with_agent(execution_agent: Agent, code: str, sandbox: Sandbox)
         return f"⚠️ Sandbox Error: {str(e)}"
 
 def main() -> None:
-    st.title("💻 多模态 AI 编码代理团队")
+    st.title("💻 多模态 AI 编码Agent团队")
     st.markdown("""
-    一款由 AI 驱动的 Streamlit 应用程序，可充当您的个人编码助手，由基于LLM构建的多个代理提供支持。您还可以上传编码问题的图像或用文字描述它，AI 代理将进行分析、生成最佳解决方案并在沙盒环境中执行它。
+    一款由 AI 驱动的 Streamlit 应用程序，可充当您的个人编码助手，由基于LLM构建的多个Agent提供支持。您还可以上传编码问题的图像或用文字描述它，AI Agent将进行分析、生成最佳解决方案并在沙盒环境中执行它。
 ## 特征
 #### 多模态问题输入
 - 上传编码问题图片（支持PNG，JPG，JPEG）
@@ -194,10 +194,10 @@ def main() -> None:
 - 实时执行结果
 - 错误处理和解释
 - 30 秒执行超时保护
-#### 多智能体架构
+#### 多Agent架构
 - 用于图像处理的 Vision Agent
-- 用于生成解决方案的编码代理
-- 执行代理用于代码运行和结果分析
+- 用于生成解决方案的编码Agent
+- 执行Agent用于代码运行和结果分析
 - 用于安全代码执行的 E2B 沙盒
 ## 用法
 1. 上传编码问题的图片或输入问题描述

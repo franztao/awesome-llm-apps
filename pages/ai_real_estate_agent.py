@@ -254,7 +254,7 @@ def main():
     #     """
     # )
     st.markdown("""
-    AI 房地产代理使用 Firecrawl 的 Extract 端点和 Agno AI Agent 的洞察自动进行房产搜索和市场分析。它帮助用户找到符合其标准的房产，同时提供详细的位置趋势和投资建议。该代理通过整合来自多个房地产网站的数据并提供智能分析来简化房产搜索流程。
+    AI 房地产Agent使用 Firecrawl 的 Extract 端点和 Agno AI Agent 的洞察自动进行房产搜索和市场分析。它帮助用户找到符合其标准的房产，同时提供详细的位置趋势和投资建议。该Agent通过整合来自多个房地产网站的数据并提供智能分析来简化房产搜索流程。
 ### 特征
 - **智能房产搜索**：使用 Firecrawl 的 Extract 端点在多个房地产网站上查找房产
 - **多源集成**：汇总来自 99acres、Housing.com、Square Yards、Nobroker 和 MagicBricks 的数据
@@ -262,7 +262,7 @@ def main():
 - **人工智能推荐**：使用 GPT 模型分析属性并提供结构化建议
 - **用户友好界面**：简洁的 Streamlit UI，方便搜索房产和查看结果
 - **可自定义搜索**：按城市、房产类型、类别和预算进行筛选
-### 使用代理
+### 使用Agent
 1. **输入 API 密钥**：
    - 在侧栏中输入您的 Firecrawl 和 LLM API 密钥
    - 密钥安全地存储在会话状态中

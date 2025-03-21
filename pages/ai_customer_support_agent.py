@@ -7,10 +7,10 @@ import json
 from datetime import datetime, timedelta
 
 # Set up the Streamlit App
-st.title("🛒 AI 客户支持代理")
+st.title("🛒 AI 客户支持Agent")
 # st.caption("Chat with a customer support assistant who remembers your past interactions.")
 st.markdown("""
-这款 Streamlit 应用针对使用LLM生成的合成数据实现了一个由 AI 驱动的客户支持代理。该代理使用使用 Mem0 库（以 Qdrant 为向量存储）保存过去交互的记忆。
+这款 Streamlit 应用针对使用LLM生成的合成数据实现了一个由 AI 驱动的客户支持Agent。该Agent使用使用 Mem0 库（以 Qdrant 为向量存储）保存过去交互的记忆。
 ### 特征
 - 用于与 AI 客服人员互动的聊天界面
 - 持久记忆客户互动和个人资料

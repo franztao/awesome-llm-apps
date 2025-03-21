@@ -7,16 +7,16 @@ import streamlit as st
 from agno.models.openai import OpenAIChat, OpenAILike
 
 # Set up the Streamlit app
-st.title("🗞️ AI记者代理")
+st.title("🗞️ AI记者Agent")
 # st.caption("Generate High-quality articles with AI Journalist by researching, wriritng and editing quality articles on autopilot using GPT-4o")
 st.markdown("""
-这款 Streamlit 应用是一款由人工智能驱动的记者代理，可使用LLM生成高质量文章。它可以自动执行研究、撰写和编辑文章的过程，让您轻松创建任何主题的引人入胜的内容。
+这款 Streamlit 应用是一款由人工智能驱动的记者Agent，可使用LLM生成高质量文章。它可以自动执行研究、撰写和编辑文章的过程，让您轻松创建任何主题的引人入胜的内容。
 ### 特征
 - 在网络上搜索关于特定主题的相关信息
 - 撰写结构良好、内容丰富且引人入胜的文章
 - 编辑和完善生成的内容以满足《纽约时报》的高标准
 ### 它是如何工作的？
-人工智能记者代理利用三个主要组件：
+人工智能记者Agent利用三个主要组件：
 - 搜索器：负责根据给定的主题生成搜索词，并使用 SerpAPI 在网络上搜索相关的 URL。
 - 作者：使用 NewspaperToolkit 从提供的 URL 中检索文本，并根据提取的信息撰写高质量的文章。
 - 编辑：协调搜索者和作者之间的工作流程，并对生成的文章进行最终的编辑和完善。

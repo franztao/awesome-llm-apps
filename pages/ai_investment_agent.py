@@ -3,10 +3,10 @@ from agno.agent import Agent
 from agno.models.openai import OpenAILike
 from agno.tools.yfinance import YFinanceTools
 
-st.title("📈 人工智能投资代理")
+st.title("📈 人工智能投资Agent")
 # st.caption("This app allows you to compare the performance of two stocks and generate detailed reports.")
 st.markdown("""
-    这款 Streamlit 应用是一款基于 AI 的投资代理，采用 Agno 的 AI Agent 框架构建，可比较两只股票的表现并生成详细报告。通过将 LLM 与 Yahoo Finance 数据结合使用，这款应用可提供有价值的见解，帮助您做出明智的投资决策。
+    这款 Streamlit 应用是一款基于 AI 的投资Agent，采用 Agno 的 AI Agent 框架构建，可比较两只股票的表现并生成详细报告。通过将 LLM 与 Yahoo Finance 数据结合使用，这款应用可提供有价值的见解，帮助您做出明智的投资决策。
     ### 特征
     - 比较两只股票的表现
     - 检索全面的公司信息

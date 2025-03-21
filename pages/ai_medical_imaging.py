@@ -107,9 +107,9 @@ IMPORTANT: Use the DuckDuckGo search tool to:
 Format your response using clear markdown headers and bullet points. Be concise yet thorough.
 """
 
-st.title("🏥 医学影像诊断代理")
+st.title("🏥 医学影像诊断Agent")
 st.markdown("""
-- 基于LLM 的 agno 构建的医学影像诊断代理，提供对各种扫描的医学图像的 AI 辅助分析。该代理充当医学影像诊断专家，分析各种类型的医学图像和视频，提供详细的诊断见解和解释。
+- 基于LLM 的 agno 构建的医学影像诊断Agent，提供对各种扫描的医学图像的 AI 辅助分析。该Agent充当医学影像诊断专家，分析各种类型的医学图像和视频，提供详细的诊断见解和解释。
 ## 特征
 - 综合图像分析
 - 图像类型识别（X 射线、MRI、CT 扫描、超声波）

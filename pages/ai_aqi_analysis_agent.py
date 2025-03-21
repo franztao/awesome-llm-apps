@@ -2,7 +2,7 @@ from typing import Dict, Optional
 from dataclasses import dataclass
 from pydantic import BaseModel, Field
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.openai import OpenAIChat, OpenAILike
 from firecrawl import FirecrawlApp
 import streamlit as st
 
@@ -96,15 +96,17 @@ class AQIAnalyzer:
 
 class HealthRecommendationAgent:
     
-    def __init__(self, openai_key: str) -> None:
+    def __init__(self, openai_key) -> None:
         self.agent = Agent(
-            model=OpenAIChat(
-                id="gpt-4o",
+            model=OpenAILike(
+                id=openai_key['openai_api_model_type'],
                 name="Health Recommendation Agent",
-                api_key=openai_key
+                api_key=openai_key['openai'],
+                base_url=openai_key['openai_api_base_url']
             )
         )
-    
+
+
     def get_recommendations(
         self,
         aqi_data: Dict[str, float],
@@ -142,7 +144,7 @@ def analyze_conditions(
     api_keys: Dict[str, str]
 ) -> str:
     aqi_analyzer = AQIAnalyzer(firecrawl_key=api_keys['firecrawl'])
-    health_agent = HealthRecommendationAgent(openai_key=api_keys['openai'])
+    health_agent = HealthRecommendationAgent(openai_key=api_keys)
     
     aqi_data = aqi_analyzer.fetch_aqi_data(
         city=user_input.city,
@@ -166,9 +168,50 @@ def setup_page():
         layout="wide"
     )
     
-    st.title("🌍 AQI Analysis Agent")
-    st.info("Get personalized health recommendations based on air quality conditions.")
-
+    st.title("🌍 AQI 分析代理")
+    # st.info("Get personalized health recommendations based on air quality conditions.")
+    st.markdown("""
+    AQI 分析代理是一款功能强大的空气质量监测和健康建议工具，由 Firecrawl 和 Agno 的 AI Agent 框架提供支持。该应用通过分析实时空气质量数据并提供个性化的健康建议，帮助用户做出明智的户外活动决定。
+## 特征
+- **多代理系统**
+  - **AQI 分析器**：获取并处理实时空气质量数据
+  - **健康推荐代理**：生成个性化的健康建议
+- **空气质量指标**：
+  - 总体空气质量指数 (AQI)
+  - 颗粒物（PM2.5 和 PM10）
+  - 一氧化碳（CO）水平
+  - 温度
+  - 湿度
+  - 风速
+- **综合分析**：
+  - 实时数据可视化
+  - 健康影响评估
+  - 活动安全建议
+  - 户外活动最佳时间建议
+  - 天气状况相关性
+- **互动功能**：
+  - 基于位置的分析
+  - 健康状况考虑
+  - 针对特定活动的建议
+  - 可下载的报告
+  - 快速测试的示例查询
+## 用法
+1. 在 API 配置部分输入您的 API 密钥
+2. 输入位置详细信息：
+   - 城市名称
+   - 州（联邦属地/美国城市可选）
+   - 国家
+3. 提供个人信息：
+   - 医疗状况（可选）
+   - 有计划的户外活动
+4. 点击“分析并获取建议”可获得：
+   - 当前空气质量数据
+   - 健康影响分析
+   - 活动安全建议
+5. 尝试示例查询以进行快速测试
+## 注意
+空气质量数据是使用 Firecrawl 的网页抓取功能获取的。由于缓存和速率限制，数据可能并不总是与网站上的实时值相匹配。为了获得最准确的实时数据，请考虑直接检查源网站。
+    """)
 def render_sidebar():
     """Render sidebar with API configuration"""
     with st.sidebar:
@@ -177,22 +220,31 @@ def render_sidebar():
         new_firecrawl_key = st.text_input(
             "Firecrawl API Key",
             type="password",
-            value=st.session_state.api_keys['firecrawl'],
+            value=st.session_state.get('firecrawl_api_key') if st.session_state.get('firecrawl_api_key') else st.session_state.api_keys['firecrawl'],
             help="Enter your Firecrawl API key"
         )
         new_openai_key = st.text_input(
             "OpenAI API Key",
             type="password",
-            value=st.session_state.api_keys['openai'],
+            value=st.session_state.get('openai_api_key') if st.session_state.get('openai_api_key') else st.session_state.api_keys['openai'],
             help="Enter your OpenAI API key"
         )
+        # Get OpenAI API key from user
+        # openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+        #                                        value=st.session_state.get('openai_api_key'))
+        openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                                      value=st.session_state.get('openai_api_model_type'))
+        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+                                                    value=st.session_state.get('openai_api_base_url'))
         
         if (new_firecrawl_key and new_openai_key and
             (new_firecrawl_key != st.session_state.api_keys['firecrawl'] or 
              new_openai_key != st.session_state.api_keys['openai'])):
             st.session_state.api_keys.update({
                 'firecrawl': new_firecrawl_key,
-                'openai': new_openai_key
+                'openai': new_openai_key,
+                'openai_api_model_type':openai_api_model_type,
+                'openai_api_base_url':openai_api_base_url
             })
             st.success("✅ API keys updated!")
 

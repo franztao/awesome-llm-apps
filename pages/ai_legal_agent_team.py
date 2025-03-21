@@ -176,112 +176,112 @@ def main():
             except Exception as e:
                 st.error(f"Failed to connect to Qdrant: {str(e)}")
 
+        # st.divider()
+
+    if all([st.session_state.openai_api_key, st.session_state.vector_db]):
+        st.header("📄 Document Upload")
+        uploaded_file = st.file_uploader("Upload Legal Document", type=['pdf'])
+
+        if uploaded_file:
+            # Check if this file has already been processed
+            if uploaded_file.name not in st.session_state.processed_files:
+                with st.spinner("Processing document..."):
+                    try:
+                        # Process the document and get the knowledge base
+                        knowledge_base = process_document(uploaded_file, st.session_state.vector_db)
+
+                        if knowledge_base:
+                            st.session_state.knowledge_base = knowledge_base
+                            # Add the file to processed files
+                            st.session_state.processed_files.add(uploaded_file.name)
+
+                            # Initialize agents
+                            legal_researcher = Agent(
+                                name="Legal Researcher",
+                                role="Legal research specialist",
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+                                tools=[DuckDuckGoTools()],
+                                knowledge=st.session_state.knowledge_base,
+                                search_knowledge=True,
+                                instructions=[
+                                    "Find and cite relevant legal cases and precedents",
+                                    "Provide detailed research summaries with sources",
+                                    "Reference specific sections from the uploaded document",
+                                    "Always search the knowledge base for relevant information"
+                                ],
+                                show_tool_calls=True,
+                                markdown=True
+                            )
+
+                            contract_analyst = Agent(
+                                name="Contract Analyst",
+                                role="Contract analysis specialist",
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+                                knowledge=st.session_state.knowledge_base,
+                                search_knowledge=True,
+                                instructions=[
+                                    "Review contracts thoroughly",
+                                    "Identify key terms and potential issues",
+                                    "Reference specific clauses from the document"
+                                ],
+                                markdown=True
+                            )
+
+                            legal_strategist = Agent(
+                                name="Legal Strategist",
+                                role="Legal strategy specialist",
+                                model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
+                                knowledge=st.session_state.knowledge_base,
+                                search_knowledge=True,
+                                instructions=[
+                                    "Develop comprehensive legal strategies",
+                                    "Provide actionable recommendations",
+                                    "Consider both risks and opportunities"
+                                ],
+                                markdown=True
+                            )
+
+                            # Legal Agent Team
+                            st.session_state.legal_team = Agent(
+                                name="Legal Team Lead",
+                                role="Legal team coordinator",
+                                model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
+                                team=[legal_researcher, contract_analyst, legal_strategist],
+                                knowledge=st.session_state.knowledge_base,
+                                search_knowledge=True,
+                                instructions=[
+                                    "Coordinate analysis between team members",
+                                    "Provide comprehensive responses",
+                                    "Ensure all recommendations are properly sourced",
+                                    "Reference specific parts of the uploaded document",
+                                    "Always search the knowledge base before delegating tasks"
+                                ],
+                                show_tool_calls=True,
+                                markdown=True
+                            )
+
+                            st.success("✅ Document processed and team initialized!")
+
+                    except Exception as e:
+                        st.error(f"Error processing document: {str(e)}")
+            else:
+                # File already processed, just show a message
+                st.success("✅ Document already processed and team ready!")
+
         st.divider()
-
-        if all([st.session_state.openai_api_key, st.session_state.vector_db]):
-            st.header("📄 Document Upload")
-            uploaded_file = st.file_uploader("Upload Legal Document", type=['pdf'])
-
-            if uploaded_file:
-                # Check if this file has already been processed
-                if uploaded_file.name not in st.session_state.processed_files:
-                    with st.spinner("Processing document..."):
-                        try:
-                            # Process the document and get the knowledge base
-                            knowledge_base = process_document(uploaded_file, st.session_state.vector_db)
-
-                            if knowledge_base:
-                                st.session_state.knowledge_base = knowledge_base
-                                # Add the file to processed files
-                                st.session_state.processed_files.add(uploaded_file.name)
-
-                                # Initialize agents
-                                legal_researcher = Agent(
-                                    name="Legal Researcher",
-                                    role="Legal research specialist",
-                                    model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
-                                    tools=[DuckDuckGoTools()],
-                                    knowledge=st.session_state.knowledge_base,
-                                    search_knowledge=True,
-                                    instructions=[
-                                        "Find and cite relevant legal cases and precedents",
-                                        "Provide detailed research summaries with sources",
-                                        "Reference specific sections from the uploaded document",
-                                        "Always search the knowledge base for relevant information"
-                                    ],
-                                    show_tool_calls=True,
-                                    markdown=True
-                                )
-
-                                contract_analyst = Agent(
-                                    name="Contract Analyst",
-                                    role="Contract analysis specialist",
-                                    model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
-                                    knowledge=st.session_state.knowledge_base,
-                                    search_knowledge=True,
-                                    instructions=[
-                                        "Review contracts thoroughly",
-                                        "Identify key terms and potential issues",
-                                        "Reference specific clauses from the document"
-                                    ],
-                                    markdown=True
-                                )
-
-                                legal_strategist = Agent(
-                                    name="Legal Strategist",
-                                    role="Legal strategy specialist",
-                                    model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
-                                    knowledge=st.session_state.knowledge_base,
-                                    search_knowledge=True,
-                                    instructions=[
-                                        "Develop comprehensive legal strategies",
-                                        "Provide actionable recommendations",
-                                        "Consider both risks and opportunities"
-                                    ],
-                                    markdown=True
-                                )
-
-                                # Legal Agent Team
-                                st.session_state.legal_team = Agent(
-                                    name="Legal Team Lead",
-                                    role="Legal team coordinator",
-                                    model=OpenAILike(id="qwen-vl-max", api_key='sk-f7f3039f52e3402bbafda926f4da7cb3',base_url='https://dashscope.aliyuncs.com/compatible-mode/v1'),
-                                    team=[legal_researcher, contract_analyst, legal_strategist],
-                                    knowledge=st.session_state.knowledge_base,
-                                    search_knowledge=True,
-                                    instructions=[
-                                        "Coordinate analysis between team members",
-                                        "Provide comprehensive responses",
-                                        "Ensure all recommendations are properly sourced",
-                                        "Reference specific parts of the uploaded document",
-                                        "Always search the knowledge base before delegating tasks"
-                                    ],
-                                    show_tool_calls=True,
-                                    markdown=True
-                                )
-
-                                st.success("✅ Document processed and team initialized!")
-
-                        except Exception as e:
-                            st.error(f"Error processing document: {str(e)}")
-                else:
-                    # File already processed, just show a message
-                    st.success("✅ Document already processed and team ready!")
-
-            st.divider()
-            st.header("🔍 Analysis Options")
-            analysis_type = st.selectbox(
-                "Select Analysis Type",
-                [
-                    "Contract Review",
-                    "Legal Research",
-                    "Risk Assessment",
-                    "Compliance Check",
-                    "Custom Query"
-                ]
-            )
-        else:
-            st.warning("Please configure all API credentials to proceed")
+        st.header("🔍 Analysis Options")
+        analysis_type = st.selectbox(
+            "Select Analysis Type",
+            [
+                "Contract Review",
+                "Legal Research",
+                "Risk Assessment",
+                "Compliance Check",
+                "Custom Query"
+            ]
+        )
+    else:
+        st.warning("Please configure all API credentials to proceed")
 
     # Main content area
     if not all([st.session_state.openai_api_key, st.session_state.vector_db]):

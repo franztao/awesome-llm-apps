@@ -1,4 +1,5 @@
 import streamlit as st
+from agno.models.openai import OpenAILike
 from openai import OpenAI
 from mem0 import Memory
 import os
@@ -6,11 +7,29 @@ import json
 from datetime import datetime, timedelta
 
 # Set up the Streamlit App
-st.title("AI Customer Support Agent with Memory 🛒")
-st.caption("Chat with a customer support assistant who remembers your past interactions.")
-
+st.title("🛒 AI 客户支持代理")
+# st.caption("Chat with a customer support assistant who remembers your past interactions.")
+st.markdown("""
+这款 Streamlit 应用针对使用LLM生成的合成数据实现了一个由 AI 驱动的客户支持代理。该代理使用使用 Mem0 库（以 Qdrant 为向量存储）保存过去交互的记忆。
+### 特征
+- 用于与 AI 客服人员互动的聊天界面
+- 持久记忆客户互动和个人资料
+- 用于测试和演示的合成数据生成
+- 利用 LLM 实现智能响应
+""")
 # Set the OpenAI API key
-openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
+# openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
+# Get OpenAI API key from user
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+                                      value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL", value=st.session_state.get('openai_api_base_url'))
+
+st.subheader("Qdrant Settings")
+qdrant_url = st.sidebar.text_input("qdrant_url", value=st.session_state.get('qdrant_url'))
+# st.session_state['qdrant_url'] = qdrant_url
+qdrant_api_key = st.sidebar.text_input("qdrant_api_key", value=st.session_state.get('qdrant_api_key'))
+# st.session_state['qdrant_api_key'] = qdrant_api_key
 
 if openai_api_key:
     os.environ['OPENAI_API_KEY'] = openai_api_key
@@ -18,12 +37,15 @@ if openai_api_key:
     class CustomerSupportAIAgent:
         def __init__(self):
             # Initialize Mem0 with Qdrant as the vector store
+            # https://docs.mem0.ai/components/vectordbs/config#supported-vector-databases
             config = {
                 "vector_store": {
                     "provider": "qdrant",
                     "config": {
-                        "host": "localhost",
-                        "port": 6333,
+                        "host": qdrant_url,
+                        # "port": 6333,
+                        # 'url':qdrant_url,
+                        # 'api_key':qdrant_api_key,
                     }
                 },
             }
@@ -34,6 +56,7 @@ if openai_api_key:
                 st.stop()  # Stop execution if memory initialization fails
 
             self.client = OpenAI()
+            self.client = OpenAILike(id=openai_api_model_type, api_key=openai_api_key, base_url=openai_api_base_url)
             self.app_id = "customer-support"
 
         def handle_query(self, query, user_id=None):
@@ -76,7 +99,7 @@ if openai_api_key:
                 st.error(f"Failed to retrieve memories: {e}")
                 return None
 
-        def generate_synthetic_data(self, user_id: str) -> dict | None:
+        def generate_synthetic_data(self, user_id: str):
             try:
                 today = datetime.now()
                 order_date = (today - timedelta(days=10)).strftime("%B %d, %Y")

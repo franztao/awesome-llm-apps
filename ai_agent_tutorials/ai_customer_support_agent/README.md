@@ -35,5 +35,5 @@ docker run -p 6333:6333 -p 6334:6334 \
 
 4. Run the Streamlit App
 ```bash
-streamlit run customer_support_agent.py
+streamlit run ai_customer_support_agent.py
 ```

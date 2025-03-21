@@ -22,7 +22,9 @@ st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI �
 # st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备代理")
 st.sidebar.page_link(r"pages/ai_chess_agent.py", label="♜ 白Agent vs 黑Agent：棋局对决")
 st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房地产经纪人")
-st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI 代理")
+# st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI 代理")
+st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析代理")
+st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持代理")
 
 
 

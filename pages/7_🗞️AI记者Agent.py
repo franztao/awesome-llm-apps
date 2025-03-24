@@ -29,7 +29,7 @@ openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
 openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 # OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url)
 # Get SerpAPI key from the user
-serp_api_key = st.sidebar.text_input("Enter Serp API Key for Search functionality", type="password", value=st.session_state.get('serpapi_api_key'))
+serp_api_key = st.sidebar.text_input("Serp API Key", type="password", value=st.session_state.get('serpapi_api_key'))
 
 if openai_api_key and serp_api_key:
     searcher = Agent(
@@ -100,7 +100,7 @@ if openai_api_key and serp_api_key:
     )
 
     # Input field for the report query
-    query = st.text_input("What do you want the AI journalist to write an Article on?")
+    query = st.text_input("你想让AI记者写一篇关于什么的文章？")
 
     if query:
         with st.spinner("Processing..."):

@@ -23,14 +23,14 @@ if 'topic' not in st.session_state:
 
 # Streamlit sidebar for API keys
 with st.sidebar:
-    st.title("API Keys Configuration")
-    st.session_state['openai_api_key'] = st.text_input("Enter your LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
+    st.title("API 配置")
+    st.session_state['openai_api_key'] = st.text_input("LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
     st.session_state['openai_api_model_type'] = st.sidebar.text_input("LLM API Model Type", value=st.session_state.get('openai_api_model_type'))
     st.session_state['openai_api_base_url'] = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
-    st.session_state['composio_api_key'] = st.text_input("Enter your Composio API Key", type="password",value=st.session_state.get('composio_api_key'))
-    st.session_state['serpapi_api_key'] = st.text_input("Enter your SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
+    st.session_state['composio_api_key'] = st.text_input("Composio API Key", type="password",value=st.session_state.get('composio_api_key'))
+    st.session_state['serpapi_api_key'] = st.text_input("SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
     # Add info about terminal responses
-    st.info("Note: You can also view detailed agent responses\nin your terminal after execution.")
+    # st.info("Note: You can also view detailed agent responses\nin your terminal after execution.")
 
 # Validate API keys
 if not st.session_state['openai_api_key'] or not st.session_state['composio_api_key'] or not st.session_state['serpapi_api_key']:
@@ -136,7 +136,7 @@ st.markdown("""Streamlit 应用程序汇集了一支专业的 AI 教学Agent团�
 - 创建渐进式里程碑标记
 - 包括时间估计和先决条件
 - 输出：具有清晰进展路径的视觉路线图文档
-#### 📚 研究图书管理员Agent
+#### 📚 研究员Agent
 - 将资源汇编到有组织的 Google 文档中
 - 包含学术论文和教程的链接
 - 添加描述和难度级别
@@ -158,10 +158,10 @@ st.markdown("""Streamlit 应用程序汇集了一支专业的 AI 教学Agent团�
 # st.info("📝 The agents will create detailed Google Docs for each section (Professor, Academic Advisor, Research Librarian, and Teaching Assistant). The links to these documents will be displayed below after processing.")
 
 # Query bar for topic input
-st.session_state['topic'] = st.text_input("Enter the topic you want to learn about:", placeholder="e.g., Machine Learning, LoRA, etc.")
+st.session_state['topic'] = st.text_input("输入您想了解的主题：", placeholder="e.g., Machine Learning, LoRA, etc.")
 
 # Start button
-if st.button("Start"):
+if st.button("开始"):
     if not st.session_state['topic']:
         st.error("Please enter a topic.")
     else:
@@ -204,7 +204,7 @@ if st.button("Start"):
         teaching_assistant_doc_link = extract_google_doc_link(teaching_assistant_response.content)
 
         # Display Google Doc links at the top of the Streamlit UI
-        st.markdown("### Google Doc Links:")
+        st.markdown("### 文档链接:")
         if professor_doc_link:
             st.markdown(f"- **Professor Document:** [View Document](https://docs.google.com{professor_doc_link})")
         if academic_advisor_doc_link:
@@ -215,31 +215,31 @@ if st.button("Start"):
             st.markdown(f"- **Teaching Assistant Document:** [View Document](https://docs.google.com{teaching_assistant_doc_link})")
 
         # Display responses in the Streamlit UI using pprint_run_response
-        st.markdown("### Professor Response:")
+        st.markdown("### 教授agent Response:")
         st.markdown(professor_response.content)
         pprint_run_response(professor_response, markdown=True)
         st.divider()
         
-        st.markdown("### Academic Advisor Response:")
+        st.markdown("### 学术顾问Agent Response:")
         st.markdown(academic_advisor_response.content)
         pprint_run_response(academic_advisor_response, markdown=True)
         st.divider()
 
-        st.markdown("### Research Librarian Response:")
+        st.markdown("### 研究员Agent Response:")
         st.markdown(research_librarian_response.content)
         pprint_run_response(research_librarian_response, markdown=True)
         st.divider()
 
-        st.markdown("### Teaching Assistant Response:")
+        st.markdown("### 助教Agent Response:")
         st.markdown(teaching_assistant_response.content)
         pprint_run_response(teaching_assistant_response, markdown=True)
         st.divider()
 # Information about the agents
 st.markdown("---")
-st.markdown("### About the Agents:")
+st.markdown("### 关于Agents:")
 st.markdown("""
-- **Professor**: Researches the topic and creates a detailed knowledge base.
-- **Academic Advisor**: Designs a structured learning roadmap for the topic.
-- **Research Librarian**: Curates high-quality learning resources.
-- **Teaching Assistant**: Creates practice materials, exercises, and projects.
+- **教授**：研究主题并创建详细的知识库。
+- **学术顾问**：为主题设计结构化的学习路线图。
+- **研究员**：策划高质量的学习资源。
+- **助教**：创建练习材料、练习和项目。
 """)

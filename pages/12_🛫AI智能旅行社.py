@@ -20,17 +20,18 @@ st.markdown("""
 """)
 # Streamlit sidebar for API keys
 with st.sidebar:
-    st.title("API Keys Configuration")
-    openai_api_key = st.text_input("Enter your LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
+    st.title("API 配置")
+    openai_api_key = st.text_input("LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
     openai_api_model_type = st.sidebar.text_input("LLM API Model Type", value=st.session_state.get('openai_api_model_type'))
     openai_api_base_url= st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
-    serpapi_api_key = st.text_input("Enter your SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
+    serpapi_api_key = st.text_input("SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
 
 if openai_api_key and serpapi_api_key:
     researcher = Agent(
         name="Researcher",
         role="Searches for travel destinations, activities, and accommodations based on user preferences",
-        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a world-class travel researcher. Given a travel destination and the number of days the user wants to travel for,
@@ -50,7 +51,8 @@ if openai_api_key and serpapi_api_key:
     planner = Agent(
         name="Planner",
         role="Generates a draft itinerary based on user preferences and research results",
-        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url),
+        model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,base_url=openai_api_base_url,
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
         description=dedent(
             """\
         You are a senior travel planner. Given a travel destination, the number of days the user wants to travel for, and a list of research results,
@@ -69,16 +71,16 @@ if openai_api_key and serpapi_api_key:
     )
 
     # Input fields for the user's destination and the number of days they want to travel for
-    destination = st.text_input("Where do you want to go?")
-    num_days = st.number_input("How many days do you want to travel for?", min_value=1, max_value=30, value=7)
+    destination = st.text_input("你想去哪里？")
+    num_days = st.number_input("你想旅行几天？", min_value=1, max_value=30, value=7)
 
-    if st.button("Generate Itinerary"):
+    if st.button("生成行程"):
         with st.spinner("Researching your destination..."):
             # First get research results
             research_results = researcher.run(f"Research {destination} for a {num_days} day trip", stream=False)
             
             # Show research progress
-            st.write("✓ Research completed")
+            st.write("✓ 研究完成")
             
         with st.spinner("Creating your personalized itinerary..."):
             # Pass research results to planner
@@ -87,7 +89,7 @@ if openai_api_key and serpapi_api_key:
             Duration: {num_days} days
             Research Results: {research_results.content}
             
-            Please create a detailed itinerary based on this research.
+            Please create a detailed itinerary based on this research.最后输出的内容必须是中文内容呈现，不要是英文
             """
             response = planner.run(prompt, stream=False)
             st.write(response.content)

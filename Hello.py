@@ -123,14 +123,21 @@ qdrant_api_key = st.text_input("qdrant_api_key", value=st.session_state.get('qdr
 st.session_state['qdrant_api_key'] = qdrant_api_key
 
 
-st.session_state['openai_api_model_type'] = "Qwen2.5-Coder-32B-Instruct"
-st.session_state['openai_api_key'] = 'VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6'
-st.session_state['openai_api_base_url'] = 'https://ai.gitee.com/v1'
+# st.session_state['openai_api_model_type'] = "Qwen2.5-Coder-32B-Instruct"
+# st.session_state['openai_api_key'] = 'VAIKKIMZVDLDET6H8NJGJCW9OE4T6P5VODKKNMW6'
+# st.session_state['openai_api_base_url'] = 'https://ai.gitee.com/v1'
+#
+# st.session_state['openai_api_embedding_model_type'] = "bge-large-zh-v1.5"
+# st.session_state['openai_api_vlm_model_type'] = "Qwen2-VL-72B"
 
 
-# st.session_state['openai_api_model_type'] = "qwen-plus"
-# st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
-# st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+
+st.session_state['openai_api_model_type'] = "qwen-plus"
+st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
+st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
+st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
+
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'
 st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'
 
@@ -161,10 +168,4 @@ st.session_state['serpapi_api_key'] = '4daaca7da2c5287775d7783777c9b416cd91ac961
 st.session_state['qdrant_url'] = "http://localhost:6333/"
 st.session_state['qdrant_api_key'] = "123"
 
-
-# st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
-# st.session_state['openai_api_vlm_model_type'] = "qwen_vl_plus"
-
-st.session_state['openai_api_embedding_model_type'] = "bge-large-zh-v1.5"
-st.session_state['openai_api_vlm_model_type'] = "Qwen2-VL-72B"
 

@@ -67,10 +67,10 @@ if openai_api_key and serp_api_key:
     )
 
     # Input fields for the user's financial goals and current financial situation
-    financial_goals = st.text_input("What are your financial goals?")
-    current_situation = st.text_area("Describe your current financial situation")
+    financial_goals = st.text_input("您的财务目标是什么？")
+    current_situation = st.text_area("描述您目前的财务状况")
 
-    if st.button("Generate Financial Plan"):
+    if st.button("制定财务计划"):
         with st.spinner("Processing..."):
             # Get the response from the assistant
             response = planner.run(f"Financial goals: {financial_goals}, Current situation: {current_situation}", stream=False)

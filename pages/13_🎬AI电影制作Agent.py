@@ -22,11 +22,11 @@ AI电影制作Agent利用三个主要组件：
 - **电影制片人**：监督整个过程，协调编剧和选角导演之间的关系，并提供简明的电影概念概述。
 """)
 with st.sidebar:
-    st.title("API Keys Configuration")
-    openai_api_key = st.text_input("Enter your LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
+    st.title("API 配置")
+    openai_api_key = st.text_input("LLM API Key", type="password",value=st.session_state.get('openai_api_key'))
     openai_api_model_type = st.sidebar.text_input("LLM API Model Type", value=st.session_state.get('openai_api_model_type'))
     openai_api_base_url= st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
-    serpapi_api_key = st.text_input("Enter your SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
+    serpapi_api_key = st.text_input("SerpAPI Key", type="password",value=st.session_state.get('serpapi_api_key'))
 
 if openai_api_key and serpapi_api_key:
     script_writer = Agent(

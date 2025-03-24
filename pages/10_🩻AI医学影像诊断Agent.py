@@ -1,12 +1,10 @@
-import os
+from PIL import Image as PILImage
+import streamlit as st
 from PIL import Image as PILImage
 from agno.agent import Agent
-from agno.models.google import Gemini
-import streamlit as st
-from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.media import Image as AgnoImage
-
-from agno.models.openai import OpenAIChat, OpenAILike
+from agno.models.openai import OpenAILike
+from agno.tools.duckduckgo import DuckDuckGoTools
 
 if "GOOGLE_API_KEY" not in st.session_state:
     st.session_state.GOOGLE_API_KEY = None
@@ -14,7 +12,7 @@ if "openai_api_key" not in st.session_state:
     st.session_state.openai_api_key = None
 
 with st.sidebar:
-    st.title("ℹ️ Configuration")
+    st.title("ℹ️ API 配置")
     
     if not st.session_state.openai_api_key:
         # api_key = st.text_input(
@@ -32,12 +30,18 @@ with st.sidebar:
         # Get LLM API Key from user
         openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
                                                value=st.session_state.get('openai_api_key'))
+        st.session_state.openai_api_key=openai_api_key
         openai_api_vlm_model_type = st.sidebar.text_input("VLM API Model Type",
                                                       value=st.session_state.get('openai_api_vlm_model_type'))
+        st.session_state.openai_api_vlm_model_type=openai_api_vlm_model_type
         openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))
+        st.session_state.openai_api_base_url=openai_api_base_url
 
     else:
+        openai_api_key = st.session_state.get('openai_api_key')
+        openai_api_vlm_model_type = st.session_state.get('openai_api_vlm_model_type')
+        openai_api_base_url = st.session_state.get('openai_api_base_url')
         st.success("API Key is configured")
         if st.button("🔄 Reset API Key"):
             # st.session_state.GOOGLE_API_KEY = None
@@ -45,13 +49,10 @@ with st.sidebar:
             st.rerun()
     
     st.info(
-        "This tool provides AI-powered analysis of medical imaging data using "
-        "advanced computer vision and radiological expertise."
+        "该工具利用先进的计算机视觉和放射学专业知识，对医学成像数据进行人工智能分析。"
     )
     st.warning(
-        "⚠DISCLAIMER: This tool is for educational and informational purposes only. "
-        "All analyses should be reviewed by qualified healthcare professionals. "
-        "Do not make medical decisions based solely on this analysis."
+        "⚠免责声明：此工具仅用于教育和信息目的。所有分析均应由合格的医疗保健专业人员审查。请勿仅根据此分析做出医疗决定。"
     )
 
 medical_agent = Agent(
@@ -64,10 +65,10 @@ medical_agent = Agent(
                 system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
     tools=[DuckDuckGoTools()],
     markdown=True
-) if st.session_state.GOOGLE_API_KEY else None
+) if st.session_state.openai_api_key else None
 
 if not medical_agent:
-    st.warning("Please configure your API key in the sidebar to continue")
+    st.warning("请在侧栏中配置您的 API 密钥以继续")
 
 # Medical Analysis Query
 query = """
@@ -106,6 +107,7 @@ IMPORTANT: Use the DuckDuckGo search tool to:
 - Include 2-3 key references to support your analysis
 
 Format your response using clear markdown headers and bullet points. Be concise yet thorough.
+最后输出的内容必须是中文内容呈现，不要是英文
 """
 
 st.title("🏥 医学影像诊断Agent")
@@ -138,7 +140,7 @@ st.markdown("""
 ## 免责声明
 此工具仅用于教育和信息目的。所有分析均应由合格的医疗保健专业人员审查。请勿仅根据此分析做出医疗决定。
 """)
-st.write("Upload a medical image for professional analysis")
+st.write("上传医学图像进行专业分析")
 
 # Create containers for better organization
 upload_container = st.container()
@@ -147,7 +149,7 @@ analysis_container = st.container()
 
 with upload_container:
     uploaded_file = st.file_uploader(
-        "Upload Medical Image",
+        "上传医学图像",
         type=["jpg", "jpeg", "png", "dicom"],
         help="Supported formats: JPG, JPEG, PNG, DICOM"
     )
@@ -165,12 +167,12 @@ if uploaded_file is not None:
             
             st.image(
                 resized_image,
-                caption="Uploaded Medical Image",
+                caption="已上传医学图像",
                 use_container_width=True
             )
             
             analyze_button = st.button(
-                "🔍 Analyze Image",
+                "🔍 分析图像",
                 type="primary",
                 use_container_width=True
             )
@@ -187,15 +189,14 @@ if uploaded_file is not None:
                     
                     # Run analysis
                     response = medical_agent.run(query, images=[agno_image])
-                    st.markdown("### 📋 Analysis Results")
+                    st.markdown("### 📋 分析结果")
                     st.markdown("---")
                     st.markdown(response.content)
                     st.markdown("---")
                     st.caption(
-                        "Note: This analysis is generated by AI and should be reviewed by "
-                        "a qualified healthcare professional."
+                        "注意：此分析由人工智能生成，应由合格的医疗保健专业人员进行审核。"
                     )
                 except Exception as e:
-                    st.error(f"Analysis error: {e}")
+                    st.error(f"分析失败: {e}")
 else:
-    st.info("👆 Please upload a medical image to begin analysis")
+    st.info("👆 请上传医学图像以开始分析")

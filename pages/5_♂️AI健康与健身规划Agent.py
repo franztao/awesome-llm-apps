@@ -39,7 +39,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def display_dietary_plan(plan_content):
-    with st.expander("📋 Your Personalized Dietary Plan", expanded=True):
+    with st.expander("📋 您的个性化饮食计划", expanded=True):
         col1, col2 = st.columns([2, 1])
 
         with col1:
@@ -60,13 +60,13 @@ def display_fitness_plan(plan_content):
         col1, col2 = st.columns([2, 1])
 
         with col1:
-            st.markdown("### 🎯 Goals")
+            st.markdown("### 🎯 目标")
             st.success(plan_content.get("goals", "Goals not specified"))
-            st.markdown("### 🏋️‍♂️ Exercise Routine")
+            st.markdown("### 🏋️‍♂️ 锻炼计划")
             st.write(plan_content.get("routine", "Routine not available"))
 
         with col2:
-            st.markdown("### 💡 Pro Tips")
+            st.markdown("### 💡 专业提示")
             tips = plan_content.get("tips", "").split('\n')
             for tip in tips:
                 if tip.strip():
@@ -87,10 +87,10 @@ def main():
     #     </div>
     # """, unsafe_allow_html=True)
     st.markdown("""
-    AI **Health & Fitness Planner**是一款个性化的健康和健身Agent，由 Agno AI Agent 框架提供支持。该应用根据用户输入（例如年龄、体重、身高、活动水平、饮食偏好和健身目标）生成量身定制的饮食和健身计划。
+    AI 健康与健身规划师Agent是一款个性化的健康和健身Agent，由 Agno AI Agent 框架提供支持。该应用根据用户输入（例如年龄、体重、身高、活动水平、饮食偏好和健身目标）生成量身定制的饮食和健身计划。
     ## 特征
     - **健康Agent和健身Agent**
-      - 该应用程序有两个 phidata Agent，分别专门提供饮食建议和健身/锻炼建议。
+      - 该应用程序有两个 Agent，分别专门提供饮食建议和健身/锻炼建议。
     - **个性化饮食计划**：
       - 生成详细的膳食计划（早餐、午餐、晚餐和零食）。
       - 包括水合作用、电解质和纤维摄入量等重要考虑因素。
@@ -132,34 +132,34 @@ def main():
             st.error(f"❌ Error initializing Gemini model: {e}")
             return
 
-        st.header("👤 Your Profile")
+        st.header("👤 个人资料")
 
         col1, col2 = st.columns(2)
 
         with col1:
-            age = st.number_input("Age", min_value=10, max_value=100, step=1, help="Enter your age")
-            height = st.number_input("Height (cm)", min_value=100.0, max_value=250.0, step=0.1)
+            age = st.number_input("年龄", min_value=10, max_value=100, step=1, help="Enter your age")
+            height = st.number_input("身高 (cm)", min_value=100.0, max_value=250.0, step=0.1)
             activity_level = st.selectbox(
-                "Activity Level",
+                "运动水平",
                 options=["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extremely Active"],
                 help="Choose your typical activity level"
             )
             dietary_preferences = st.selectbox(
-                "Dietary Preferences",
+                "饮食偏好",
                 options=["Vegetarian", "Keto", "Gluten Free", "Low Carb", "Dairy Free"],
                 help="Select your dietary preference"
             )
 
         with col2:
-            weight = st.number_input("Weight (kg)", min_value=20.0, max_value=300.0, step=0.1)
-            sex = st.selectbox("Sex", options=["Male", "Female", "Other"])
+            weight = st.number_input("体重 (kg)", min_value=20.0, max_value=300.0, step=0.1)
+            sex = st.selectbox("性别", options=["Male", "Female", "Other"])
             fitness_goals = st.selectbox(
-                "Fitness Goals",
+                "健身目标",
                 options=["Lose Weight", "Gain Muscle", "Endurance", "Stay Fit", "Strength Training"],
                 help="What do you want to achieve?"
             )
 
-        if st.button("🎯 Generate My Personalized Plan", use_container_width=True):
+        if st.button("🎯 生成我的个性化计划", use_container_width=True):
             with st.spinner("Creating your perfect health and fitness routine..."):
                 try:
                     dietary_agent = Agent(
@@ -198,25 +198,25 @@ def main():
 
                     dietary_plan_response = dietary_agent.run(user_profile)
                     dietary_plan = {
-                        "why_this_plan_works": "High Protein, Healthy Fats, Moderate Carbohydrates, and Caloric Balance",
+                        "why_this_plan_works": "高蛋白、健康脂肪、适量碳水化合物和热量平衡",
                         "meal_plan": dietary_plan_response.content,
                         "important_considerations": """
-                        - Hydration: Drink plenty of water throughout the day
-                        - Electrolytes: Monitor sodium, potassium, and magnesium levels
-                        - Fiber: Ensure adequate intake through vegetables and fruits
-                        - Listen to your body: Adjust portion sizes as needed
+                        - 补充水分：全天喝大量的水
+                        - 电解质：监测钠、钾和镁的含量
+                        - 纤维：确保通过蔬菜和水果摄入足够的纤维
+                        - 倾听身体的声音：根据需要调整份量
                         """
                     }
 
                     fitness_plan_response = fitness_agent.run(user_profile)
                     fitness_plan = {
-                        "goals": "Build strength, improve endurance, and maintain overall fitness",
+                        "goals": "增强力量、提高耐力并保持整体健康",
                         "routine": fitness_plan_response.content,
                         "tips": """
-                        - Track your progress regularly
-                        - Allow proper rest between workouts
-                        - Focus on proper form
-                        - Stay consistent with your routine
+                        - 定期跟踪进度
+                        - 在锻炼之间适当休息
+                        - 专注于正确的锻炼方式
+                        - 坚持日常锻炼
                         """
                     }
 
@@ -232,8 +232,8 @@ def main():
                     st.error(f"❌ An error occurred: {e}")
 
         if st.session_state.plans_generated:
-            st.header("❓ Questions about your plan?")
-            question_input = st.text_input("What would you like to know?")
+            st.header("❓ 对你的计划有疑问吗？")
+            question_input = st.text_input("您想知道什么？")
 
             if st.button("Get Answer"):
                 if question_input:

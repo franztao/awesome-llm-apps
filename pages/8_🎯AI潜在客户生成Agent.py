@@ -205,12 +205,12 @@ def main():
         #     st.experimental_rerun()
 
     user_query = st.text_area(
-        "Describe what kind of leads you're looking for:",
-        placeholder="e.g., Looking for users who need automated video editing software with AI capabilities",
+        "描述您正在寻找哪种类型的线索：",
+        placeholder="e.g., 寻找需要具有 AI 功能的自动视频编辑软件的用户",
         help="Be specific about the product/service and target audience. The AI will convert this into a focused search query."
     )
 
-    if st.button("Generate Leads"):
+    if st.button("生成结果"):
         if not all([firecrawl_api_key, openai_api_key, composio_api_key, user_query, openai_api_model_type,
                     openai_api_base_url]):
             st.error("Please fill in all the API keys and describe what leads you're looking for.")
@@ -220,13 +220,13 @@ def main():
                                                                      openai_api_base_url)
                 company_description = transform_agent.run(
                     f"Transform this query into a concise 3-4 word company description: {user_query}")
-                st.write("🎯 Searching for:", company_description.content)
+                st.write("🎯 检索:", company_description.content)
 
             with st.spinner("Searching for relevant URLs..."):
                 urls = search_for_urls(company_description.content, firecrawl_api_key, num_links)
 
             if urls:
-                st.subheader("Quora Links Used:")
+                st.subheader("Quora 链接检索:")
                 for url in urls:
                     st.write(url)
 

@@ -21,11 +21,15 @@ AI 创业趋势分析Agent是一款面向新兴企业家的工具，可通过识
   - **趋势分析**：系统通过分析的故事识别初创企业资金、技术采用和市场机会方面的新兴模式。
   - **Streamlit UI**：该应用程序具有使用 Streamlit 构建的用户友好界面，可轻松进行交互。
   """)
-topic = st.text_input("Enter the area of interest for your Startup:")
+topic = st.text_input("输入您的初创企业感兴趣的领域：")
 # anthropic_api_key = st.sidebar.text_input("Enter Anthropic API Key", type="password")
 openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.openai_api_key)
 
-if st.button("Generate Analysis"):
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
+                                      value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
+
+if st.button("生成分析结果"):
     if not openai_api_key:
         st.warning("Please enter the required API key.")
     else:
@@ -33,8 +37,8 @@ if st.button("Generate Analysis"):
             try:
                 # Initialize Anthropic model
                 # anthropic_model = Claude(id ="claude-3-5-sonnet-20240620",api_key=anthropic_api_key)
-                anthropic_model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,
-                           base_url=st.session_state.openai_api_base_url,
+                anthropic_model=OpenAILike(id=openai_api_model_type, api_key=openai_api_key,
+                           base_url=openai_api_base_url,
                 system_prompt="最后输出的内容必须是中文内容呈现，不要是英文")
                 # Define News Collector Agent - Duckduckgo_search tool enables an Agent to search the web for information.
                 search_tool = DuckDuckGoTools(search=True, news=True, fixed_max_results=5)
@@ -102,10 +106,10 @@ if st.button("Generate Analysis"):
                 # st.subheader("News Summaries")
                 # # st.write(summaries)
 
-                st.subheader("Trend Analysis and Potential Startup Opportunities")
+                st.subheader("趋势分析和潜在创业机会")
                 st.write(analysis)
 
             except Exception as e:
                 st.error(f"An error occurred: {e}")
 else:
-    st.info("Enter the topic and API keys, then click 'Generate Analysis' to start.")
+    st.info("输入主题和 API 密钥，然后单击“生成分析”开始。")

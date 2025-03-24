@@ -16,9 +16,9 @@ import json
 
 # Sidebar for API keys
 st.sidebar.title("API Keys")
-openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.openai_api_key)
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 firecrawl_api_key = st.sidebar.text_input("Firecrawl API Key", type="password",
-                                          value=st.session_state.firecrawl_api_key)
+                                          value=st.session_state.get('firecrawl_api_key'))
 
 # Add search engine selection before API keys
 search_engine = st.sidebar.selectbox(
@@ -29,23 +29,23 @@ search_engine = st.sidebar.selectbox(
 
 # Show relevant API key input based on selection
 if search_engine == "Perplexity AI - Sonar Pro":
-    perplexity_api_key = st.sidebar.text_input("Perplexity API Key", type="password", value=st.session_state.perplexity_api_key)
+    perplexity_api_key = st.sidebar.text_input("Perplexity API Key", type="password", value=st.session_state.get('perplexity_api_key'))
     # Store API keys in session state
     if openai_api_key and firecrawl_api_key and perplexity_api_key:
         st.session_state.openai_api_key = openai_api_key
         st.session_state.firecrawl_api_key = firecrawl_api_key
         st.session_state.perplexity_api_key = perplexity_api_key
     else:
-        st.sidebar.warning("Please enter all required API keys to proceed.")
+        st.sidebar.warning("请输入所有必需的 API 密钥才能继续。")
 else:  # Exa AI
-    exa_api_key = st.sidebar.text_input("Exa API Key", type="password", value=st.session_state.exa_api_key)
+    exa_api_key = st.sidebar.text_input("Exa API Key", type="password", value=st.session_state.get('exa_api_key'))
     # Store API keys in session state
     if openai_api_key and firecrawl_api_key and exa_api_key:
         st.session_state.openai_api_key = openai_api_key
         st.session_state.firecrawl_api_key = firecrawl_api_key
         st.session_state.exa_api_key = exa_api_key
     else:
-        st.sidebar.warning("Please enter all required API keys to proceed.")
+        st.sidebar.warning("请输入所有必需的 API 密钥才能继续。")
 
 # Main UI
 st.title("🧲 AI 竞争对手情报Agent团队")
@@ -90,11 +90,14 @@ AI 竞争对手情报Agent团队是一款功能强大的竞争对手分析工具
 #     - The app will fetch competitor URLs, extract relevant information, and generate a detailed analysis report.
 #     """
 # )
-st.success("For better results, provide both URL and a 5-6 word description of your company!")
+# st.success("For better results, provide both URL and a 5-6 word description of your company!")
+st.success("为了获得更好的结果，请提供 URL 和 5-6 个字的公司描述！")
 
 # Input fields for URL and description
-url = st.text_input("Enter your company URL :")
-description = st.text_area("Enter a description of your company (if URL is not available):")
+# url = st.text_input("Enter your company URL :")
+url = st.text_input("输入公司网址：")
+# description = st.text_area("Enter a description of your company (if URL is not available):")
+description = st.text_area("输入公司的描述（如果没有 URL）：")
 
 # Initialize API keys and tools
 if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_state:
@@ -103,17 +106,17 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
         # Initialize Exa only if selected
         if search_engine == "Exa AI":
-            exa = Exa(api_key=st.session_state.exa_api_key)
+            exa = Exa(api_key=st.session_state.get('exa_api_key'))
 
         firecrawl_tools = FirecrawlTools(
-            api_key=st.session_state.firecrawl_api_key,
+            api_key=st.session_state.get('firecrawl_api_key'),
             scrape=False,
             crawl=True,
             limit=5
         )
 
         firecrawl_agent = Agent(
-            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+            model=OpenAILike(id=st.session_state.get('openai_api_model_type'), api_key=st.session_state.get('openai_api_key'),base_url=st.session_state.get('openai_api_base_url'),
                 system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             tools=[firecrawl_tools, DuckDuckGoTools()],
             show_tool_calls=True,
@@ -121,7 +124,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
         )
 
         analysis_agent = Agent(
-            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+            model=OpenAILike(id=st.session_state.get('openai_api_model_type'), api_key=st.session_state.get('openai_api_key'),base_url=st.session_state.get('openai_api_base_url'),
                 system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             show_tool_calls=True,
             markdown=True
@@ -129,7 +132,7 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
         # New agent for comparing competitor data
         comparison_agent = Agent(
-            model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+            model=OpenAILike(id=st.session_state.get('openai_api_model_type'), api_key=st.session_state.get('openai_api_key'),base_url=st.session_state.get('openai_api_base_url'),
                 system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
             show_tool_calls=True,
             markdown=True
@@ -325,7 +328,8 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
                 )
 
                 # Display the table
-                st.subheader("Competitor Comparison")
+                # st.subheader("Competitor Comparison")
+                st.subheader("竞争对手比较")
                 st.table(df)
 
             except Exception as e:
@@ -359,11 +363,11 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
 
 
         # Run analysis when the user clicks the button
-        if st.button("Analyze Competitors"):
+        if st.button("分析竞争对手"):
             if url or description:
                 with st.spinner("Fetching competitor URLs..."):
                     competitor_urls = get_competitor_urls(url=url, description=description)
-                    st.write(f"Competitor URLs: {competitor_urls}")
+                    st.write(f"竞争对手的网址: {competitor_urls}")
 
                 competitor_data = []
                 for comp_url in competitor_urls:
@@ -380,11 +384,14 @@ if "openai_api_key" in st.session_state and "firecrawl_api_key" in st.session_st
                     # Generate and display final analysis report
                     with st.spinner("Generating analysis report..."):
                         analysis_report = generate_analysis_report(competitor_data)
-                        st.subheader("Competitor Analysis Report")
+                        # st.subheader("Competitor Analysis Report")
+                        st.subheader("竞争对手分析报告")
+
                         st.markdown(analysis_report)
 
-                    st.success("Analysis complete!")
+                    st.success("分析完成！")
                 else:
-                    st.error("Could not extract data from any competitor URLs")
+                    # st.error("Could not extract data from any competitor URLs")
+                    st.error("无法从任何竞争对手的 URL 中提取数据")
             else:
                 st.error("Please provide either a URL or a description.")

@@ -103,7 +103,7 @@ def main():
     """)
 
     with st.sidebar:
-        st.header("🔑 API Configuration")
+        st.header("🔑 API 配置")
         # gemini_api_key = st.text_input(
         #     "Gemini API Key",
         #     type="password",

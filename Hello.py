@@ -112,7 +112,7 @@ st.session_state['email_sender'] = email_sender
 email_passkey = st.text_input("Email App Password", type="password", value=st.session_state.get('email_passkey'),
                               help="App-specific password for email")
 st.session_state['email_passkey'] = email_passkey
-company_name = st.text_input("Company Name", value=st.session_state.get('email_passkey'),
+company_name = st.text_input("Company Name", value=st.session_state.get('company_name'),
                              help="Name to use in email communications")
 st.session_state['company_name'] = company_name
 
@@ -166,5 +166,5 @@ st.session_state['qdrant_api_key'] = "123"
 # st.session_state['openai_api_vlm_model_type'] = "qwen_vl_plus"
 
 st.session_state['openai_api_embedding_model_type'] = "bge-large-zh-v1.5"
-st.session_state['openai_api_vlm_model_type'] = "Qwen2-VL-72B-Instruct"
+st.session_state['openai_api_vlm_model_type'] = "Qwen2-VL-72B"
 

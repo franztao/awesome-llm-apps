@@ -123,7 +123,7 @@ def main():
     st.title("‍⚖️ AI法律agent团队 👨‍⚖️")
 
     with st.sidebar:
-        st.header("🔑 API Configuration")
+        st.header("🔑 API 配置")
 
         openai_key = st.text_input(
             "LLM API Key",
@@ -181,8 +181,10 @@ def main():
         # st.divider()
 
     if all([st.session_state.openai_api_key, st.session_state.vector_db]):
-        st.header("📄 Document Upload")
-        uploaded_file = st.file_uploader("Upload Legal Document", type=['pdf'])
+        # st.header("📄 Document Upload")
+        st.header("📄 文档上传")
+        # uploaded_file = st.file_uploader("Upload Legal Document", type=['pdf'])
+        uploaded_file = st.file_uploader("上传法律文档", type=['pdf'])
 
         if uploaded_file:
             # Check if this file has already been processed
@@ -272,10 +274,14 @@ def main():
                         st.error(f"Error processing document: {str(e)}")
             else:
                 # File already processed, just show a message
-                st.success("✅ Document already processed and team ready!")
+                # st.success("✅ Document already processed and team ready!")
+                st.success("✅ 文件已处理完毕且agent准备就绪！")
+
 
         st.divider()
-        st.header("🔍 Analysis Options")
+        # st.header("🔍 Analysis Options")
+        st.header("🔍 分析选项")
+        # 选择分析类型
         analysis_type = st.selectbox(
             "Select Analysis Type",
             [
@@ -305,38 +311,43 @@ def main():
         }
 
         # Dynamic header with icon
-        st.header(f"{analysis_icons[analysis_type]} {analysis_type} Analysis")
+        st.header(f"{analysis_icons[analysis_type]} {analysis_type} 分析")
 
         analysis_configs = {
             "Contract Review": {
                 "query": "Review this contract and identify key terms, obligations, and potential issues.",
                 "agents": ["Contract Analyst"],
-                "description": "Detailed contract analysis focusing on terms and obligations"
+                # "description": "Detailed contract analysis focusing on terms and obligations"
+                "description": "详细分析合同条款和义务"
             },
             "Legal Research": {
                 "query": "Research relevant cases and precedents related to this document.",
                 "agents": ["Legal Researcher"],
-                "description": "Research on relevant legal cases and precedents"
+                # "description": "Research on relevant legal cases and precedents"
+                "description": "相关法律案例和判例研究"
             },
             "Risk Assessment": {
                 "query": "Analyze potential legal risks and liabilities in this document.",
                 "agents": ["Contract Analyst", "Legal Strategist"],
-                "description": "Combined risk analysis and strategic assessment"
+                # "description": "Combined risk analysis and strategic assessment"
+                "description": "综合风险分析与战略评估"
             },
             "Compliance Check": {
                 "query": "Check this document for regulatory compliance issues.",
                 "agents": ["Legal Researcher", "Contract Analyst", "Legal Strategist"],
-                "description": "Comprehensive compliance analysis"
+                # "description": "Comprehensive compliance analysis"
+                "description": "全面的合规性分析"
             },
             "Custom Query": {
                 "query": None,
                 "agents": ["Legal Researcher", "Contract Analyst", "Legal Strategist"],
-                "description": "Custom analysis using all available agents"
+                # "description": "Custom analysis using all available agents"
+                "description": "使用所有可用agent进行自定义分析"
             }
         }
 
         st.info(f"📋 {analysis_configs[analysis_type]['description']}")
-        st.write(f"🤖 Active Legal AI Agents: {', '.join(analysis_configs[analysis_type]['agents'])}")  #dictionary!!
+        st.write(f"🤖 法律 AI Agents: {', '.join(analysis_configs[analysis_type]['agents'])}")  #dictionary!!
 
         # Replace the existing user_query section with this:
         if analysis_type == "Custom Query":
@@ -348,7 +359,7 @@ def main():
             user_query = None  # Set to None for non-custom queries
 
 
-        if st.button("Analyze"):
+        if st.button("分析"):
             if analysis_type == "Custom Query" and not user_query:
                 st.warning("Please enter a query")
             else:

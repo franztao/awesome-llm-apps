@@ -54,32 +54,32 @@ class CustomZoomTool(ZoomTool):
 # Role requirements as a constant dictionary
 ROLE_REQUIREMENTS: Dict[str, str] = {
     "ai_ml_engineer": """
-        Required Skills:
-        - Python, PyTorch/TensorFlow
-        - Machine Learning algorithms and frameworks
-        - Deep Learning and Neural Networks
-        - Data preprocessing and analysis
-        - MLOps and model deployment
-        - RAG, LLM, Finetuning and Prompt Engineering
+        所需技能：
+        - Python、PyTorch/TensorFlow
+        - 机器学习算法和框架
+        - 深度学习和神经网络
+        - 数据预处理和分析
+        - MLOps 和模型部署
+        - RAG、LLM、微调和快速工程
     """,
 
     "frontend_engineer": """
-        Required Skills:
+        所需技能：
         - React/Vue.js/Angular
-        - HTML5, CSS3, JavaScript/TypeScript
-        - Responsive design
-        - State management
-        - Frontend testing
+        - HTML5、CSS3、JavaScript/TypeScript
+        - 响应式设计
+        - 状态管理
+        - 前端测试
     """,
 
     "backend_engineer": """
-        Required Skills:
+        所需技能：
         - Python/Java/Node.js
-        - REST APIs
-        - Database design and management
-        - System architecture
-        - Cloud services (AWS/GCP/Azure)
-        - Kubernetes, Docker, CI/CD
+        - REST API
+        - 数据库设计和管理
+        - 系统架构
+        - 云服务 (AWS/GCP/Azure)
+        - Kubernetes、Docker、CI/CD
     """
 }
 
@@ -299,7 +299,7 @@ def schedule_interview(scheduler: Agent, candidate_email: str, email_agent: Agen
             """
         )
         
-        st.success("Interview scheduled successfully! Check your email for details.")
+        st.success("面试安排成功！请查看您的电子邮件了解详情。")
         
     except Exception as e:
         logger.error(f"Error scheduling interview: {str(e)}")
@@ -393,11 +393,13 @@ def main() -> None:
         st.warning("Please enter your LLM API Key in the sidebar to continue.")
         return
 
-    role = st.selectbox("Select the role you're applying for:", ["ai_ml_engineer", "frontend_engineer", "backend_engineer"])
-    with st.expander("View Required Skills", expanded=True): st.markdown(ROLE_REQUIREMENTS[role])
+    # role = st.selectbox("Select the role you're applying for:", ["ai_ml_engineer", "frontend_engineer", "backend_engineer"])
+    role = st.selectbox("选择您申请的职位：", ["ai_ml_engineer", "frontend_engineer", "backend_engineer"])
+    # with st.expander("View Required Skills", expanded=True): st.markdown(ROLE_REQUIREMENTS[role])
+    with st.expander("查看所需技能", expanded=True): st.markdown(ROLE_REQUIREMENTS[role])
 
     # Add a "New Application" button before the resume upload
-    if st.button("📝 New Application"):
+    if st.button("📝 重新操作"):
         # Clear only the application-related states
         keys_to_clear = ['resume_text', 'analysis_complete', 'is_selected', 'candidate_email', 'current_pdf']
         for key in keys_to_clear:
@@ -405,7 +407,7 @@ def main() -> None:
                 st.session_state[key] = None if key == 'current_pdf' else ""
         st.rerun()
 
-    resume_file = st.file_uploader("Upload your resume (PDF)", type=["pdf"], key="resume_uploader")
+    resume_file = st.file_uploader("上传你的简历 (PDF)", type=["pdf"], key="resume_uploader")
     if resume_file is not None and resume_file != st.session_state.get('current_pdf'):
         st.session_state.current_pdf = resume_file
         st.session_state.resume_text = ""
@@ -414,7 +416,8 @@ def main() -> None:
         st.rerun()
 
     if resume_file:
-        st.subheader("Uploaded Resume")
+        # st.subheader("Uploaded Resume")
+        st.subheader("已经上传的简历")
         col1, col2 = st.columns([4, 1])
         
         with col1:
@@ -440,7 +443,8 @@ def main() -> None:
 
     # Email input with session state
     email = st.text_input(
-        "Candidate's email address",
+        "候选人的电子邮件地址",
+        # "Candidate's email address",
         value=st.session_state.candidate_email,
         key="email_input"
     )
@@ -463,13 +467,15 @@ def main() -> None:
                     print(f"DEBUG: Analysis complete - Selected: {is_selected}, Feedback: {feedback}")
 
                     if is_selected:
-                        st.success("Congratulations! Your skills match our requirements.")
+                        # st.success("Congratulations! Your skills match our requirements.")
+                        st.success("恭喜！您的技能符合我们的要求。")
                         st.session_state.analysis_complete = True
                         st.session_state.is_selected = True
                         st.rerun()
                     else:
-                        st.warning("Unfortunately, your skills don't match our requirements.")
-                        st.write(f"Feedback: {feedback}")
+                        # st.warning("Unfortunately, your skills don't match our requirements.")
+                        st.warning("遗憾的是，您的技能不符合我们的要求。")
+                        st.write(f"反馈: {feedback}")
                         
                         # Send rejection email
                         with st.spinner("Sending feedback email..."):
@@ -486,12 +492,15 @@ def main() -> None:
                                 st.error("Could not send feedback email. Please try again.")
 
     if st.session_state.get('analysis_complete') and st.session_state.get('is_selected', False):
-        st.success("Congratulations! Your skills match our requirements.")
-        st.info("Click 'Proceed with Application' to continue with the interview process.")
+        # st.success("Congratulations! Your skills match our requirements.")
+        st.success("恭喜！您的技能符合我们的要求。")
+        # st.info("Click 'Proceed with Application' to continue with the interview process.")
+        st.info("单击“继续申请”以继续面试流程。")
+
         
-        if st.button("Proceed with Application", key="proceed_button"):
+        if st.button("继续申请", key="proceed_button"):
             print("DEBUG: Proceed button clicked")  # Debug
-            with st.spinner("🔄 Processing your application..."):
+            with st.spinner("🔄 正在处理您的申请..."):
                 try:
                     print("DEBUG: Creating email agent")  # Debug
                     email_agent = create_email_agent()
@@ -502,7 +511,7 @@ def main() -> None:
                     print(f"DEBUG: Scheduler agent created: {scheduler_agent}")  # Debug
 
                     # 3. Send selection email
-                    with st.status("📧 Sending confirmation email...", expanded=True) as status:
+                    with st.status("📧 正在发送确认电子邮件...", expanded=True) as status:
                         print(f"DEBUG: Attempting to send email to {st.session_state.candidate_email}")  # Debug
                         send_selection_email(
                             email_agent,
@@ -510,10 +519,10 @@ def main() -> None:
                             role
                         )
                         print("DEBUG: Email sent successfully")  # Debug
-                        status.update(label="✅ Confirmation email sent!")
+                        status.update(label="✅ 确认邮件已发送！")
 
                     # 4. Schedule interview
-                    with st.status("📅 Scheduling interview...", expanded=True) as status:
+                    with st.status("📅 正在安排面试...", expanded=True) as status:
                         print("DEBUG: Attempting to schedule interview")  # Debug
                         schedule_interview(
                             scheduler_agent,
@@ -522,20 +531,22 @@ def main() -> None:
                             role
                         )
                         print("DEBUG: Interview scheduled successfully")  # Debug
-                        status.update(label="✅ Interview scheduled!")
+                        # status.update(label="✅ Interview scheduled!")
+                        status.update(label="✅ 已安排面试！")
+                    #
 
                     print("DEBUG: All processes completed successfully")  # Debug
                     st.success("""
-                        🎉 Application Successfully Processed!
-                        
-                        Please check your email for:
-                        1. Selection confirmation ✅
-                        2. Interview details with Zoom link 🔗
-                        
-                        Next steps:
-                        1. Review the role requirements
-                        2. Prepare for your technical interview
-                        3. Join the interview 5 minutes early
+                        🎉 申请已成功处理！
+                            请查看您的电子邮件以获取：
+                            
+                            1. 选择确认✅
+                            2. 带有 Zoom 链接的面试详情🔗
+
+                            后续步骤：
+                            1. 查看职位要求
+                            2. 准备技术面试
+                            3. 提前 5 分钟加入面试
                     """)
 
                 except Exception as e:

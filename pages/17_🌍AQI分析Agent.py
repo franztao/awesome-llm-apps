@@ -216,9 +216,9 @@ def setup_page():
 空气质量数据是使用 Firecrawl 的网页抓取功能获取的。由于缓存和速率限制，数据可能并不总是与网站上的实时值相匹配。为了获得最准确的实时数据，请考虑直接检查源网站。
     """)
 def render_sidebar():
-    """Render sidebar with API configuration"""
+    """Render sidebar with API 配置"""
     with st.sidebar:
-        st.header("🔑 API Configuration")
+        st.header("🔑 API 配置")
         
         new_firecrawl_key = st.text_input(
             "Firecrawl API Key",

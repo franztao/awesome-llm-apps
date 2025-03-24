@@ -35,9 +35,11 @@ if openai_api_key:
 
     col1, col2 = st.columns(2)
     with col1:
-        stock1 = st.text_input("Enter first stock symbol (e.g. AAPL)")
+        # stock1 = st.text_input("Enter first stock symbol (e.g. AAPL)")
+        stock1 = st.text_input("输入第一个股票代码 (e.g. AAPL)")
     with col2:
-        stock2 = st.text_input("Enter second stock symbol (e.g. MSFT)")
+        # stock2 = st.text_input("Enter second stock symbol (e.g. MSFT)")
+        stock2 = st.text_input("输入第二个股票代码 (e.g. MSFT)")
 
     if stock1 and stock2:
         with st.spinner(f"Analyzing {stock1} and {stock2}..."):

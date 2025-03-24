@@ -215,7 +215,7 @@ def main():
     )
 
     with st.sidebar:
-        st.title("🔑 API Configuration")
+        st.title("🔑 API 配置")
         
         # st.subheader("🤖 Model Selection")
         # model_id = st.selectbox(

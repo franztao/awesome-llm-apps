@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 5. Run the Streamlit App
 ```bash
-streamlit run ai_movie_production_agent.py
+streamlit run 13_🎬AI电影制作Agent.py
 ```
 
 ### How it Works?

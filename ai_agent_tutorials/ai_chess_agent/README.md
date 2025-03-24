@@ -41,6 +41,6 @@ pip install -r requirements.txt
 
 4. Run the Streamlit App
 ```bash
-streamlit run ai_chess_agent.py
+streamlit run 15_♜白Agentvs黑Agent棋局对决.py
 ```
 

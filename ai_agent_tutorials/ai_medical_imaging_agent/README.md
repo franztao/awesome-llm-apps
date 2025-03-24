@@ -29,7 +29,7 @@ A Medical Imaging Diagnosis Agent build on agno powered by Gemini 2.0 Flash that
 
 3. **Run the Application**
    ```bash
-   streamlit run ai_medical_imaging.py
+   streamlit run 10_🩻AI医学影像诊断Agent.py
    ```
 
 ## Analysis Components

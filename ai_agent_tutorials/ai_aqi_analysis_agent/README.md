@@ -51,7 +51,7 @@ Follow these steps to set up and run the application:
 
 4. **Run the Gradio app**:
     ```bash
-    python ai_aqi_analysis_agent.py
+    python 17_🌍AQI分析Agent.py
     ```
 
 5. **Access the Web Interface**:

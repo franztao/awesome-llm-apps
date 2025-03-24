@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 5. Run the Streamlit App
 ```bash
-streamlit run ai_travel_agent.py
+streamlit run 12_🛫AI智能旅行社.py
 ```
 
 ### How it Works?

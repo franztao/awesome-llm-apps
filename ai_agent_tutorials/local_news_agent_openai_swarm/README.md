@@ -47,5 +47,5 @@ OPENAI_API_KEY=fake-key
 ```
 5. Run the Streamlit app
 ```bash
-streamlit run ai_news_agent.py
+streamlit run 19_📰AI新闻助手.py
 ```

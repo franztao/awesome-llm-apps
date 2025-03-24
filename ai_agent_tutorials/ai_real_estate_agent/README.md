@@ -28,7 +28,7 @@ The AI Real Estate Agent automates property search and market analysis using Fir
 
 4. **Run the application**:
    ```bash
-   streamlit run ai_real_estate_agent.py
+   streamlit run 16_🏠AI智能房地产经纪人.py
    ```
 
 ### Using the Agent

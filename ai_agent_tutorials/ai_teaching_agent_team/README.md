@@ -63,7 +63,7 @@ A Streamlit application that brings together a team of specialized AI teaching a
 
 1. Start the Streamlit app
 ```bash
-streamlit run ai_teaching_agent_team.py
+streamlit run 11_👨‍🏫AI教学Agent团队.py
 ```
 
 2. Use the application

@@ -43,7 +43,7 @@ An Agno agentic system that provides expert software architecture analysis and r
 
 3. **Run the Application**
    ```bash
-   streamlit run ai_system_architect.py
+   streamlit run 18_🤖AI系统架构师顾问.py
    ```
 
 4. **Use the Interface**

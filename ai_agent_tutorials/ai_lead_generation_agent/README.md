@@ -30,6 +30,6 @@ The AI Lead Generation Agent automates the process of finding and qualifying pot
 
 6. **Run the application**:
    ```bash
-   streamlit run ai_lead_generation_agent.py
+   streamlit run 8_🎯AI潜在客户生成Agent.py
    ```
 

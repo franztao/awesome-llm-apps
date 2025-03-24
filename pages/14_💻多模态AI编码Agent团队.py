@@ -5,7 +5,7 @@ import streamlit as st
 from PIL import Image
 from agno.agent import Agent
 # from agno.models.google import Gemini
-from agno.models.openai import OpenAIChat, OpenAILike
+from agno.models.openai import OpenAILike
 from e2b_code_interpreter import Sandbox
 
 
@@ -63,7 +63,7 @@ def create_agents() -> tuple[Agent, Agent, Agent]:
     )
     
     execution_agent = Agent(
-        model=OpenAIChat(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+        model=OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
             system_prompt="""You are an expert at executing Python code in sandbox environments.
             Your task is to:
             1. Take the provided Python code
@@ -211,7 +211,7 @@ def main() -> None:
     initialize_session_state()
     setup_sidebar()
     with st.sidebar:
-        st.info("⏱️ Code execution timeout: 30 seconds")
+        st.info("⏱️ 代码执行超时：30 秒")
     
     # Check all required API keys
     if not (st.session_state.openai_api_key and 
@@ -224,7 +224,7 @@ def main() -> None:
     
     # Clean, single-column layout
     uploaded_image = st.file_uploader(
-        "Upload an image of your coding problem (optional)",
+        "上传你的有关编码问题的图片（可选）",
         type=['png', 'jpg', 'jpeg']
     )
     
@@ -232,13 +232,13 @@ def main() -> None:
         st.image(uploaded_image, caption="Uploaded Image", use_container_width=True)
     
     user_query = st.text_area(
-        "Or type your coding problem here:",
-        placeholder="Example: Write a function to find the sum of two numbers. Include sample input/output cases.",
+        "或者在这里输入你的编码问题：",
+        placeholder="Example: 编写一个函数来计算两个数字之和。包括输入/输出示例。",
         height=100
     )
     
     # Process button
-    if st.button("Generate & Execute Solution", type="primary"):
+    if st.button("生成并执行解决方案", type="primary"):
         if uploaded_image and not user_query:
             # Process image with Gemini
             with st.spinner("Processing image..."):
@@ -276,7 +276,7 @@ def main() -> None:
         # Display and execute solution
         if 'response' in locals():
             st.divider()
-            st.subheader("💻 Solution")
+            st.subheader("💻 解决方案")
             
             # Extract code from markdown response
             code_blocks = response.content.split("```python")
@@ -300,7 +300,7 @@ def main() -> None:
                         
                         # Display execution results
                         st.divider()
-                        st.subheader("🚀 Execution Results")
+                        st.subheader("🚀 执行结果")
                         st.markdown(execution_results)
                         
                         # Try to display files if available

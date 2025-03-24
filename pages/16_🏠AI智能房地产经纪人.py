@@ -71,13 +71,13 @@ class PropertyFindingAgent:
         raw_response = self.firecrawl.extract(
             urls=urls,
             params={
-                'prompt': f"""Extract ONLY 10 OR LESS different {property_category} {property_type_prompt} from {city} that cost less than {max_price} crores.
+                'prompt': f"""Extract ONLY 10 OR LESS different {property_category} {property_type_prompt} from {city} that cost less than {max_price} dollars.
                 
                 Requirements:
                 - Property Category: {property_category} properties only
                 - Property Type: {property_type_prompt} only
                 - Location: {city}
-                - Maximum Price: {max_price} crores
+                - Maximum Price: {max_price} dollars
                 - Include complete property details with exact location
                 - IMPORTANT: Return data for at least 3 different properties. MAXIMUM 10.
                 - Format as a list of properties with their respective details
@@ -106,14 +106,14 @@ class PropertyFindingAgent:
             1. ONLY analyze properties from the above JSON data that match the user's requirements:
                - Property Category: {property_category}
                - Property Type: {property_type}
-               - Maximum Price: {max_price} crores
+               - Maximum Price: {max_price} dollars
             2. DO NOT create new categories or property types
-            3. From the matching properties, select 5-6 properties with prices closest to {max_price} crores
+            3. From the matching properties, select 5-6 properties with prices closest to {max_price} dollars
 
             Please provide your analysis in this format:
             
             🏠 SELECTED PROPERTIES
-            • List only 5-6 best matching properties with prices closest to {max_price} crores
+            • List only 5-6 best matching properties with prices closest to {max_price} dollars
             • For each property include:
               - Name and Location
               - Price (with value analysis)
@@ -138,6 +138,7 @@ class PropertyFindingAgent:
             • Property-specific negotiation strategies
 
             Format your response in a clear, structured way using the above sections.
+            最后输出的内容必须是中文内容呈现，不要是英文
             """
         )
         
@@ -191,6 +192,8 @@ class PropertyFindingAgent:
 
                 🎯 RECOMMENDATIONS
                 • [Bullet points with specific recommendations]
+                
+                最后输出的内容必须是中文内容呈现，不要是英文
                 """
             )
             
@@ -294,34 +297,34 @@ def main():
     
     with col1:
         city = st.text_input(
-            "City",
-            placeholder="Enter city name (e.g., Bangalore)",
+            "城市",
+            # placeholder="Enter city name (e.g., Bangalore)",
             help="Enter the city where you want to search for properties"
         )
         
         property_category = st.selectbox(
-            "Property Category",
+            "类别",
             options=["Residential", "Commercial"],
             help="Select the type of property you're interested in"
         )
 
     with col2:
         max_price = st.number_input(
-            "Maximum Price (in Crores)",
+            "最高价格（千万美元）",
             min_value=0.1,
             max_value=100.0,
             value=5.0,
             step=0.1,
-            help="Enter your maximum budget in Crores"
+            help="Enter your maximum budget in Dollars"
         )
         
         property_type = st.selectbox(
-            "Property Type",
+            "物业类型",
             options=["Flat", "Individual House"],
             help="Select the specific type of property"
         )
 
-    if st.button("🔍 Start Search", use_container_width=True):
+    if st.button("🔍 开始检索", use_container_width=True):
         if 'property_agent' not in st.session_state:
             st.error("⚠️ Please enter your API keys in the sidebar first!")
             return
@@ -339,9 +342,9 @@ def main():
                     property_type=property_type
                 )
                 
-                st.success("✅ Property search completed!")
+                st.success("✅ 房产搜寻完成！")
                 
-                st.subheader("🏘️ Property Recommendations")
+                st.subheader("🏘️ 楼盘推荐")
                 st.markdown(property_results)
                 
                 st.divider()
@@ -349,9 +352,9 @@ def main():
                 with st.spinner("📊 Analyzing location trends..."):
                     location_trends = st.session_state.property_agent.get_location_trends(city)
                     
-                    st.success("✅ Location analysis completed!")
+                    st.success("✅ 位置分析完成！")
                     
-                    with st.expander("📈 Location Trends Analysis of the city"):
+                    with st.expander("📈 城市区位趋势分析"):
                         st.markdown(location_trends)
                 
         except Exception as e:

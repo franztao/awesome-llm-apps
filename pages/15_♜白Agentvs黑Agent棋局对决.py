@@ -16,7 +16,7 @@ if "move_history" not in st.session_state:
 if "max_turns" not in st.session_state:
     st.session_state.max_turns = 5
 
-st.sidebar.title("Chess Agent Configuration")
+st.sidebar.title("API配置")
 # Get LLM API Key from user
 openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
@@ -27,13 +27,11 @@ if openai_api_key:
     st.sidebar.success("API key saved!")
 
 st.sidebar.info("""
-For a complete chess game with potential checkmate, it would take max_turns > 200 approximately.
-However, this will consume significant API credits and a lot of time.
-For demo purposes, using 5-10 turns is recommended.
+对于一场的完整国际象棋游戏，大约需要 max_turns > 200。但是，这将消耗大量 API 积分和大量时间。出于演示目的，建议使用 5-10 个回合。
 """)
 
 max_turns_input = st.sidebar.number_input(
-    "Enter the number of turns (max_turns):",
+    "输入圈数（max_turns）：",
     min_value=1,
     max_value=1000,
     value=st.session_state.max_turns,
@@ -42,7 +40,7 @@ max_turns_input = st.sidebar.number_input(
 
 if max_turns_input:
     st.session_state.max_turns = max_turns_input
-    st.sidebar.success(f"Max turns of total chess moves set to {st.session_state.max_turns}!")
+    st.sidebar.success(f"总棋步的最大回合数设置为 {st.session_state.max_turns}!")
 
 st.title("♜ 白Agent vs 黑Agent：棋局对决")
 st.markdown("""
@@ -215,30 +213,29 @@ if st.session_state.openai_api_key:
         )
 
         st.info("""
-This chess game is played between two AG2 AI agents:
-- **Agent White**: A LLM powered chess player controlling white pieces
-- **Agent Black**: A LLM powered chess player controlling black pieces
+此国际象棋游戏由两个 AG2 AI 代理进行：
+- 白agent：一名拥有 LLM 的国际象棋选手，控制白棋
+- 黑agent：一名拥有 LLM 的国际象棋选手，控制黑棋
 
-The game is managed by a **Game Master** that:
-- Validates all moves
-- Updates the chess board
-- Manages turn-taking between players
-- Provides legal move information
+游戏由游戏管理员管理，游戏管理员负责：
+- 验证所有走法
+- 更新棋盘
+- 管理玩家之间的轮换
+- 提供合法走法信息
 """)
 
         initial_board_svg = chess.svg.board(st.session_state.board, size=300)
-        st.subheader("Initial Board")
+        st.subheader("初始棋盘")
         st.image(initial_board_svg)
 
-        if st.button("Start Game"):
+        if st.button("开始游戏"):
             st.session_state.board.reset()
             st.session_state.made_move = False
             st.session_state.move_history = []
             st.session_state.board_svg = chess.svg.board(st.session_state.board, size=300)
-            st.info("The AI agents will now play against each other. Each agent will analyze the board, " 
-                   "request legal moves from the Game Master (proxy agent), and make strategic decisions.")
-            st.success("You can view the interaction between the agents in the terminal output, after the turns between agents end, you get view all the chess board moves displayed below!")
-            st.write("Game started! White's turn.")
+            st.info("AI Agent现在将相互对战。每个代理将分析棋盘，向游戏管理员（代理）请求合法移动，并做出战略决策。")
+            st.success("您可以在终端输出中查看代理之间的交互，代理之间的轮流结束后，您可以看到下面显示的所有棋盘走法！")
+            st.write("游戏开始了！轮到白棋了")
 
             chat_result = agent_black.initiate_chat(
                 recipient=agent_white, 
@@ -249,7 +246,7 @@ The game is managed by a **Game Master** that:
             st.markdown(chat_result.summary)
 
             # Display the move history (boards for each move)
-            st.subheader("Move History")
+            st.subheader("移动历史记录")
             for i, move_svg in enumerate(st.session_state.move_history):
                 # Determine which agent made the move
                 if i % 2 == 0:
@@ -260,7 +257,7 @@ The game is managed by a **Game Master** that:
                 st.write(f"Move {i + 1} by {move_by}")
                 st.image(move_svg)
 
-        if st.button("Reset Game"):
+        if st.button("重新游戏"):
             st.session_state.board.reset()
             st.session_state.made_move = False
             st.session_state.move_history = []

@@ -82,7 +82,7 @@ def process_document(uploaded_file, vector_db: Qdrant):
             temp_file.write(uploaded_file.getvalue())
             temp_file_path = temp_file.name
 
-        st.info("Loading and processing document...")
+        st.info("正在加载并处理文档...")
 
         # Create a PDFKnowledgeBase with the vector_db
         knowledge_base = PDFKnowledgeBase(
@@ -99,7 +99,7 @@ def process_document(uploaded_file, vector_db: Qdrant):
         with st.spinner('📤 Loading documents into knowledge base...'):
             try:
                 knowledge_base.load(recreate=True, upsert=True)
-                st.success("✅ Documents stored successfully!")
+                st.success("✅ 文档存储成功！")
             except Exception as e:
                 st.error(f"Error loading documents: {str(e)}")
                 raise
@@ -268,7 +268,7 @@ def main():
                                 markdown=True
                             )
 
-                            st.success("✅ Document processed and team initialized!")
+                            st.success("✅文档已处理并团队已初始化！")
 
                     except Exception as e:
                         st.error(f"Error processing document: {str(e)}")
@@ -283,7 +283,7 @@ def main():
         st.header("🔍 分析选项")
         # 选择分析类型
         analysis_type = st.selectbox(
-            "Select Analysis Type",
+            "选择分析类型",
             [
                 "Contract Review",
                 "Legal Research",
@@ -299,7 +299,7 @@ def main():
     if not all([st.session_state.openai_api_key, st.session_state.vector_db]):
         st.info("👈 Please configure your API credentials in the sidebar to begin")
     elif not uploaded_file:
-        st.info("👈 Please upload a legal document to begin analysis")
+        st.info("👈 请上传法律文件以开始分析")
     elif st.session_state.legal_team:
         # Create a dictionary for analysis type icons
         analysis_icons = {
@@ -376,7 +376,7 @@ def main():
                             Primary Analysis Task: {analysis_configs[analysis_type]['query']}
                             Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
                             
-                            Please search the knowledge base and provide specific references from the document.
+                            Please search the knowledge base and provide specific references from the document.。最后输出的内容必须是中文内容呈现，不要是英文
                             """
                         else:
                             combined_query = f"""
@@ -385,7 +385,7 @@ def main():
                             {user_query}
                             
                             Please search the knowledge base and provide specific references from the document.
-                            Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
+                            Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}。最后输出的内容必须是中文内容呈现，不要是英文
                             """
 
                         response = st.session_state.legal_team.run(combined_query)
@@ -394,7 +394,7 @@ def main():
                         tabs = st.tabs(["Analysis", "Key Points", "Recommendations"])
 
                         with tabs[0]:
-                            st.markdown("### Detailed Analysis")
+                            st.markdown("### 详细分析")
                             if response.content:
                                 st.markdown(response.content)
                             else:
@@ -403,13 +403,13 @@ def main():
                                         st.markdown(message.content)
 
                         with tabs[1]:
-                            st.markdown("### Key Points")
+                            st.markdown("### 要点")
                             key_points_response = st.session_state.legal_team.run(
                                 f"""Based on this previous analysis:    
                                 {response.content}
                                 
                                 Please summarize the key points in bullet points.
-                                Focus on insights from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
+                                Focus on insights from: {', '.join(analysis_configs[analysis_type]['agents'])}。最后输出的内容必须是中文内容呈现，不要是英文"""
                             )
                             if key_points_response.content:
                                 st.markdown(key_points_response.content)
@@ -419,13 +419,13 @@ def main():
                                         st.markdown(message.content)
 
                         with tabs[2]:
-                            st.markdown("### Recommendations")
+                            st.markdown("### 建议")
                             recommendations_response = st.session_state.legal_team.run(
                                 f"""Based on this previous analysis:
                                 {response.content}
                                 
                                 What are your key recommendations based on the analysis, the best course of action?
-                                Provide specific recommendations from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
+                                Provide specific recommendations from: {', '.join(analysis_configs[analysis_type]['agents'])}。最后输出的内容必须是中文内容呈现，不要是英文"""
                             )
                             if recommendations_response.content:
                                 st.markdown(recommendations_response.content)
@@ -437,7 +437,7 @@ def main():
                     except Exception as e:
                         st.error(f"Error during analysis: {str(e)}")
     else:
-        st.info("Please upload a legal document to begin analysis")
+        st.info("请上传法律文件以开始分析")
 
 if __name__ == "__main__":
     main()

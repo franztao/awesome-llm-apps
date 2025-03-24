@@ -236,7 +236,7 @@ class ModelChain:
             reasoning_content, normal_content = deepseek_output
 
             # Create expander for Claude's response
-            with st.expander("🤖 Claude's Response", expanded=True):
+            with st.expander("🤖 LLM's Response", expanded=True):
                 response_placeholder = st.empty()
 
                 # Prepare the message with user input, reasoning and normal output
@@ -299,39 +299,39 @@ def main() -> None:
     """)
     # Add prompt guidance
     st.info("""
-    📝 For best results, structure your prompt with:
-    
-    1. **Project Context**: Brief description of your project/system
-    2. **Requirements**: Key functional and non-functional requirements
-    3. **Constraints**: Any technical, budget, or time constraints
-    4. **Scale**: Expected user base and growth projections
-    5. **Security/Compliance**: Any specific security or regulatory needs
-    
-    Example:
-    ```
-    I need to build a healthcare data management system that:
-    - Handles patient records and appointments
-    - Needs to scale to 10,000 users
-    - Must be HIPAA compliant
-    - Budget constraint of $50k for initial setup
-    - Should integrate with existing hospital systems
-    ```
+    📝 为了获得最佳效果，请按照以下方式组织您的提示：
+
+        1. **项目背景**：简要描述您的项目/系统
+        2. **要求**：关键功能性和非功能性要求
+        3. **限制**：任何技术、预算或时间限制
+        4. **规模**：预期用户群和增长预测
+        5. **安全/合规性**：任何特定的安全或监管需求
+        
+        示例：
+        ```
+        我需要构建一个医疗保健数据管理系统：
+        - 处理患者记录和预约
+        - 需要扩展到 10,000 名用户
+        - 必须符合 HIPAA 标准
+        - 初始设置的预算限制为 50,000 美元
+        - 应与现有医院系统集成
+        ```
     """)
 
     # Sidebar for API keys
     with st.sidebar:
-        st.header("⚙️ Configuration")
+        st.header("⚙️ API配置")
         # deepseek_api_key = st.text_input("DeepSeek API Key", type="password")
         # anthropic_api_key = st.text_input("Anthropic API Key", type="password")
         # Get OpenAI API key from user
-        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password",
+        openai_api_key = st.sidebar.text_input("LLM API Key", type="password",
                                                value=st.session_state.get('openai_api_key'))
-        openai_api_model_type = st.sidebar.text_input("OpenAI API Model Type",
+        openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                                       value=st.session_state.get('openai_api_model_type'))
-        openai_api_base_url = st.sidebar.text_input("OpenAI API Base URL",
+        openai_api_base_url = st.sidebar.text_input("LLM API Base URL",
                                                     value=st.session_state.get('openai_api_base_url'))
 
-        if st.button("🗑️ Clear Chat History"):
+        if st.button("🗑️ 清除对话历史"):
             st.session_state.messages = []
             st.rerun()
 
@@ -345,7 +345,7 @@ def main() -> None:
             st.markdown(message["content"])
 
     # Chat input
-    if prompt := st.chat_input("What would you like to know?"):
+    if prompt := st.chat_input("你想知道什么?"):
         if not openai_api_key or not openai_api_base_url or not openai_api_model_type:
             st.error("⚠️ Please enter both API keys in the sidebar.")
             return

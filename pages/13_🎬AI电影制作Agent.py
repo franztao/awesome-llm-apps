@@ -81,15 +81,15 @@ if openai_api_key and serpapi_api_key:
     )
 
     # Input field for the report query
-    movie_idea = st.text_area("Describe your movie idea in a few sentences:")
-    genre = st.selectbox("Select the movie genre:", 
+    movie_idea = st.text_area("用几句话描述你的电影创意：")
+    genre = st.selectbox("选择电影类型：",
                          ["Action", "Comedy", "Drama", "Sci-Fi", "Horror", "Romance", "Thriller"])
     target_audience = st.selectbox("Select the target audience:", 
                                    ["General", "Children", "Teenagers", "Adults", "Mature"])
-    estimated_runtime = st.slider("Estimated runtime (in minutes):", 60, 180, 120)
+    estimated_runtime = st.slider("预计运行时间（分钟）:", 60, 180, 120)
 
     # Process the movie concept
-    if st.button("Develop Movie Concept"):
+    if st.button("构思电影"):
         with st.spinner("Developing movie concept..."):
             input_text = (
                 f"Movie idea: {movie_idea}, Genre: {genre}, "

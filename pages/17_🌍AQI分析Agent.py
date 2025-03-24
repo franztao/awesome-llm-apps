@@ -51,7 +51,7 @@ class AQIAnalyzer:
         """Fetch AQI data using Firecrawl"""
         try:
             url = self._format_url(country, state, city)
-            st.info(f"Accessing URL: {url}")  # Display URL being accessed
+            st.info(f"访问网址: {url}")  # Display URL being accessed
             
             response = self.firecrawl.extract(
                 urls=[f"{url}/*"],
@@ -252,22 +252,22 @@ def render_sidebar():
             st.success("✅ API keys updated!")
 
 def render_main_content():
-    st.header("📍 Location Details")
+    st.header("📍 地点详情")
     col1, col2 = st.columns(2)
     
     with col1:
-        city = st.text_input("City", placeholder="e.g., Washington")
-        state = st.text_input("State", placeholder="If it's a Union Territory or a city in the US, leave it blank")
-        country = st.text_input("Country", value="USA", placeholder="United States")
+        city = st.text_input("城市", placeholder="e.g., Washington")
+        state = st.text_input("州", placeholder="如果是联邦属地或美国城市，请留空")
+        country = st.text_input("国家", value="USA", placeholder="United States")
     
     with col2:
-        st.header("👤 Personal Details")
+        st.header("👤 个人资料")
         medical_conditions = st.text_area(
-            "Medical Conditions (optional)",
+            "医疗状况（可选）",
             placeholder="e.g., asthma, allergies"
         )
         planned_activity = st.text_area(
-            "Planned Activity",
+            "计划活动",
             placeholder="e.g., morning jog for 2 hours"
         )
     
@@ -288,7 +288,7 @@ def main():
     
     result = None
     
-    if st.button("🔍 Analyze & Get Recommendations"):
+    if st.button("🔍 分析并获得建议"):
         if not all([user_input.city, user_input.planned_activity]):
             st.error("Please fill in all required fields (state and medical conditions are optional)")
         elif not all(st.session_state.api_keys.values()):
@@ -300,17 +300,17 @@ def main():
                         user_input=user_input,
                         api_keys=st.session_state.api_keys
                     )
-                    st.success("✅ Analysis completed!")
+                    st.success("✅ 分析完毕！")
             
             except Exception as e:
                 st.error(f"❌ Error: {str(e)}")
 
     if result:
-        st.markdown("### 📦 Recommendations")
+        st.markdown("### 📦 建议")
         st.markdown(result)
         
         st.download_button(
-            "💾 Download Recommendations",
+            "💾  下载建议",
             data=result,
             file_name=f"aqi_recommendations_{user_input.city}_{user_input.state}.txt",
             mime="text/plain"

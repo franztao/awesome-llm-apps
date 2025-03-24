@@ -38,8 +38,20 @@ st.set_page_config(
 st.write("# 欢迎使用 沐曦Agent智能体! 👋")
 # st.write(
 #     "A curated collection of awesome LLM apps built with RAG and AI agents. This repository features LLM apps that use models from OpenAI, Anthropic, Google, and open-source models like DeepSeek, Qwen or Llama that you can run locally on your computer.")
-st.write(
-    "精选的 LLM 应用集合，使用 RAG 和 AI Agent构建。此存储库包含使用 OpenAI、Anthropic、Google 的模型以及 DeepSeek、Qwen 或 Llama 等开源模型的 LLM 应用，您可以在计算机上本地运行这些应用。")
+st.markdown(
+    """以下是一组精选的Agent应用集合，您可以在本地计算机上运行这些应用。配置方式灵活可选：
+
+### 全局配置（推荐）：
+- 在通用配置栏中一次性完成基础设置
+- 所有Agent将自动共享这些配置参数
+
+### 独立配置：
+- 每个Agent都有专属的配置栏
+- 可单独进行个性化设置
+
+提示：您也可以混合使用这两种方式 - 先设置全局配置，再为特定Agent进行单独调整。
+
+# 通用配置栏""")
 
 st.sidebar.success("在上方选择一个演示。")
 # st.markdown(
@@ -61,6 +73,7 @@ st.header("API Keys")
 
 # OpenAILike(id=st.session_state.openai_api_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url)
 openai_api_key = st.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+st.caption(" Get your LLM API key from [LLM's website](https://ai.gitee.com/serverless-api/packages/1492)")
 st.session_state['openai_api_key'] = openai_api_key
 openai_api_model_type = st.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
@@ -84,19 +97,28 @@ st.session_state['composio_api_key'] = composio_api_key
 st.caption(" Get your Composio API key from [Composio's website](https://composio.ai)")
 
 perplexity_api_key = st.text_input("Perplexity API Key", type="password", value=st.session_state.get('perplexity_api_key'))
+st.caption(" Get your perplexity API key from [perplexity's website](https://www.perplexity.ai/settings/api)")
 st.session_state['perplexity_api_key'] = perplexity_api_key
 exa_api_key = st.text_input("Exa API Key", type="password", value=st.session_state.get('exa_api_key'))
+st.caption(" Get your exa API key from [exa's website](https://dashboard.exa.ai/api-keys)")
 st.session_state['exa_api_key'] = exa_api_key
 
 serpapi_api_key = st.text_input("Enter your SerpAPI Key", type="password", value=st.session_state.get('serpapi_api_key'))
+st.caption(" Get your serpapi API key from [exa's website](https://serpapi.com/manage-api-key)")
 st.session_state['serpapi_api_key'] = serpapi_api_key
 
 e2b_key = st.text_input("E2B API Key", value=st.session_state.get('e2b_key'),
                                          type="password")
+st.caption(" Get your e2b API key from [e2b's website](https://e2b.dev/docs)")
 st.session_state['e2b_key'] = e2b_key
 #
 
 st.subheader("Zoom Settings")
+st.markdown("""
+- 创建/使用 Zoom 帐户并前往 Zoom 应用市场获取 API 凭据：[Zoom 市场](https://marketplace.zoom.us/)
+- 前往开发者仪表板并创建一个新应用程序 - 选择服务器到服务器 OAuth 并获取凭据，您会看到 3 个凭据 - 客户端 ID、客户端密钥和帐户 ID之后，您需要向应用程序添加一些范围 - 以便通过邮件发送和创建候选人的缩放链接。
+- 范围是meeting:write:invite_links:admin, meeting:write:meeting:admin, meeting:write:meeting:master, meeting:write:invite_links:master, meeting:write:open_app:admin, user:read:email:admin, user:read:list_users:admin, billing:read:user_entitlement:admin, dashboard:read:list_meeting_participants:admin
+""")
 zoom_account_id = st.text_input("Zoom Account ID", type="password", value=st.session_state.get('zoom_account_id'))
 st.session_state['zoom_account_id'] = zoom_account_id
 zoom_client_id = st.text_input("Zoom Client ID", type="password", value=st.session_state.get('zoom_client_id'))
@@ -106,6 +128,12 @@ zoom_client_secret = st.text_input("Zoom Client Secret", type="password",
 st.session_state['zoom_client_secret'] = zoom_client_secret
 
 st.subheader("Email Settings")
+st.markdown("""
+- 为招聘人员创建/使用新的 Gmail 帐户
+- 启用两步验证并为 Gmail 帐户生成[应用密码](https://support.google.com/accounts/answer/185833?hl=en)
+- 应用密码是一个 16 位代码（不带空格），应在此处生成 - Google 应用密码请按照以下步骤生成密码 - 其格式为 - “afec wejf awoj fwrv”（删除空格并将其输入到 streamlit 应用程序中）
+""")
+
 email_sender = st.text_input("Sender Email", value=st.session_state.get('email_sender'),
                              help="Email address to send from")
 st.session_state['email_sender'] = email_sender
@@ -121,6 +149,7 @@ qdrant_url = st.text_input("qdrant_url", value=st.session_state.get('qdrant_url'
 st.session_state['qdrant_url'] = qdrant_url
 qdrant_api_key = st.text_input("qdrant_api_key", value=st.session_state.get('qdrant_api_key'))
 st.session_state['qdrant_api_key'] = qdrant_api_key
+st.caption(" Get your qdrant API key from [e2b's website](https://login.cloud.qdrant.io/)")
 
 
 # st.session_state['openai_api_model_type'] = "Qwen2.5-Coder-32B-Instruct"
@@ -141,7 +170,7 @@ st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'
 st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'
 
-st.session_state['e2b_key'] = 'sk_e2b_cd993c89f425970130e118828cfd78dbbad08394'
+st.session_state['e2b_key'] = 'e2b_9c69f27d0275b14a5c70ee75c7c819d34e098bf4'
 # zoom_tools = CustomZoomTool(
 #     account_id='CRGZvs0ARnaGntbxJuFjbw',
 #     client_id='dmp7GbYhSICJERYeIF5M6w',

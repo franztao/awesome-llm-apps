@@ -44,9 +44,9 @@ def setup_sidebar() -> None:
 
 def create_agents() -> tuple[Agent, Agent, Agent]:
     vision_agent = Agent(
-        model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url),
-        markdown=True,
-                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"
+        model=OpenAILike(id=st.session_state.openai_api_vlm_model_type, api_key=st.session_state.openai_api_key,base_url=st.session_state.openai_api_base_url,
+                system_prompt="最后输出的内容必须是中文内容呈现，不要是英文"),
+        markdown=True
     )
 
     coding_agent = Agent(

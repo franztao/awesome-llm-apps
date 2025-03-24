@@ -49,7 +49,7 @@ A Streamlit application that simulates a full-service recruitment team using mul
 
 3. **Run the Application**
    ```bash
-   streamlit run ai_recruitment_agent_team.py
+   streamlit run 3_💼AI招聘Agent团队.py
    ```
 
 ## System Components

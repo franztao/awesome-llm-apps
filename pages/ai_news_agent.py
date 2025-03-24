@@ -11,7 +11,7 @@ client = Swarm()
 st.set_page_config(page_title="AI News Processor", page_icon="📰")
 st.title("📰 多Agent AI 新闻助手")
 st.markdown("""
-这款 Streamlit 应用程序实现了复杂的新闻处理管道，使用多个专门的 AI Agent来搜索、合成和总结新闻文章。它通过 LLM 和 DuckDuckGo 搜索利用大模型来提供全面的新闻分析。
+这款 Agent  应用程序实现了复杂的新闻处理管道，使用多个专门的 AI Agent来搜索、合成和总结新闻文章。它通过 LLM 和 DuckDuckGo 搜索利用大模型来提供全面的新闻分析。
 ### 特征
 - 具有专门角色的多Agent架构：
   - 新闻搜索器：查找最近的新闻文章

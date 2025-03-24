@@ -1,31 +1,37 @@
 import streamlit as st
-
+# from pages import ai_investment_agent
 st.set_page_config(
     page_title="沐曦Agent智能体",
     page_icon="👋",
 )
 
-st.sidebar.page_link(r"pages/ai_investment_agent.py", label="👨📈 AI智能投资Agent")
-st.sidebar.page_link(r"pages/ai_legal_agent_team.py", label="👨‍⚖️ AI法律agent团队")
-st.sidebar.page_link(r"pages/ai_recruitment_agent_team.py", label="👨💼 AI招聘Agent团队")
-st.sidebar.page_link(r"pages/ai_competitor_agent_team.py", label="🧲 AI竞争对手情报Agent团队")
-st.sidebar.page_link(r"pages/ai_health_agent.py", label="️‍♂️ AI 健康与健身规划Agent")
-st.sidebar.page_link(r"pages/ai_startup_trends_agent.py", label="️📈 AI初创企业趋势分析Agent")
-st.sidebar.page_link(r"pages/ai_journalist_agent.py", label="️🗞️ AI记者Agent")
-st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨🎯 AI潜在客户生成Agent")
-st.sidebar.page_link(r"pages/ai_finance_agent.py", label="💰 AI个人财务Agent")
-st.sidebar.page_link(r"pages/ai_medical_imaging.py", label="🩻 AI医学影像诊断Agent")
-st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI教学Agent团队")
-st.sidebar.page_link(r"pages/ai_travel_agent.py", label="🛫 AI智能旅行社")
-st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作Agent")
-st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码Agent团队")
-# st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备Agent")
-st.sidebar.page_link(r"pages/ai_chess_agent.py", label="♜ 白Agent vs 黑Agent：棋局对决")
-st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房地产经纪人")
-# st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI Agent")
-st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析Agent")
-# st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持Agent")
-st.sidebar.page_link(r"pages/ai_system_architect.py", label="🤖AI 系统架构师顾问")
+# page1 = st.Page("pages/1_📈AI智能投资Agent.py", title="页面1")
+# page2 = st.Page("pages/2_‍⚖️AI法律agent团队.py", title="页面2")
+#
+# pg = st.navigation([page1, page2])
+# pg.run()
+
+# st.sidebar.page_link(r"pages/1_📈AI智能投资Agent.py", label="👨📈AI智能投资Agent")
+# st.sidebar.page_link(r"pages/2_‍⚖️AI法律agent团队.py", label="👨‍⚖️AI法律agent团队")
+# st.sidebar.page_link(r"pages/3_💼AI招聘Agent团队.py", label="👨💼AI招聘Agent团队")
+# st.sidebar.page_link(r"pages/4_🧲AI竞争对手情报Agent团队.py", label="🧲AI竞争对手情报Agent团队")
+# st.sidebar.page_link(r"pages/5_♂️AI健康与健身规划Agent.py", label="️‍♂️AI健康与健身规划Agent")
+# st.sidebar.page_link(r"pages/6_📈AI初创企业趋势分析Agent.py", label="️📈AI初创企业趋势分析Agent")
+# st.sidebar.page_link(r"pages/ai_journalist_agent.py", label="️🗞️ AI记者Agent")
+# st.sidebar.page_link(r"pages/ai_lead_generation_agent.py", label="👨🎯 AI潜在客户生成Agent")
+# st.sidebar.page_link(r"pages/ai_finance_agent.py", label="💰 AI个人财务Agent")
+# st.sidebar.page_link(r"pages/ai_medical_imaging.py", label="🩻 AI医学影像诊断Agent")
+# st.sidebar.page_link(r"pages/ai_teaching_agent_team.py", label="👨‍🏫 AI教学Agent团队")
+# st.sidebar.page_link(r"pages/ai_travel_agent.py", label="🛫 AI智能旅行社")
+# st.sidebar.page_link(r"pages/ai_movie_production_agent.py", label="🎬 AI 电影制作Agent")
+# st.sidebar.page_link(r"pages/ai_coding_agent_o3.py", label="💻 多模态 AI 编码Agent团队")
+# # st.sidebar.page_link(r"pages/ai_meeting_agent.py", label="📝 AI 会议准备Agent")
+# st.sidebar.page_link(r"pages/ai_chess_agent.py", label="♜ 白Agent vs 黑Agent：棋局对决")
+# st.sidebar.page_link(r"pages/ai_real_estate_agent.py", label="🏠 AI智能房地产经纪人")
+# # st.sidebar.page_link(r"pages/ai_mutimodal_agent.py", label="🧬 多模态 AI Agent")
+# st.sidebar.page_link(r"pages/ai_aqi_analysis_agent.py", label="🌍 AQI 分析Agent")
+# # st.sidebar.page_link(r"pages/ai_customer_support_agent.py", label="🛒 AI 客户支持Agent")
+# st.sidebar.page_link(r"pages/ai_system_architect.py", label="🤖AI 系统架构师顾问")
 
 
 

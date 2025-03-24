@@ -11,7 +11,7 @@ from agno.tools.serpapi import SerpApiTools
 st.title("🗞️ AI记者Agent")
 # st.caption("Generate High-quality articles with AI Journalist by researching, wriritng and editing quality articles on autopilot using GPT-4o")
 st.markdown("""
-这款 Streamlit 应用是一款由人工智能驱动的记者Agent，可使用LLM生成高质量文章。它可以自动执行研究、撰写和编辑文章的过程，让您轻松创建任何主题的引人入胜的内容。
+这款 Agent  应用是一款由人工智能驱动的记者Agent，可使用LLM生成高质量文章。它可以自动执行研究、撰写和编辑文章的过程，让您轻松创建任何主题的引人入胜的内容。
 ### 特征
 - 在网络上搜索关于特定主题的相关信息
 - 撰写结构良好、内容丰富且引人入胜的文章

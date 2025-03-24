@@ -8,7 +8,7 @@ from agno.models.openai import OpenAIChat, OpenAILike
 st.title("AI智能旅行社 ✈️")
 # st.caption("Plan your next adventure with AI Travel Planner by researching and planning a personalized itinerary on autopilot using GPT-4o")
 st.markdown("""
-这款 Streamlit 应用是一款人工智能旅行社，可使用LLM生成个性化旅行行程。它可自动完成您研究、规划和组织梦想假期的过程，让您轻松探索令人兴奋的目的地。
+这款 Agent  应用是一款人工智能旅行社，可使用LLM生成个性化旅行行程。它可自动完成您研究、规划和组织梦想假期的过程，让您轻松探索令人兴奋的目的地。
 ### 特征
 - 研究并发现令人兴奋的旅游目的地、活动和住宿
 - 根据你想要旅行的天数定制你的行程

@@ -10,7 +10,7 @@ from textwrap import dedent
 st.title("🎬 AI 电影制作Agent")
 # st.caption("Bring your movie ideas to life with the teams of script writing and casting AI agents")
 st.markdown("""
-这款 Streamlit 应用是一款人工智能电影制作助手，它使用LLM帮助您将电影创意变为现实。它可自动执行剧本编写和选角流程，让您轻松创作引人入胜的电影概念。
+这款 Agent  应用是一款人工智能电影制作助手，它使用LLM帮助您将电影创意变为现实。它可自动执行剧本编写和选角流程，让您轻松创作引人入胜的电影概念。
 ### 特征
 - 根据您的电影创意、类型和目标观众生成剧本大纲
 - 根据演员过往表现和当前空闲时间，推荐适合主要角色的演员

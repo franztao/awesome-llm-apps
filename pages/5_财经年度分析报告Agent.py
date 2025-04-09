@@ -5,7 +5,7 @@ import autogen
 from textwrap import dedent
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(__file__)), "code_fin","FinRobot"))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(__file__)), "code_fin", "FinRobot"))
 print(sys.path)
 from code_fin.FinRobot.finrobot.utils import register_keys_from_json
 from code_fin.FinRobot.finrobot.agents.workflow import SingleAssistantShadow
@@ -26,34 +26,39 @@ def st_display_pdf(pdf_file):
 st.title("财经年度分析报告Agent")
 # st.caption("Get the latest trend analysis and startup opportunities based on your topic of interest in a click!.")
 st.markdown("""
-AI 创业趋势分析Agent是一款面向新兴企业家的工具，可通过识别新兴趋势、潜在市场空白和特定行业的增长机会来生成可操作的见解。企业家可以利用这些数据驱动的见解来验证想法、发现市场机会并对其创业项目做出明智的决策。它结合 Newspaper4k 和 DuckDuckGo 来扫描和分析以创业公司为重点的文章和市场数据。它使用LLM 来处理这些信息以提取新兴模式并使企业家能够识别有前途的创业机会。
-  ### 特征
-  - **用户提示**：创业者可以输入自己感兴趣的具体创业领域或者技术进行研究。
-  - **新闻收集**：该Agent使用 DuckDuckGo 收集最近的创业新闻、融资轮次和市场分析。
-  - **摘要生成**：使用 Newspaper4k 生成已验证信息的简明摘要。
-  - **趋势分析**：系统通过分析的故事识别初创企业资金、技术采用和市场机会方面的新兴模式。
-  - **Streamlit UI**：该应用程序具有使用 Streamlit 构建的用户友好界面，可轻松进行交互。
+财经年度分析报告Agent是一款基于Streamlit的交互式应用，帮助用户快速生成专业财经年度分析报告。它提供数据可视化、关键指标分析和自动化报告生成功能，支持多种财经数据类型，适用于投资者、分析师和企业决策者，简化财经数据分析流程，提升报告效率。
   """)
 
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
+                                              value=st.session_state.get('openai_api_model_type'))
+openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 
-def get_report(company, fyear):
+
+def get_report(company, fyear, openai_api_key, openai_api_model_type, openai_api_base_url):
     llm_config = {
-        "config_list": autogen.config_list_from_json(
-            r"C:\Users\m01216.METAX-TECH\Desktop\code\awesome-llm-apps\code_fin\FinRobot\OAI_CONFIG_LIST",
-            filter_dict={
-                "model": ["deepseek/deepseek-chat"],
-            },
-        ),
+        "config_list": [
+
+            {
+                "model": openai_api_model_type,
+                "api_key": openai_api_key,
+                "base_url": openai_api_base_url
+            }
+        ],
         "timeout": 120,
         "temperature": 0.5,
         # "max_tokens": 8192
     }
+    print(llm_config)
+
     register_keys_from_json(
-        r"C:\Users\m01216.METAX-TECH\Desktop\code\awesome-llm-apps\code_fin\FinRobot\config_api_keys")
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "code_fin", "FinRobot", "config_api_keys"))
+    # register_keys_from_json(
+    #     r"C:\Users\m01216.METAX-TECH\Desktop\code\awesome-llm-apps\code_fin\FinRobot\config_api_keys")
 
     # Intermediate results will be saved in this directory
 
-    work_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "report0408")
+    work_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "_".join([company, fyear]))
     os.makedirs(work_dir, exist_ok=True)
 
     assistant = SingleAssistantShadow(
@@ -80,10 +85,6 @@ def get_report(company, fyear):
     return work_dir
 
 
-openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
-                                              value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 if openai_api_key:
 
     # company = "Microsoft"
@@ -91,17 +92,20 @@ if openai_api_key:
     col1, col2 = st.columns(2)
     with col1:
         # stock1 = st.text_input("Enter first stock symbol (e.g. AAPL)")
-        stock1 = st.text_input("company (e.g. Microsoft)")
+        stock1 = st.text_input("公司 (e.g. Microsoft)", "Microsoft")
     with col2:
         # stock2 = st.text_input("Enter second stock symbol (e.g. MSFT)")
-        stock2 = st.text_input("fyear (e.g. 2023)")
+        stock2 = st.text_input("年份 (e.g. 2023)", "2023")
 
     if stock1 and stock2:
-        with st.spinner(f"Analyzing {stock1} and {stock2}..."):
-            paths = get_report(stock1, stock2)
-
-        fs = os.listdir(paths)
-        for f in fs:
-            if f.endswith(".pdf"):
-                st.subheader("生成的分析报告")
-                st_display_pdf(os.path.join(paths, f))
+        if st.button("生成报告"):
+            with st.spinner(f"分析公司{stock1}和年份{stock2}（大约需要5分钟，请耐心等候）..."):
+                paths = get_report(stock1, stock2, openai_api_key, openai_api_model_type, openai_api_base_url)
+            # paths = r'C:\Users\m01216.METAX-TECH\Downloads\FinRobot-master\FinRobot-master\report'
+            fs = os.listdir(paths)
+            for f in fs:
+                if f.endswith(".pdf"):
+                    print(f)
+                    print("生成的分析报告")
+                    st.subheader("生成的分析报告")
+                    st_display_pdf(os.path.join(paths, f))

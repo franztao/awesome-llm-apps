@@ -31,7 +31,7 @@ stock_symbol = st.text_input("输入股票代码 (e.g., AAPL):", "AAPL")
 
 if st.button("分析股票"):
     # Run CrewAI analysis
-    with st.spinner("全面的股票分析进行中（大约需要5分钟）..."):
+    with st.spinner("全面的股票分析进行中（大约需要5分钟，请耐心等候）..."):
         result = run_analysis(stock_symbol,openai_api_base_url,openai_api_model_type,openai_api_key)
 
     # Parse the result

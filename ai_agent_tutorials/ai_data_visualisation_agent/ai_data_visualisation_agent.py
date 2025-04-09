@@ -19,7 +19,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
 pattern = re.compile(r"```python\n(.*?)\n```", re.DOTALL)
 
 def code_interpret(e2b_code_interpreter: Sandbox, code: str) -> Optional[List[Any]]:
-    with st.spinner('Executing code in E2B sandbox...'):
+    with st.spinner('Executing code_fin in E2B sandbox...'):
         stdout_capture = io.StringIO()
         stderr_capture = io.StringIO()
 
@@ -51,8 +51,8 @@ def match_code_blocks(llm_response: str) -> str:
 def chat_with_llm(e2b_code_interpreter: Sandbox, user_message: str, dataset_path: str) -> Tuple[Optional[List[Any]], str]:
     # Update system prompt to include dataset path information
     system_prompt = f"""You're a Python data scientist and data visualization expert. You are given a dataset at path '{dataset_path}' and also the user's query.
-You need to analyze the dataset and answer the user's query with a response and you run Python code to solve them.
-IMPORTANT: Always use the dataset path variable '{dataset_path}' in your code when reading the CSV file."""
+You need to analyze the dataset and answer the user's query with a response and you run Python code_fin to solve them.
+IMPORTANT: Always use the dataset path variable '{dataset_path}' in your code_fin when reading the CSV file."""
 
     messages = [
         {"role": "system", "content": system_prompt},
@@ -73,7 +73,7 @@ IMPORTANT: Always use the dataset path variable '{dataset_path}' in your code wh
             code_interpreter_results = code_interpret(e2b_code_interpreter, python_code)
             return code_interpreter_results, response_message.content
         else:
-            st.warning(f"Failed to match any Python code in model's response")
+            st.warning(f"Failed to match any Python code_fin in model's response")
             return None, response_message.content
 
 def upload_dataset(code_interpreter: Sandbox, uploaded_file) -> str:

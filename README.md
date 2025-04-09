@@ -140,3 +140,5 @@ Contributions are welcome! If you have any ideas, improvements, or new apps to a
 docker run -it  -w /qdrant -p 6333:6333 -p 6334:6334 -p 8501:8501 -p 8502:8502 -p 8503:8503  \
     -v "$(pwd)/qdrant_storage:/qdrant/storage:z" -v /home/hengtao:/home/hengtao --shm-size 16G d936dd218d4f  \
     qdrant/qdrant
+
+docker commit -a "taoheng" -m "agent0324" 02c7e9fceb45 awesome-llm-apps:v1

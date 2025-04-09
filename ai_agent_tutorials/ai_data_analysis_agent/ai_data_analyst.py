@@ -97,7 +97,7 @@ if uploaded_file is not None and "openai_key" in st.session_state:
             system_prompt="You are an expert data analyst. Generate SQL queries to solve the user's query. Return only the SQL query, enclosed in ```sql ``` and give the final answer.",
         )
         
-        # Initialize code storage in session state
+        # Initialize code_fin storage in session state
         if "generated_code" not in st.session_state:
             st.session_state.generated_code = None
         

@@ -34,10 +34,10 @@ with st.sidebar:
     📝 How to use:
     1. Enter your API keys above
     2. Write your PyGame visualization query
-    3. Click 'Generate Code' to get the code
+    3. Click 'Generate Code' to get the code_fin
     4. Click 'Generate Visualization' to:
        - Open Trinket.io PyGame editor
-       - Copy and paste the generated code
+       - Copy and paste the generated code_fin
        - Watch it run automatically
     """)
 
@@ -67,8 +67,8 @@ if generate_code_btn and query:
     )
 
     system_prompt = """You are a Pygame and Python Expert that specializes in making games and visualisation through pygame and python programming. 
-    During your reasoning and thinking, include clear, concise, and well-formatted Python code in your reasoning. 
-    Always include explanations for the code you provide."""
+    During your reasoning and thinking, include clear, concise, and well-formatted Python code_fin in your reasoning. 
+    Always include explanations for the code_fin you provide."""
 
     try:
         # Get reasoning from Deepseek
@@ -97,19 +97,19 @@ if generate_code_btn and query:
             markdown=True
         )
 
-        # Extract code
-        extraction_prompt = f"""Extract ONLY the Python code from the following content which is reasoning of a particular query to make a pygame script. 
-        Return nothing but the raw code without any explanations, or markdown backticks:
+        # Extract code_fin
+        extraction_prompt = f"""Extract ONLY the Python code_fin from the following content which is reasoning of a particular query to make a pygame script. 
+        Return nothing but the raw code_fin without any explanations, or markdown backticks:
         {reasoning_content}"""
 
-        with st.spinner("Extracting code..."):
+        with st.spinner("Extracting code_fin..."):
             code_response = openai_agent.run(extraction_prompt)
             extracted_code = code_response.content
 
-        # Store the generated code in session state
+        # Store the generated code_fin in session state
         st.session_state.generated_code = extracted_code
         
-        # Display the code
+        # Display the code_fin
         with st.expander("Generated PyGame Code", expanded=True):      
             st.code(extracted_code, language="python")
             
@@ -120,7 +120,7 @@ if generate_code_btn and query:
 
 elif generate_vis_btn:
     if "generated_code" not in st.session_state:
-        st.warning("Please generate code first before visualization")
+        st.warning("Please generate code_fin first before visualization")
     else:
         async def run_pygame_on_trinket(code: str) -> None:
             browser = Browser()
@@ -138,13 +138,13 @@ elif generate_vis_btn:
                 )
                 
                 executor = Agent(
-                    task='Executor. Execute the code written by the User by clicking on the run button on the right. ',
+                    task='Executor. Execute the code_fin written by the User by clicking on the run button on the right. ',
                     llm=model,
                     browser_context=context
                 )
 
                 coder = Agent(
-                    task='Coder. Your job is to wait for the user for 10 seconds to write the code in the code editor.',
+                    task='Coder. Your job is to wait for the user for 10 seconds to write the code_fin in the code_fin editor.',
                     llm=model,
                     browser_context=context
                 )
@@ -155,7 +155,7 @@ elif generate_vis_btn:
                     browser_context=context,
                 )
 
-                with st.spinner("Running code on Trinket..."):
+                with st.spinner("Running code_fin on Trinket..."):
                     try:
                         await agent1.run()
                         await coder.run()
@@ -163,11 +163,11 @@ elif generate_vis_btn:
                         await viewer.run()
                         st.success("Code is running on Trinket!")
                     except Exception as e:
-                        st.error(f"Error running code on Trinket: {str(e)}")
-                        st.info("You can still copy the code above and run it manually on Trinket")
+                        st.error(f"Error running code_fin on Trinket: {str(e)}")
+                        st.info("You can still copy the code_fin above and run it manually on Trinket")
 
-        # Run the async function with the stored code
+        # Run the async function with the stored code_fin
         asyncio.run(run_pygame_on_trinket(st.session_state.generated_code))
 
 elif generate_code_btn and not query:
-    st.warning("Please enter a query before generating code")
+    st.warning("Please enter a query before generating code_fin")

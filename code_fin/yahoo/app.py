@@ -20,6 +20,11 @@ def load_app():
     st.set_page_config(layout="wide")
 
 
+    openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
+    openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
+                                                  value=st.session_state.get('openai_api_model_type'))
+    openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
+
     def register_tools():
         if not hasattr(tool_registry, "_is_registered"):
             tool_registry.register_tool("get_stock_info", get_stock_info)
@@ -44,12 +49,12 @@ def load_app():
     tools = tool_registry.get_tools()
 
     # Sidebar for selecting the OpenAI model
-    st.sidebar.markdown("### Select OpenAI Model")
-    model_options = ["gpt-4o", "gpt-4o-mini", "gpt-3.5-turbo-0125"]
-    selected_model = st.sidebar.selectbox("Choose a model:", model_options, index=model_options.index("gpt-3.5-turbo-0125"))
+    # st.sidebar.markdown("### Select OpenAI Model")
+    # model_options = ["gpt-4o", "gpt-4o-mini", "gpt-3.5-turbo-0125"]
+    # selected_model = st.sidebar.selectbox("Choose a model:", model_options, index=model_options.index("gpt-3.5-turbo-0125"))
 
     # Create the agent chain
-    agent_chain = create_chain(tools, model=selected_model)
+    agent_chain = create_chain(tools,openai_api_base_url,openai_api_model_type,openai_api_key)
 
     # Create the memory for storing conversation history
     memory = ConversationBufferMemory(return_messages=True, memory_key="chat_history")
@@ -57,54 +62,54 @@ def load_app():
     # Create the agent executor
     agent_executor = AgentExecutor(agent=agent_chain, tools=tools, verbose=True, memory=memory)
 
-    st.title("Yahoo Finance Agent")
+    st.title("实时财经洞察Agent")
 
     st.markdown("""
-    Welcome to the Finance Insights Assistant! This application leverages OpenAI, Langchain Agents and the Yahoo Finance Python library to provide you with up-to-date financial data and insights. Whether you're interested in stock prices, company financials, or the latest news, this assistant is here to help.
+    欢迎使用实时财经洞察助手！此应用程序利用 LLM、Langchain Agents 和 Yahoo Finance Python 库为您提供最新的财务数据和洞察。无论您对股票价格、公司财务状况还是最新消息感兴趣，此助手都可以为您提供帮助。
     
-    ##### Features:
-    - **Stock Information**: Get detailed information about any stock, including historical data and recent news.
-    - **Financial Statements**: Access income statements, balance sheets, and cash flow statements, both annual and quarterly.
-    - **Options Data**: Explore available options expiration dates and detailed options chains.
-    - **Holders and Recommendations**: View information about major holders, insider transactions, and analyst recommendations.
+    ##### 功能：
+    - **股票信息**：获取有关任何股票的详细信息，包括历史数据和最新消息。
+    - **财务报表**：访问年度和季度损益表、资产负债表和现金流量表。
+    - **期权数据**：探索可用的期权到期日和详细的期权链。
+    - **持有人和建议**：查看有关主要持有人、内幕交易和分析师建议的信息。
     """)
 
     # Sidebar for Sample Questions
-    st.sidebar.markdown("### Sample Questions")
+    st.sidebar.markdown("### 示例问题")
     sample_questions = {
-        "Stock Information": [
-            "Give me information about Microsoft"
-            "What is the current price of Apple?",
-            "Give me the historical data for Tesla over the last month.",
-            "What are the latest news articles for Microsoft?"
+        "股票信息": [
+            "给我关于微软的信息"
+            "苹果现在的价格是多少？",
+            "给我特斯拉过去一个月的历史数据",
+            "微软的最新新闻文章是什么？"
         ],
-        "Financial Statements": [
-            "Show me the latest income statement for Google.",
-            "What is the quarterly cash flow for Amazon?",
-            "Can you provide the annual balance sheet for Facebook?",
-            "Please provide the quarterly balance sheet for Amazon."
+        "财务报表": [
+            "给我看看谷歌的最新损益表",
+            "亚马逊的季度现金流是多少？",
+            "你能提供 Facebook 的年度资产负债表吗？",
+            "请提供亚马逊的季度资产负债表"
         ],
-        "Splits and Dividends": [
-            "Give me dividends and splits for Goldman Sachs",
-            "Give me splits for apple",
-            "Give me dividends for cocacola"
+        "拆分和股息": [
+            "给我高盛的股息和拆分",
+            "给我苹果的拆分",
+            "给我可口可乐的股息"
         ],
-        "Shares Count": [
-            "Tell me the number of Microsoft shares outstanding since January 1, 2022.",
-            "How many shares did Microsoft have outstanding between January 1, 2022, and December 31, 2022?",
-            "What is the most recent number of Microsoft shares outstanding?",
+        "股票数量": [
+            "告诉我自 2022 年 1 月 1 日以来微软的流通股数量",
+            "微软有多少股微软在 2022 年 1 月 1 日至 2022 年 12 月 31 日期间有多少未偿还的股票？",
+            "微软最近未偿还的股票数量是多少？",
         ],
-        "Options Data": [
-            "What are the available options expiration dates for Apple?",
-            "Show me the options chain for Tesla expiring on 2024-01-19."
+        "期权数据": [
+            "苹果有哪些期权到期日？",
+            "请向我展示 2024-01-19 到期的特斯拉期权链"
         ],
-        "Holders and Recommendations": [
-            "Who are the major holders of Netflix?",
-            "Which mutual funds hold the most shares in Amazon?",
-            "What are the recent analyst recommendations for Tesla?",
-            "Show me the recent insider transactions for Microsoft.",
-            "What are the sustainability scores for Google?",
-            "Can you provide a summary of the latest recommendations for Tesla?"
+        "持有人和推荐": [
+            "Netflix 的主要持有者是谁？",
+            "哪些共同基金持有亚马逊的股份最多？",
+            "分析师最近对特斯拉有什么建议？",
+            "请向我展示微软最近的内幕交易",
+            "谷歌的可持续性得分是多少？",
+            "您能提供特斯拉最新建议的摘要吗？"
         ]
     }
 
@@ -118,7 +123,7 @@ def load_app():
     # TODO: Accept OpenAI API key as input in sidebar
 
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [ChatMessage(role="assistant", content="How can I help you?")]
+        st.session_state["messages"] = [ChatMessage(role="assistant", content="我能帮你什么？")]
 
     # Display the chat messages already in the session state
     for msg in st.session_state.messages:

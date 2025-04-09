@@ -5,13 +5,13 @@ st.set_page_config(
     page_icon="👋",
 )
 
-# page1 = st.Page("pages/1_智能投资Agent.py", title="页面1")
+# page1 = st.Page("pages/2_智能选股投资Agent.py", title="页面1")
 # page2 = st.Page("pages/2_‍⚖️AI法律agent团队.py", title="页面2")
 #
 # pg = st.navigation([page1, page2])
 # pg.run()
 
-# st.sidebar.page_link(r"pages/1_智能投资Agent.py", label="📈AI智能投资Agent")
+# st.sidebar.page_link(r"pages/2_智能选股投资Agent.py", label="📈AI智能投资Agent")
 # st.sidebar.page_link(r"pages/2_‍⚖️AI法律agent团队.py", label="👨‍⚖️AI法律agent团队")
 # st.sidebar.page_link(r"pages/3_💼AI招聘Agent团队.py", label="💼AI招聘Agent团队")
 # st.sidebar.page_link(r"pages/4_🧲AI竞争对手情报Agent团队.py", label="🧲AI竞争对手情报Agent团队")
@@ -159,13 +159,19 @@ st.session_state['openai_api_key'] = openai_api_key
 # st.session_state['openai_api_embedding_model_type'] = "bge-large-zh-v1.5"
 # st.session_state['openai_api_vlm_model_type'] = "Qwen2-VL-72B"
 
-
-
-st.session_state['openai_api_model_type'] = "qwen-plus"
-st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
-st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+st.session_state['openai_api_model_type'] = "DeepSeek-R1"
+st.session_state['openai_api_key'] = 'XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6'
+st.session_state['openai_api_base_url'] = 'https://ai.gitee.com/v1'
 st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
 st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
+
+
+# st.session_state['openai_api_model_type'] = "qwen-plus"
+# st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
+# st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+# st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
+# st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
+
 
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'
 st.session_state['composio_api_key'] = '8fsy14yf2vd3nuekyc03g5'

@@ -6,12 +6,16 @@ from langchain.prompts import MessagesPlaceholder
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.agents.format_scratchpad import format_to_openai_functions
 
-def create_chain(tools, model="gpt-3.5-turbo-0125"):
+def create_chain(tools, openai_api_base_url,openai_api_model_type,openai_api_key):
     functions = [format_tool_to_openai_function(f) for f in tools]
     
     # TODO: use better model with larger context window
-    model = ChatOpenAI(model="DeepSeek-R1",base_url="https://ai.gitee.com/v1",api_key="XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6", temperature=0).bind(functions=functions)
-
+    # model = ChatOpenAI(model="DeepSeek-R1",base_url="https://ai.gitee.com/v1",api_key="XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6", temperature=0).bind(functions=functions)
+    model = ChatOpenAI(
+        model=openai_api_model_type,
+        base_url=openai_api_base_url,
+        api_key=openai_api_key
+    , temperature=0).bind(functions=functions)
     # client = OpenAI(
     #     base_url="https://ai.gitee.com/v1",
     #     # base_url="https://api.deepseek.com",

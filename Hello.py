@@ -16,7 +16,7 @@ st.set_page_config(
 # st.sidebar.page_link(r"pages/3_💼AI招聘Agent团队.py", label="💼AI招聘Agent团队")
 # st.sidebar.page_link(r"pages/4_🧲AI竞争对手情报Agent团队.py", label="🧲AI竞争对手情报Agent团队")
 # st.sidebar.page_link(r"pages/5_♂️AI健康与健身规划Agent.py", label="️‍♂️AI健康与健身规划Agent")
-# st.sidebar.page_link(r"pages/6_初创企业趋势分析Agent.py", label="️📈AI初创企业趋势分析Agent")
+# st.sidebar.page_link(r"pages/8_初创企业趋势分析Agent.py", label="️📈AI初创企业趋势分析Agent")
 # st.sidebar.page_link(r"pages/7_🗞️AI记者Agent.py", label="️🗞️AI记者Agent")
 # st.sidebar.page_link(r"pages/8_🎯AI潜在客户生成Agent.py", label="🎯AI潜在客户生成Agent")
 # st.sidebar.page_link(r"pages/9_个人财务Agent.py", label="💰AI个人财务Agent")

@@ -1,12 +1,12 @@
 from crewai import Agent, Task, Crew, Process
-from langchain.llms import Ollama
+# from langchain.llms import Ollama
 from ..Financial.tools.yf_tech_analysis_tool import yf_tech_analysis
 from ..Financial.tools.yf_fundamental_analysis_tool import yf_fundamental_analysis
 from ..Financial.tools.sentiment_analysis_tool import sentiment_analysis
 from ..Financial.tools.competitor_analysis_tool import competitor_analysis
 from ..Financial.tools.risk_assessment_tool import risk_assessment
 # from openai import OpenAI
-from crewai import LLM
+# from crewai import LLM
 from langchain_openai import ChatOpenAI
 import os
 os.environ['DEEPSEEK_API_KEY']="sk-ebcb53f7e81a4ee88e1e140a41522f19"
@@ -15,20 +15,20 @@ def create_crew(stock_symbol,openai_api_base_url,openai_api_model_type,openai_ap
     # Initialize Ollama LLM
     # llm = Ollama(model="tinyllama")  # Make sure you have the llama2 model installed in Ollama
     print(stock_symbol)
-    llm = ChatOpenAI(
-        # model="DeepSeek-R1",
-        model="deepseek/deepseek-chat",
-        # base_url="https://ai.gitee.com/v1",
-        base_url="https://api.deepseek.com",
-        # api_key="8AORHWT6OWTFKSGEYIPOUPDB7IXZCJCGLR49D5TD",
-        api_key="sk-ebcb53f7e81a4ee88e1e140a41522f19"
-        # default_headers={"X-Package":"1910"},
-    )
-    # client = ChatOpenAI(
-    #     model=openai_api_model_type,
-    #     base_url=openai_api_base_url,
-    #     api_key=openai_api_key
+    # llm = ChatOpenAI(
+    #     # model="DeepSeek-R1",
+    #     model="deepseek/deepseek-chat",
+    #     # base_url="https://ai.gitee.com/v1",
+    #     base_url="https://api.deepseek.com",
+    #     # api_key="8AORHWT6OWTFKSGEYIPOUPDB7IXZCJCGLR49D5TD",
+    #     api_key="sk-ebcb53f7e81a4ee88e1e140a41522f19"
+    #     # default_headers={"X-Package":"1910"},
     # )
+    client = ChatOpenAI(
+        model=openai_api_model_type,
+        base_url=openai_api_base_url,
+        api_key=openai_api_key
+    )
 
     # llm = LLM(
     #     model=openai_api_model_type,

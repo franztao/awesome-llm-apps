@@ -28,6 +28,8 @@ st.title("财经年度分析报告Agent")
 st.markdown("""
 财经年度分析报告Agent是一款基于Streamlit的交互式应用，帮助用户快速生成专业财经年度分析报告。它提供数据可视化、关键指标分析和自动化报告生成功能，支持多种财经数据类型，适用于投资者、分析师和企业决策者，简化财经数据分析流程，提升报告效率。
   """)
+st.subheader("分析报告样例如下(英伟达2024年)：")
+st_display_pdf(os.path.join(os.path.dirname(os.path.dirname(__file__)), "code_fin", "FinRobot","NVDA_report.pdf"))
 
 openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
@@ -87,6 +89,7 @@ def get_report(company, fyear, openai_api_key, openai_api_model_type, openai_api
 
 if openai_api_key:
 
+    st.subheader("生成新分析报告请输入公司和年份")
     # company = "Microsoft"
     # fyear = "2023"
     col1, col2 = st.columns(2)
@@ -99,7 +102,7 @@ if openai_api_key:
 
     if stock1 and stock2:
         if st.button("生成报告"):
-            with st.spinner(f"分析公司{stock1}和年份{stock2}（大约需要5分钟，请耐心等候）..."):
+            with st.spinner(f"分析公司{stock1}和年份{stock2}（大约需要15分钟，请耐心等候）..."):
                 paths = get_report(stock1, stock2, openai_api_key, openai_api_model_type, openai_api_base_url)
             # paths = r'C:\Users\m01216.METAX-TECH\Downloads\FinRobot-master\FinRobot-master\report'
             fs = os.listdir(paths)

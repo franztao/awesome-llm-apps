@@ -3,7 +3,7 @@ from agno.agent import Agent
 from agno.models.openai import OpenAILike
 from agno.tools.yfinance import YFinanceTools
 
-st.set_page_config(page_title="AI智能投资Agent", page_icon="👨📈")
+st.set_page_config(page_title="智能选股投资Agent", page_icon="👨📈")
 
 st.title("📈 智能选股投资Agent")
 # st.caption("This app allows you to compare the performance of two stocks and generate detailed reports.")
@@ -31,18 +31,20 @@ if openai_api_key:
         instructions=[
             "Format your response using markdown and use tables to display data where possible."
         ],
+        debug_mode=True
     )
 
     col1, col2 = st.columns(2)
     with col1:
         # stock1 = st.text_input("Enter first stock symbol (e.g. AAPL)")
-        stock1 = st.text_input("输入第一个股票代码 (e.g. AAPL)")
+        stock1 = st.text_input("输入第一个股票代码 (e.g. AAPL)","AAPL")
     with col2:
         # stock2 = st.text_input("Enter second stock symbol (e.g. MSFT)")
-        stock2 = st.text_input("输入第二个股票代码 (e.g. MSFT)")
+        stock2 = st.text_input("输入第二个股票代码 (e.g. MSFT)","MSFT")
 
     if stock1 and stock2:
-        with st.spinner(f"Analyzing {stock1} and {stock2}..."):
-            query = f"Compare both the stocks - {stock1} and {stock2} and make a detailed report for an investment trying to invest and compare these stocks"
-            response = assistant.run(query, stream=False)
-            st.markdown(response.content)
+        if st.button("进行分析"):
+            with st.spinner(f"对比 {stock1} 和 {stock2}（大约需要5分钟，请耐心等候）......"):
+                query = f"Compare both the stocks - {stock1} and {stock2} and make a detailed report for an investment trying to invest and compare these stocks"
+                response = assistant.run(query, stream=False)
+                st.markdown(response.content)

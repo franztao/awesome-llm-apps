@@ -43,6 +43,8 @@ if openai_api_key and serp_api_key:
         ],
         tools=[SerpApiTools(api_key=serp_api_key)],
         add_datetime_to_instructions=True,
+        show_tool_calls=True,
+                    debug_mode=True,
     )
     planner = Agent(
         name="Planner",
@@ -64,6 +66,8 @@ if openai_api_key and serp_api_key:
             "Never make up facts or plagiarize. Always provide proper attribution.",
         ],
         add_datetime_to_instructions=True,
+        show_tool_calls=True,
+                    debug_mode=True,
     )
 
     # Input fields for the user's financial goals and current financial situation

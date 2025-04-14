@@ -21,9 +21,9 @@ AI 创业趋势分析Agent是一款面向新兴企业家的工具，可通过识
   - **趋势分析**：系统通过分析的故事识别初创企业资金、技术采用和市场机会方面的新兴模式。
   - **Streamlit UI**：该应用程序具有使用 Streamlit 构建的用户友好界面，可轻松进行交互。
   """)
-topic = st.text_input("输入您的初创企业感兴趣的领域：")
+topic = st.text_input("输入您的初创企业感兴趣的领域：","互联网企业")
 # anthropic_api_key = st.sidebar.text_input("Enter Anthropic API Key", type="password")
-openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.openai_api_key)
+openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 
 openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
@@ -50,6 +50,7 @@ if st.button("生成分析结果"):
                     instructions=["Gather latest articles on the topic"],
                     show_tool_calls=True,
                     markdown=True,
+                    debug_mode=True,
                 )
 
                 # Define Summary Writer Agent
@@ -62,6 +63,7 @@ if st.button("生成分析结果"):
                     instructions=["Provide concise summaries of the articles"],
                     show_tool_calls=True,
                     markdown=True,
+                    debug_mode=True,
                 )
 
                 # Define Trend Analyzer Agent
@@ -72,6 +74,7 @@ if st.button("生成分析结果"):
                     instructions=["Identify emerging trends and startup opportunities"],
                     show_tool_calls=True,
                     markdown=True,
+                    debug_mode=True,
                 )
 
                 # The multi agent Team setup of phidata:
@@ -87,6 +90,7 @@ if st.button("生成分析结果"):
                     ],
                     show_tool_calls=True,
                     markdown=True,
+                    debug_mode=True,
                 )
 
                 # Executing the workflow

@@ -78,12 +78,12 @@ st.session_state['openai_api_key'] = openai_api_key
 openai_api_model_type = st.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
 st.session_state['openai_api_model_type'] = openai_api_model_type
-openai_api_vlm_model_type = st.text_input("VLM API Model Type",
-                                          value=st.session_state.get('openai_api_vlm_model_type'))
-st.session_state['openai_api_vlm_model_type'] = openai_api_vlm_model_type
-openai_api_embedding_model_type = st.text_input("Embedding API  Model Type",
-                                                value=st.session_state.get('openai_api_embedding_model_type'))
-st.session_state['openai_api_embedding_model_type'] = openai_api_embedding_model_type
+# openai_api_vlm_model_type = st.text_input("VLM API Model Type",
+#                                           value=st.session_state.get('openai_api_vlm_model_type'))
+# st.session_state['openai_api_vlm_model_type'] = openai_api_vlm_model_type
+# openai_api_embedding_model_type = st.text_input("Embedding API  Model Type",
+#                                                 value=st.session_state.get('openai_api_embedding_model_type'))
+# st.session_state['openai_api_embedding_model_type'] = openai_api_embedding_model_type
 openai_api_base_url = st.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
 st.session_state['openai_api_key'] = openai_api_key
 # st.caption(" Get your LLM API Key from [OpenAI's website](https://platform.openai.com/api-keys)")
@@ -167,11 +167,25 @@ st.session_state['openai_api_key'] = openai_api_key
 # st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
 
 
-st.session_state['openai_api_model_type'] = "qwen-plus"
-st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
-st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
-st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
-st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
+st.session_state['openai_api_model_type'] = "deepseek-chat"
+st.session_state['openai_api_key'] = 'sk-ebcb53f7e81a4ee88e1e140a41522f19'
+st.session_state['openai_api_base_url'] = 'https://api.deepseek.com'
+# llm = ChatOpenAI(
+#         # model="DeepSeek-R1",
+#         model="deepseek/deepseek-chat",
+#         # base_url="https://ai.gitee.com/v1",
+#         base_url="https://api.deepseek.com",
+#         # api_key="8AORHWT6OWTFKSGEYIPOUPDB7IXZCJCGLR49D5TD",
+#         api_key="sk-ebcb53f7e81a4ee88e1e140a41522f19"
+#         # default_headers={"X-Package":"1910"},
+#     )
+
+#
+# st.session_state['openai_api_model_type'] = "qwen-plus"
+# st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
+# st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+# st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
+# st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
 
 
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'

@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 1. Start the application:
 ```bash
-streamlit run app.py
+streamlit run 3_AI法律文献助手Agent️.py
 ```
 
 2. Enter a stock symbol (e.g., AAPL for Apple Inc.) in the input field.

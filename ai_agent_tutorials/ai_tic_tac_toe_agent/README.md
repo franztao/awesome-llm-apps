@@ -52,7 +52,7 @@ export GROQ_API_KEY=***       # For Groq models
 ### 4. Run the Game
 
 ```shell
-streamlit run app.py
+streamlit run 3_AI法律文献助手Agent️.py
 ```
 
 - Open [localhost:8501](http://localhost:8501) to view the game interface

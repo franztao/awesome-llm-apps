@@ -43,7 +43,7 @@ LANGCHAIN_PROJECT="<YOUR_PROJECT_NAME_HERE>"
 4. To start the Streamlit app, run the following command:
 
 ```bash
-streamlit run app.py
+streamlit run 3_AI法律文献助手Agent️.py
 ```
 
 ## Resources

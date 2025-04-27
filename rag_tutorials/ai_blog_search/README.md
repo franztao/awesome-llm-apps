@@ -36,7 +36,7 @@ https://github.com/user-attachments/assets/cee07380-d3dc-45f4-ad26-7d944ba9c32b
 
 2. **Run the Application**:
    ```bash
-   streamlit run app.py
+   streamlit run 3_AI法律文献助手Agent️.py
    ```
 
 3. **Use the Application**:

@@ -58,7 +58,7 @@ A Streamlit application that allows you to explore and analyze GitHub repositori
 
 1. Start the Streamlit app:
    ```bash
-   streamlit run app.py
+   streamlit run 3_AI法律文献助手Agent️.py
    ```
 
 2. In the app interface:

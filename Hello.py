@@ -35,7 +35,7 @@ st.set_page_config(
 
 
 
-st.write("# 欢迎使用 沐曦金融财务Agent智能体! 👋")
+st.write("# 欢迎使用 沐曦Agent智能体! 👋")
 # st.write(
 #     "A curated collection of awesome LLM apps built with RAG and AI agents. This repository features LLM apps that use models from OpenAI, Anthropic, Google, and open-source models like DeepSeek, Qwen or Llama that you can run locally on your computer.")
 st.markdown(
@@ -181,11 +181,11 @@ st.session_state['openai_api_base_url'] = 'https://api.deepseek.com'
 #     )
 
 #
-# st.session_state['openai_api_model_type'] = "qwen-plus"
-# st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
-# st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
-# st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
-# st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
+st.session_state['openai_api_model_type'] = "qwen-plus"
+st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
+st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
+st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
 
 
 st.session_state['firecrawl_api_key'] = 'fc-bd7f59397c2544e79a7236038b0ba662'

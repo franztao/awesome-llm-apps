@@ -117,11 +117,25 @@ def process_document(uploaded_file, vector_db: Qdrant):
         raise Exception(f"Error processing document: {str(e)}")
 
 def main():
-    st.set_page_config(page_title="Legal Document Analyzer", layout="wide")
+    st.set_page_config(page_title="全方位服务法律Agent团队", layout="wide")
     init_session_state()
 
-    st.title("‍⚖️ AI法律agent团队 👨‍⚖️")
-
+    st.title("‍⚖️ 全方位服务法律Agent团队 👨‍⚖️")
+    st.markdown("""模拟了一支提供全方位服务的法律团队，使用多个 AI Agent来分析法律文件并提供全面的法律见解。每个代理代表不同的法律专家角色，涵盖从研究、合同分析到战略规划等各个方面，共同提供全面的法律分析和建议。
+    """)
+    st.markdown("""## 特征
+- **专业法律AI Agent团队**
+  - **法律研究员**：配备 DuckDuckGo 搜索工具，可查找并引用相关的法律案例和判例。提供详细的研究摘要，并注明来源和上传文档的特定章节。
+  - **合同分析师**：擅长全面审查合同，识别关键条款、义务和潜在问题。参考文件中的具体条款进行详细分析。
+  - **法律策略师**：专注于制定全面的法律策略，在考虑风险和机遇的同时提供可行的建议。
+  - **团队负责人**：协调团队成员之间的分析，确保回复全面、建议来源合理，并参考特定文档部分。同时担任三名特工的特工团队协调员。
+- **文档分析类型**
+  - 合同审查 - 由合同分析师完成
+  - 法律研究 - 由法律研究员完成
+  - 风险评估 - 由法律策略师、合同分析师完成
+  - 合规性检查 - 由法律策略师、法律研究员、合同分析师完成
+  - 定制查询 - 由Agent团队完成 - 法律研究员、法律策略师、合同分析师
+    """)
     with st.sidebar:
         st.header("🔑 API 配置")
 

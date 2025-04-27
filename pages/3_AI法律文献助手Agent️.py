@@ -75,7 +75,7 @@ def load_css():
     # os.Pat
     # __file__
 
-    with open(os.path.join(os.path.dirname(os.path.dirname(Path(__file__))), 'code/code_legal/LegalFlow/static/styles.css'), "r") as f:
+    with open(os.path.join(os.path.dirname(os.path.dirname(Path(__file__))), 'code_agent/code_legal/LegalFlow/static/styles.css'), "r") as f:
         css = f"<style>{f.read()}</style>"
         st.markdown(css, unsafe_allow_html=True)
 
@@ -224,19 +224,41 @@ def main():
     
     
     # Begin the Streamlit App Here
-    st.markdown("<h1 style='text-align: center; color: #ffc107;'>LegalFlow</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center;'>Your assistant for document analysis & legal guidance.</h3>", unsafe_allow_html=True)
-
+    # st.markdown("<h1 style='text-align: center; color: #ffc107;'>LegalFlow</h1>", unsafe_allow_html=True)
+    # st.markdown("<h3 style='text-align: center;'>Your assistant for document analysis & legal guidance.</h3>", unsafe_allow_html=True)
+    st.markdown("""## 介绍
+一款人工智能虚拟助手，旨在简化法律领域的文档分类。利用llama parse技术进行文档分析，将文档分为 6 个不同的类别。此举简化了法律文件的组织和管理流程，节省了宝贵的时间和资源。
+## 特征
+- 文档分类
+  - 分为6类：
+    1. 医疗记录
+    2. 医疗费用
+    3. 警方报告
+    4. 一致
+    5. 法院命令
+    6. 其他
+- 聊天机器人
+  - 与客户进行法律对话
+  - 天生好奇
+- Web 界面
+  - 由 Streamlit 提供支持的用户友好型设计，确保可访问性和流畅的导航
+- 辅助功能选项
+  - 用于 ChatBot响应的文本转语音 (TTS) 服务
+## 用法
+- 律师事务所客户可以用它来识别和分类文件
+- 律师事务所可以在内部利用此工具对法律文件进行分类和筛选
+- 客户可以通过对话获得一般指导和帮助
+    """)
     # Do the sidebar here
-    st.sidebar.title('Accessibility')
-    use_accessibility = st.sidebar.checkbox('Enable Text to Speech Responses')
+    st.sidebar.title('语音配置')
+    use_accessibility = st.sidebar.checkbox('启用文本到语音转换功能')
     if use_accessibility:
         st.session_state["accessibility_audio"] = True
     else:
         st.session_state["accessibility_audio"] = False
 
-    st.sidebar.title('Upload a Legal Document')
-    file = st.sidebar.file_uploader("Upload a file here", type=["pdf", "png", "jpg", "jpeg"])
+    st.sidebar.title('上传法律文件')
+    file = st.sidebar.file_uploader(" ", type=["pdf", "png", "jpg", "jpeg"])
 
     # Add information for the file
     if file:
@@ -249,14 +271,51 @@ def main():
                 verbose=True,
                 num_workers=1,
             )
-            # src = r"C:\Users\m01216.METAX-TECH\Desktop\2025\Mar\国电投_测试资料\GBT 50796-2012 光伏发电工程验收规范.pdf"
-            file=r"C:\Users\m01216.METAX-TECH\Downloads\20180921164428.pdf"
-            documents = parser.load_data(file)
-            print(documents)
-            docs = []
-            for d in documents:
-                docs.append(d.text)
-            result_content = '\n'.join(docs)
+
+            import tempfile
+
+            def save_uploaded_file(uploaded_file):
+                """将上传的文件保存到临时目录并返回文件路径"""
+                try:
+                    # 创建临时目录（如果不存在）
+                    temp_dir = tempfile.gettempdir()
+                    os.makedirs(temp_dir, exist_ok=True)
+
+                    # 构造文件保存路径
+                    file_path = os.path.join(temp_dir, uploaded_file.name)
+
+                    # 保存文件
+                    with open(file_path, "wb") as f:
+                        f.write(uploaded_file.getbuffer())
+
+                    return file_path
+                except Exception as e:
+                    st.error(f"保存文件时出错: {e}")
+                    return None
+
+            uploaded_file=file
+            if uploaded_file is not None:
+                # 显示文件信息
+                st.write("文件名:", uploaded_file.name)
+                st.write("文件类型:", uploaded_file.type)
+                st.write("文件大小:", uploaded_file.size, "字节")
+
+                # 保存文件到临时目录
+                saved_path = save_uploaded_file(uploaded_file)
+
+                if saved_path:
+                    st.success(f"文件已成功保存到: {saved_path}")
+
+                # src = r"C:\Users\m01216.METAX-TECH\Desktop\2025\Mar\国电投_测试资料\GBT 50796-2012 光伏发电工程验收规范.pdf"
+                file=saved_path
+                documents = parser.load_data(file)
+                print(documents)
+                docs = []
+                for d in documents:
+                    docs.append(d.text)
+                result_content = '\n'.join(docs)
+            else:
+                result_content=""
             # document_analysis_client = DocumentAnalysisClient(
             #     endpoint=azure_endpoint,
             #     credential=AzureKeyCredential(azure_key)
@@ -269,7 +328,7 @@ def main():
         st.session_state["result_content"]=result_content
         st.sidebar.success('Document uploaded successfully')
     else:
-        st.warning('Please use the sidebar to upload a document for classification, or continue to interact with LegalFlowAI below')
+        st.warning('请使用侧边栏上传文档进行分类，或继续与下面的交互')
 
     if file:
         st.markdown('---')
@@ -278,7 +337,7 @@ def main():
 
     st.markdown('---')
 
-    st.write('Hello, I am LegalFlowAI and I am here to help you with any questions you may have about your legal documents or legal procedures. Please use the chatbox below to ask any questions you may have.')
+    st.write('你好，我是AI法律文献助手Agent️，我在这里帮助您解决有关法律文件或法律程序的任何问题。请使用下面的聊天框提问。')
     st.write('')
     chat_palceholder = st.container()
     prompt_placeholder = st.form("Chat-form")
@@ -291,7 +350,7 @@ def main():
             st.markdown(div, unsafe_allow_html=True)
 
     with prompt_placeholder:
-        st.text_input("LegalFlowAI  -  Begin a chat", value="", key='human_prompt')
+        st.text_input("开始对话", value="", key='human_prompt')
         c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
         with c1:
             pass

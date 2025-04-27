@@ -226,37 +226,44 @@ def main():
     # Begin the Streamlit App Here
     # st.markdown("<h1 style='text-align: center; color: #ffc107;'>LegalFlow</h1>", unsafe_allow_html=True)
     # st.markdown("<h3 style='text-align: center;'>Your assistant for document analysis & legal guidance.</h3>", unsafe_allow_html=True)
-    st.markdown("""## 介绍
-一款人工智能虚拟助手，旨在简化法律领域的文档分类。利用llama parse技术进行文档分析，将文档分为 6 个不同的类别。此举简化了法律文件的组织和管理流程，节省了宝贵的时间和资源。
-## 特征
-- 文档分类
-  - 分为6类：
-    1. 医疗记录
-    2. 医疗费用
-    3. 警方报告
-    4. 一致
-    5. 法院命令
-    6. 其他
-- 聊天机器人
-  - 与客户进行法律对话
-  - 天生好奇
-- Web 界面
-  - 由 Streamlit 提供支持的用户友好型设计，确保可访问性和流畅的导航
-- 辅助功能选项
-  - 用于 ChatBot响应的文本转语音 (TTS) 服务
-## 用法
-- 律师事务所客户可以用它来识别和分类文件
-- 律师事务所可以在内部利用此工具对法律文件进行分类和筛选
-- 客户可以通过对话获得一般指导和帮助
+    st.markdown("""
+#### **核心功能**
+
+1. **自动文档分类**
+   - 使用AI技术将法律文件智能分类为以下6类：
+     - 医疗记录
+     - 医疗费用单据
+     - 警方报告
+     - 法律协议（合同、和解书等）
+     - 法院命令
+     - 其他未分类文档
+2. **智能法律咨询助手**
+   - 支持自然语言交互，解答基础法律问题
+   - 可引导用户提供必要文件或信息
+3. **用户友好界面**
+   - 基于Web的简洁操作平台，支持文件拖拽上传
+   - 提供文本转语音（TTS）功能，增强可访问性
+
+#### **技术实现**
+
+- 采用**Llama Parse**技术解析文档内容，提取关键信息
+- 支持常见格式（PDF、Word、扫描件等）
+- 分类结果可导出，便于进一步处理
+
+#### **适用场景**
+
+- 快速整理案件材料（如医疗记录、警方报告）
+- 自动识别医疗费用单据，便于报销或理赔对账
+- 通过对话获取法律指引，减少人工咨询负担
     """)
     # Do the sidebar here
-    st.sidebar.title('语音配置')
-    use_accessibility = st.sidebar.checkbox('启用文本到语音转换功能')
-    if use_accessibility:
-        st.session_state["accessibility_audio"] = True
-    else:
-        st.session_state["accessibility_audio"] = False
-
+    # st.sidebar.title('语音配置')
+    # use_accessibility = st.sidebar.checkbox('启用文本到语音转换功能')
+    # if use_accessibility:
+    #     st.session_state["accessibility_audio"] = True
+    # else:
+    #     st.session_state["accessibility_audio"] = False
+    st.session_state["accessibility_audio"] = False
     st.sidebar.title('上传法律文件')
     file = st.sidebar.file_uploader(" ", type=["pdf", "png", "jpg", "jpeg"])
 
@@ -337,7 +344,7 @@ def main():
 
     st.markdown('---')
 
-    st.write('你好，我是AI法律文献助手Agent️，我在这里帮助您解决有关法律文件或法律程序的任何问题。请使用下面的聊天框提问。')
+    st.write('您好，我是AI法律文献助手Agent️，我在这里帮助您解决有关法律文件或法律程序的任何问题。请使用下面的聊天框提问。')
     st.write('')
     chat_palceholder = st.container()
     prompt_placeholder = st.form("Chat-form")

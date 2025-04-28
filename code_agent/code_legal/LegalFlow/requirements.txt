@@ -1,0 +1,6 @@
+langchain
+azure-ai-formrecognizer
+azure-common
+azure-core
+openai
+gTTS

@@ -59,7 +59,8 @@ st.title("AI法律文献助手Agent️")
 openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
 openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
                                       value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
+# openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url = st.session_state.get('openai_api_base_url')
 
 
 DOCUMENT_TYPES = [
@@ -340,7 +341,7 @@ def main():
     if file:
         st.markdown('---')
         doc_type = get_type_of_document(result_content)
-        st.markdown(f"<h3 style='text-align: center;'>Document Type: {doc_type}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center;'>文章类型: {doc_type}</h3>", unsafe_allow_html=True)
 
     st.markdown('---')
 

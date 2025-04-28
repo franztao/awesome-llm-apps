@@ -1,0 +1,16 @@
+lottie_url1: "https://lottie.host/f89e48e2-55e5-4fdf-a406-0be2b00cc2af/ECJa6PGrCV.json"
+lottie_url2: "https://lottie.host/05824020-0a23-4373-8418-721bd6e68504/FE5XXRT455.json"
+welcome_template: "Streamline Analyst 🪄 is an advanced, open-source application powered by LLMs that streamlines the entire process of data analysis. It automates all the tasks from data preprocessing to model testing, simplifying complex data tasks with precision."
+introduction_template1: |
+  作为数据分析师Agent，**Analyst Agent**能够根据您的数据做出自主决策：
+  - 轻松的数据预处理
+  - 智能编码与平衡
+  - 自动模型选择和训练
+  - 动态数据可视化
+  - 还有更多。。。
+introduction_template2: |
+  **您只需**:
+  
+  1. **选择**您的数据文件
+  2. **选择**分析模式
+  3. **按下**开始按钮

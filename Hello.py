@@ -160,16 +160,16 @@ st.session_state['openai_api_key'] = openai_api_key
 # st.session_state['openai_api_vlm_model_type'] = "Qwen2-VL-72B"
 
 # st.session_state['openai_api_model_type'] = "DeepSeek-R1"
-# st.session_state['openai_api_model_type'] = "QwQ-32B"
+# # st.session_state['openai_api_model_type'] = "QwQ-32B"
 # st.session_state['openai_api_key'] = 'XWKOBFEFOYJYDXAIONEQBBHLX5TTEEUIN70JTZA6'
 # st.session_state['openai_api_base_url'] = 'https://ai.gitee.com/v1'
 # st.session_state['openai_api_embedding_model_type'] = "text-embedding-v3"
 # st.session_state['openai_api_vlm_model_type'] = "qwen-vl-plus"
 
 
-st.session_state['openai_api_model_type'] = "deepseek-chat"
-st.session_state['openai_api_key'] = 'sk-ebcb53f7e81a4ee88e1e140a41522f19'
-st.session_state['openai_api_base_url'] = 'https://api.deepseek.com'
+# st.session_state['openai_api_model_type'] = "deepseek-chat"
+# st.session_state['openai_api_key'] = 'sk-ebcb53f7e81a4ee88e1e140a41522f19'
+# st.session_state['openai_api_base_url'] = 'https://api.deepseek.com'
 # llm = ChatOpenAI(
 #         # model="DeepSeek-R1",
 #         model="deepseek/deepseek-chat",

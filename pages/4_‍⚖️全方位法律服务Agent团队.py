@@ -9,6 +9,7 @@ from agno.knowledge.pdf import PDFKnowledgeBase, PDFReader
 from agno.models.openai import OpenAILike
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.vectordb.qdrant import Qdrant
+from llama_cloud_services import LlamaParse
 
 
 def init_session_state():
@@ -82,6 +83,20 @@ def process_document(uploaded_file, vector_db: Qdrant):
             temp_file.write(uploaded_file.getvalue())
             temp_file_path = temp_file.name
 
+        os.environ["LLAMA_CLOUD_API_KEY"] = "llx-FZXLhNvbI4TF094usy7482L0vrk6D5u9qsqphdJRbG58FsGv"
+        parser = LlamaParse(
+            result_type="text",
+            language="ch_sim",
+            verbose=True,
+            num_workers=1,
+        )
+        documents = parser.load_data(temp_file_path)
+        print(documents)
+        docs = []
+        for d in documents:
+            docs.append(d.text)
+        result_content = '\n'.join(docs)
+
         st.info("正在加载并处理文档...")
 
         # Create a PDFKnowledgeBase with the vector_db
@@ -110,7 +125,7 @@ def process_document(uploaded_file, vector_db: Qdrant):
         except Exception:
             pass
 
-        return knowledge_base
+        return knowledge_base,result_content
 
     except Exception as e:
         st.error(f"Document processing error: {str(e)}")
@@ -222,8 +237,8 @@ def main():
                 with st.spinner("Processing document..."):
                     try:
                         # Process the document and get the knowledge base
-                        knowledge_base = process_document(uploaded_file, st.session_state.vector_db)
-
+                        knowledge_base,result_content = process_document(uploaded_file, st.session_state.vector_db)
+                        st.session_state['result_content']=result_content
                         if knowledge_base:
                             st.session_state.knowledge_base = knowledge_base
                             # Add the file to processed files
@@ -399,8 +414,11 @@ def main():
                         os.environ['OPENAI_API_KEY'] = st.session_state.openai_api_key
 
                         # Combine predefined and user queries
+                        result_content = st.session_state['result_content']
+                        print(result_content)
                         if analysis_type != "Custom Query":
-                            combined_query = f"""
+
+                            combined_query = f"""pdf正文:```{result_content}```
                             Using the uploaded document as reference:
                             
                             Primary Analysis Task: {analysis_configs[analysis_type]['query']}
@@ -409,7 +427,8 @@ def main():
                             Please search the knowledge base and provide specific references from the document.。最后输出的内容必须是中文内容呈现，不要是英文
                             """
                         else:
-                            combined_query = f"""
+                            # result_content=st.session_state['result_content']
+                            combined_query = f"""pdf正文:```{result_content}```
                             Using the uploaded document as reference:
                             
                             {user_query}
@@ -422,7 +441,7 @@ def main():
 
                         # Display results in tabs
                         tabs = st.tabs(["Analysis", "Key Points", "Recommendations"])
-
+                        print(response.content)
                         with tabs[0]:
                             st.markdown("### 详细分析")
                             if response.content:
@@ -435,7 +454,7 @@ def main():
                         with tabs[1]:
                             st.markdown("### 要点")
                             key_points_response = st.session_state.legal_team.run(
-                                f"""Based on this previous analysis:    
+                                f"""pdf正文:```{result_content}```Based on this previous analysis:    
                                 {response.content}
                                 
                                 Please summarize the key points in bullet points.
@@ -451,7 +470,7 @@ def main():
                         with tabs[2]:
                             st.markdown("### 建议")
                             recommendations_response = st.session_state.legal_team.run(
-                                f"""Based on this previous analysis:
+                                f"""pdf正文:```{result_content}```Based on this previous analysis:
                                 {response.content}
                                 
                                 What are your key recommendations based on the analysis, the best course of action?

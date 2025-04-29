@@ -149,8 +149,9 @@ def main_conversationalAI():
         # ]
 
         # 方法1：直接传入文本列表
-        retriever = BM25Retriever.from_texts(st.session_state.chunks)
+        retriever = BM25Retriever.from_texts(st.session_state.chunks,search_kwargs={"k": 3})
 
+        st.session_state.vectorstore=retriever
 
         # Updating rag chain after every upload
         history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
@@ -194,3 +195,4 @@ def main_conversationalAI():
 
 
 
+# 中国和美国专利法的区别？

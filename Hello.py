@@ -181,6 +181,7 @@ st.session_state['openai_api_key'] = openai_api_key
 #     )
 
 #
+# https://help.aliyun.com/zh/model-studio/get-api-key
 st.session_state['openai_api_model_type'] = "qwen-plus"
 st.session_state['openai_api_key'] = 'sk-f7f3039f52e3402bbafda926f4da7cb3'
 st.session_state['openai_api_base_url'] = 'https://dashscope.aliyuncs.com/compatible-mode/v1'

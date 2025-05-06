@@ -2,7 +2,7 @@ import os
 import requests
 from sec_api import ExtractorApi, QueryApi, RenderApi
 from functools import wraps
-from typing import Annotated
+from typing import Annotated, Union
 from ..utils import SavePathType, decorate_all_methods
 from ..data_source import FMPUtils
 
@@ -140,7 +140,7 @@ class SECUtils:
         ticker_symbol: Annotated[str, "ticker symbol"],
         fyear: Annotated[str, "fiscal year of the 10-K report"],
         section: Annotated[
-            str | int,
+            Union[str, int],
             "Section of the 10-K report to extract, should be in [1, 1A, 1B, 2, 3, 4, 5, 6, 7, 7A, 8, 9, 9A, 9B, 10, 11, 12, 13, 14, 15]",
         ],
         report_address: Annotated[

@@ -1,6 +1,6 @@
 import os
 from textwrap import dedent
-from typing import Annotated, List
+from typing import Annotated, List, Union
 from datetime import timedelta, datetime
 from ..data_source import YFinanceUtils, SECUtils, FMPUtils
 
@@ -342,7 +342,7 @@ class ReportAnalysisUtils:
     def get_key_data(
         ticker_symbol: Annotated[str, "ticker symbol"],
         filing_date: Annotated[
-            str | datetime, "the filing date of the financial report being analyzed"
+            Union[str, datetime], "the filing date of the financial report being analyzed"
         ],
     ) -> dict:
         """

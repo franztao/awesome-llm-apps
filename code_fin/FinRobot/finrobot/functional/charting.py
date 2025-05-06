@@ -3,7 +3,7 @@ import mplfinance as mpf
 import pandas as pd
 
 from matplotlib import pyplot as plt
-from typing import Annotated, List, Tuple
+from typing import Annotated, List, Tuple, Union
 from pandas import DateOffset
 from datetime import datetime, timedelta
 
@@ -35,7 +35,7 @@ class MplFinanceUtils:
             "Style of the plot, should be one of 'default','classic','charles','yahoo','nightclouds','sas','blueskies','mike'. Default to 'default'.",
         ] = "default",
         mav: Annotated[
-            int | List[int] | Tuple[int, ...] | None,
+            Union[int, List[int], Tuple[int, ...]],
             "Moving average window(s) to plot on the chart. Default to None.",
         ] = None,
         show_nontrading: Annotated[
@@ -77,7 +77,7 @@ class ReportChartUtils:
         ticker_symbol: Annotated[
             str, "Ticker symbol of the stock (e.g., 'AAPL' for Apple)"
         ],
-        filing_date: Annotated[str | datetime, "filing date in 'YYYY-MM-DD' format"],
+        filing_date: Annotated[Union[str, datetime], "filing date in 'YYYY-MM-DD' format"],
         save_path: Annotated[str, "File path where the plot should be saved"],
     ) -> str:
         """Plot the stock performance of a company compared to the S&P 500 over the past year."""
@@ -153,7 +153,7 @@ class ReportChartUtils:
         ticker_symbol: Annotated[
             str, "Ticker symbol of the stock (e.g., 'AAPL' for Apple)"
         ],
-        filing_date: Annotated[str | datetime, "filing date in 'YYYY-MM-DD' format"],
+        filing_date: Annotated[Union[str, datetime], "filing date in 'YYYY-MM-DD' format"],
         years: Annotated[int, "number of years to search from, default to 4"] = 4,
         save_path: Annotated[str, "File path where the plot should be saved"] = None,
     ) -> str:

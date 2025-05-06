@@ -47,8 +47,9 @@ def main_conversationalAI():
     """)
 
     openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
-    openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
-                                                  value=st.session_state.get('openai_api_model_type'))
+    # openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
+    #                                               value=st.session_state.get('openai_api_model_type'))
+    openai_api_model_type = st.session_state.get('openai_api_model_type')
     # openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
     openai_api_base_url =st.session_state.get('openai_api_base_url')
 
@@ -59,6 +60,7 @@ def main_conversationalAI():
         st.session_state.uploaded_docs = []
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    st.session_state.messages=[]
     if "client" not in st.session_state:
         pass
         # st.session_state.client = weaviate.Client(embedded_options = EmbeddedOptions())

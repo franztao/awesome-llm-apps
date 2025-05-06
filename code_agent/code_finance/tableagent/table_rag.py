@@ -139,8 +139,9 @@ def main_table_agent():
     #     st.session_state.selected_model = selected_model
 
     openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
-    openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
-                                                  value=st.session_state.get('openai_api_model_type'))
+    # openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
+    #                                               value=st.session_state.get('openai_api_model_type'))
+    openai_api_model_type = st.session_state.get('openai_api_model_type')
     # openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
     openai_api_base_url = st.session_state.get('openai_api_base_url')
     # temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.0, 0.05)

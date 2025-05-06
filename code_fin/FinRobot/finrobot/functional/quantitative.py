@@ -4,7 +4,7 @@ import importlib
 import yfinance as yf
 import backtrader as bt
 from backtrader.strategies import SMA_CrossOver
-from typing import Annotated, List, Tuple
+from typing import Annotated, List, Tuple, Optional, Union
 from matplotlib import pyplot as plt
 from pprint import pformat
 from IPython import get_ipython
@@ -56,7 +56,7 @@ class BackTraderUtils:
             "Additional parameters to be passed to the strategy class formatted as json string. E.g. {'fast': 10, 'slow': 30} for SMACross.",
         ] = "",
         sizer: Annotated[
-            int | str | None,
+            Union[int, str, None],
             "Sizer used for backtesting. Can be a fixed number or a custom Sizer class. If input is integer, a corresponding fixed sizer will be applied. If custom, provide module path and class name as a string like 'my_module:TestSizer'.",
         ] = None,
         sizer_params: Annotated[
@@ -64,7 +64,7 @@ class BackTraderUtils:
             "Additional parameters to be passed to the sizer class formatted as json string.",
         ] = "",
         indicator: Annotated[
-            str | None,
+            Optional[str],
             "Custom indicator class added to strategy. Provide module path and class name as a string like 'my_module:TestIndicator'.",
         ] = None,
         indicator_params: Annotated[
@@ -75,7 +75,7 @@ class BackTraderUtils:
             float, "Initial cash amount for the backtest. Default to 10000.0"
         ] = 10000.0,
         save_fig: Annotated[
-            str | None, "Path to save the plot of backtest results. Default to None."
+            Optional[str], "Path to save the plot of backtest results. Default to None."
         ] = None,
     ) -> str:
         """

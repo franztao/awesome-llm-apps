@@ -32,10 +32,11 @@ st.subheader("分析报告样例如下(英伟达2024年)：")
 st_display_pdf(os.path.join(os.path.dirname(os.path.dirname(__file__)), "code_fin", "FinRobot","NVDA_report.pdf"))
 
 openai_api_key = st.sidebar.text_input("LLM API Key", type="password", value=st.session_state.get('openai_api_key'))
-openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
-                                              value=st.session_state.get('openai_api_model_type'))
-openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
-
+# openai_api_model_type = st.sidebar.text_input("LLM API Model Type",
+#                                               value=st.session_state.get('openai_api_model_type'))
+openai_api_model_type=st.session_state.get('openai_api_model_type')
+# openai_api_base_url = st.sidebar.text_input("LLM API Base URL", value=st.session_state.get('openai_api_base_url'))
+openai_api_base_url=st.session_state.get('openai_api_base_url')
 
 def get_report(company, fyear, openai_api_key, openai_api_model_type, openai_api_base_url):
     llm_config = {
@@ -95,10 +96,10 @@ if openai_api_key:
     col1, col2 = st.columns(2)
     with col1:
         # stock1 = st.text_input("Enter first stock symbol (e.g. AAPL)")
-        stock1 = st.text_input("公司 (e.g. Microsoft)", "Microsoft")
+        stock1 = st.text_input("公司 (e.g. Nvidia)", "Nvidia")
     with col2:
         # stock2 = st.text_input("Enter second stock symbol (e.g. MSFT)")
-        stock2 = st.text_input("年份 (e.g. 2023)", "2023")
+        stock2 = st.text_input("年份 (e.g. 2024)", "2024")
 
     if stock1 and stock2:
         if st.button("生成报告"):

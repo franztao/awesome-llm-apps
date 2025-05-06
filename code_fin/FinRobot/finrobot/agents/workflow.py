@@ -1,5 +1,5 @@
 from .agent_library import library
-from typing import Any, Callable, Dict, List, Optional, Annotated
+from typing import Any, Callable, Dict, List, Optional, Annotated, Union
 import autogen
 from autogen.cache import Cache
 from autogen import (
@@ -23,10 +23,10 @@ class FinRobot(AssistantAgent):
 
     def __init__(
         self,
-        agent_config: str | Dict[str, Any],
-        system_message: str | None = None,  # overwrites previous config
-        toolkits: List[Callable | dict | type] = [],  # overwrites previous config
-        proxy: UserProxyAgent | None = None,
+        agent_config: Union[str, Dict[str, Any]],
+        system_message: Optional[str] = None,  # overwrites previous config
+        toolkits: List[Union[Callable, dict, type]] = [],  # overwrites previous config
+        proxy: Optional[UserProxyAgent] = None,
         **kwargs,
     ):
         orig_name = ""
@@ -104,7 +104,7 @@ class SingleAssistantBase(ABC):
 
     def __init__(
         self,
-        agent_config: str | Dict[str, Any],
+        agent_config: Union[str, Dict[str, Any]],
         llm_config: Dict[str, Any] = {},
     ):
         self.assistant = FinRobot(
@@ -126,7 +126,7 @@ class SingleAssistant(SingleAssistantBase):
 
     def __init__(
         self,
-        agent_config: str | Dict[str, Any],
+        agent_config: Union[str, Dict[str, Any]],
         llm_config: Dict[str, Any] = {},
         is_termination_msg=lambda x: x.get("content", "")
         and x.get("content", "").endswith("TERMINATE"),
@@ -170,7 +170,7 @@ class SingleAssistantRAG(SingleAssistant):
 
     def __init__(
         self,
-        agent_config: str | Dict[str, Any],
+        agent_config: Union[str, Dict[str, Any]],
         llm_config: Dict[str, Any] = {},
         is_termination_msg=lambda x: x.get("content", "")
         and x.get("content", "").endswith("TERMINATE"),
@@ -212,7 +212,7 @@ class SingleAssistantShadow(SingleAssistant):
 
     def __init__(
         self,
-        agent_config: str | Dict[str, Any],
+        agent_config: Union[str, Dict[str, Any]],
         llm_config: Dict[str, Any] = {},
         is_termination_msg=lambda x: x.get("content", "")
         and x.get("content", "").endswith("TERMINATE"),
@@ -270,12 +270,12 @@ class MultiAssistantBase(ABC):
 
     def __init__(
         self,
-        group_config: str | dict,
+        group_config: Union[str, dict],
         agent_configs: List[
-            Dict[str, Any] | str | ConversableAgent
+            Union[Dict[str, Any], str, ConversableAgent]
         ] = [],  # overwrites previous config
         llm_config: Dict[str, Any] = {},
-        user_proxy: UserProxyAgent | None = None,
+        user_proxy: Optional[UserProxyAgent] = None,
         is_termination_msg=lambda x: x.get("content", "")
         and x.get("content", "").endswith("TERMINATE"),
         human_input_mode="NEVER",

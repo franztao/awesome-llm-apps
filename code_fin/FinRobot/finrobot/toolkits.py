@@ -2,7 +2,7 @@ from autogen import register_function, ConversableAgent
 from .data_source import *
 from .functional.coding import CodingUtils
 
-from typing import List, Callable
+from typing import List, Callable, Union
 from functools import wraps
 from pandas import DataFrame
 
@@ -20,7 +20,7 @@ def stringify_output(func):
 
 
 def register_toolkits(
-    config: List[dict | Callable | type],
+    config: List[Union[dict, Callable, type]],
     caller: ConversableAgent,
     executor: ConversableAgent,
     **kwargs
